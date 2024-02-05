@@ -1,0 +1,62 @@
+// Breakpoints -->
+$break--nano:   375px;
+$break--tiny:   556px;
+$break--small:  868px;
+$break--medium: 992px;
+$break--large:  1280px;
+$break--xLarge:  1400px;
+
+// Colours -->     
+$colour--primary: #000; 
+$colour--secondary: #000; 
+$colour--tertiary: #000; 
+
+$colour--accent: #000;
+$colour--accent_2: #000;
+
+// Button -->
+$button--bg: #000;
+$button--bgHover: #000000;
+$button--text: #000;
+$button--textHover: #000;
+
+$button--bg_2: transparent;
+$button--bgHover_2: transparent;
+$button--text_2: #000;
+$button--textHover_2: #000;
+
+// Other -->
+$colour--border: #000;
+$colour--border_2: #DEDEDE;
+  
+$input--border: #000;
+$input--background: transparent;
+$input--placeholder: #000;
+$input--background: #fff;
+
+// Container -->
+$container--width: 1240px;
+$container--widthWide:  1440px;
+$container--widthNarrow1:  960px;
+$container--widthNarrow2:  1150px;
+$container--widthNarrow3:  768px;
+
+$container--padding: 5rem;
+$container--modifierSmall: 2.5;
+$container--modifierTiny: 2.5;
+
+// Gid -->
+$grid--gap: 3rem;
+$grid--modifierSmall: 2;
+$grid--modifierTiny: 2;
+
+// List -->
+$list--gap: 0.5rem;
+
+// Fonts -->   
+$font--primary: 'Arial', sans-serif;
+$font--secondary: 'Arial', sans-serif;
+
+// REM Size -->
+$size--large: 1.0;
+$size--xlarge: 0.9;
