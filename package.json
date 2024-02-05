@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile_scss": "sass --no-source-map dev/sass/main.scss:assets/custom.main_styles.css dev/sass/product.scss:assets/custom.product_styles.css dev/sass/collection.scss:assets/custom.collection_styles.css dev/sass/homepage.scss:assets/custom.homepage_styles.css",
-    "compile_scss_compressed": "sass --style compressed --no-source-map dev/sass/main.scss:assets/custom.main_styles.min.css dev/sass/product.scss:assets/custom.product_styles.min.css dev/sass/collection.scss:assets/custom.collection_styles.min.css dev/sass/homepage.scss:assets/custom.homepage_styles.min.css",
-    "compile_javascript": "cp dev/js/main.js assets/custom.main_scripts.js & terser dev/js/main.js -o assets/custom.main_scripts.min.js --compress --mangle",
+    "compile_scss": "sass --no-source-map source/sass/main.scss:assets/custom.main_styles.css source/sass/product.scss:assets/custom.product_styles.css source/sass/collection.scss:assets/custom.collection_styles.css source/sass/homepage.scss:assets/custom.homepage_styles.css",
+    "compile_scss_compressed": "sass --style compressed --no-source-map source/sass/main.scss:assets/custom.main_styles.min.css source/sass/product.scss:assets/custom.product_styles.min.css source/sass/collection.scss:assets/custom.collection_styles.min.css source/sass/homepage.scss:assets/custom.homepage_styles.min.css",
+    "compile_javascript": "cp source/js/main.js assets/custom.main_scripts.js & terser source/js/main.js -o assets/custom.main_scripts.min.js --compress --mangle",
     "compile": "sudo npm run compile_scss & sudo npm run compile_scss_compressed & sudo npm run compile_javascript",
-    "compile_watch": "sass --watch --style compressed --no-source-map dev/sass/main.scss:assets/custom.main_styles.min.css dev/sass/product.scss:assets/custom.product_styles.min.css dev/sass/collection.scss:assets/custom.collection_styles.min.css dev/sass/homepage.scss:assets/custom.homepage_styles.min.css",
+    "compile_watch": "sass --watch --style compressed --no-source-map source/sass/main.scss:assets/custom.main_styles.min.css source/sass/product.scss:assets/custom.product_styles.min.css source/sass/collection.scss:assets/custom.collection_styles.min.css source/sass/homepage.scss:assets/custom.homepage_styles.min.css",
     "push_env1": "sudo shopify theme push -e env1",
     "deploy_env1": "sudo npm run compile & sudo npm run push_env1"
   },
