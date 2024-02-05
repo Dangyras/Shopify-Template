@@ -1,0 +1,54 @@
+{% assign ss = section.settings %}
+
+#section__{{ section.id }} {
+  {%- if ss.section_padding_1 != blank -%}--section--paddingTop_1: {{ ss.section_padding_1 }}rem;{%- endif -%}
+  {%- if ss.section_padding_1 != blank -%}--section--paddingBottom_1: {{ ss.section_padding_1 }}rem;{%- endif -%}
+  {%- if ss.section_margin_1 != blank -%}--section--marginTop_1: {{ ss.section_margin_1 }}rem;{%- endif %} 
+  {%- if ss.section_margin_1 != blank -%}--section--marginBottom_1: {{ ss.section_margin_1 }}rem;{%- endif %} 
+
+  {%- if ss.content_padding_1 != blank -%}--content--paddingTop_1: {{ ss.content_padding_1 }}rem;{%- endif -%}
+  {%- if ss.content_padding_1 != blank -%}--content--paddingBottom_1: {{ ss.content_padding_1 }}rem;{%- endif -%}
+  {%- if ss.content_padding_2 != blank -%}--content--paddingSides_1: {{ ss.content_padding_2 }}rem;{%- endif -%} 
+
+  {%- if ss.content_width_1 != 0 -%}--content--width_1: {{ ss.content_width_1 }}rem;{%- endif -%} 
+  {%- if ss.custom_width_1 != 0 -%}--custom--width_1: {{ ss.custom_width_1 }}rem;{%- endif -%} 
+    
+  {%- if ss.section_background_image != blank -%}--section--bgImage: url({{ ss.section_background_image | img_url: "2000x" }});{%- endif -%}
+  {%- if ss.section_background_1 != blank -%}--section--background_1: {{ ss.section_background_1 }};{%- endif -%}
+  {%- if ss.content_background_1 != blank -%}--content--background_1: {{ ss.content_background_1 }};{%- endif -%}
+  {%- if ss.content_background_2 != blank -%}--content--background_2: {{ ss.content_background_2 }};{%- endif -%}
+  {%- if ss.content_background_3 != blank -%}--content--background_3: {{ ss.content_background_3 }};{%- endif -%}
+  {%- if ss.content_background_4 != blank -%}--content--background_4: {{ ss.content_background_4 }};{%- endif -%}
+
+  {%- if ss.content_text_1 != blank -%}--content--colour_1: {{ ss.content_text_1 }};{%- endif %}
+  {%- if ss.content_text_2 != blank -%}--content--colour_2: {{ ss.content_text_2 }};{%- endif %}
+  {%- if ss.content_text_3 != blank -%}--content--colour_3: {{ ss.content_text_3 }};{%- endif %}
+  {%- if ss.content_text_4 != blank -%}--content--colour_4: {{ ss.content_text_4 }};{%- endif %}
+  
+  {%- if ss.content_accent_1 != blank -%}--content--accent_1: {{ ss.content_accent_1 }};{%- endif -%}
+  {%- if ss.content_accent_2 != blank -%}--content--accent_2: {{ ss.content_accent_2 }};{%- endif -%}
+
+  {%- if ss.button_text_1 != blank -%}--section--buttonText_1: {{ ss.button_text_1 }};{%- endif %}
+  {%- if ss.button_text_1 != blank -%}--section--buttonTextHover_1: {{ ss.button_text_1 }};{%- endif %}
+  {%- if ss.button_text_2 != blank -%}--section--buttonText_2: {{ ss.button_text_2 }};{%- endif %}
+  {%- if ss.button_text_2 != blank -%}--section--buttonTextHover_2: {{ ss.button_text_2 }};{%- endif %}
+
+  {%- if ss.button_background_1 != blank -%}--section--buttonBackground_1: {{ ss.button_background_1 }};{%- endif %}
+  {%- if ss.button_background_1 != blank -%}--section--buttonBackground_1: {{ ss.button_background_1 }};{%- endif %}
+  {%- if ss.button_background_2 != blank -%}--section--buttonBackground_2: {{ ss.button_background_2 }};{%- endif %}
+  {%- if ss.button_background_2 != blank -%}--section--buttonBackgroundHover_2: {{ ss.button_background_2 }};{%- endif %}
+
+  {%- if ss.element_margin_1 != blank -%}--element--marginBottom_1: {{ ss.element_margin_1 }}rem;{%- endif %} 
+
+  {%- if ss.mobile_modifier_1 != blank -%}
+    {% if ss.mobile_modifier_1 > 0 %}
+      --section--modifierSmall_1: {{ ss.mobile_modifier_1 | divided_by: 100.00 | plus: 1 }};
+    {% elsif ss.mobile_modifier_1 == 0 %}
+      --section--modifierSmall_1: {{ 1 }};
+    {% elsif ss.mobile_modifier_1 == "-100" %}
+      --section--modifierSmall_1: {{ 2 }};
+    {% else %}
+      --section--modifierSmall_1: {{ ss.mobile_modifier_1 | abs | divided_by: 100.00 | minus: 1 | abs }};
+    {% endif %}
+  {%- endif -%}
+}
