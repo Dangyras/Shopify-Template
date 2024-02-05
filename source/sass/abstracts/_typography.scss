@@ -1,0 +1,169 @@
+/* ------------------------------------------------------------------------------------------------------------------------------------------------[Text]---*/
+
+#theme {
+  // Paragraphs
+  p {
+    margin: 0 0 1em 0;
+  }
+
+  .text--wrapper p {
+    margin: 0;
+    & + p {
+      margin-top: 1em;
+    }
+  }
+
+  // Links
+  a {
+    color: var(--colour--primary);
+    text-decoration: none;
+  }
+
+  // Headings
+  h1,
+  .h1,
+  h2,
+  .h2,
+  h3,
+  .h3,
+  h4,
+  .h4,
+  h5,
+  .h5,
+  h6,
+  .h6,
+  .heading--h1,
+  .heading--h2,
+  .heading--h3,
+  .heading--h4,
+  .heading--h5,
+  .heading--h6 {
+    font-family: var(--font--secondary);
+    margin-top: 0;
+    font-weight: 700;
+    letter-spacing: normal;
+
+    a,
+    span {
+      color: inherit;
+      text-decoration: none;
+      font-weight: inherit;
+    }
+
+    &.style--text {
+      font-family: var(--font--primary);
+    }
+  }
+
+  .heading--title {
+    font-size: 8rem;
+    line-height: 1.125;
+
+    @media only screen and (min-width: $break--small) and (max-width: $break--xLarge) {
+      font-size: clamp(4.4rem, vw(83px), 8.3rem);
+    }
+
+    @media only screen and (max-width: $break--small) {
+      font-size: 4.4rem;
+    }
+  }
+
+  h1,
+  .h1,
+  .heading--h1 {
+    font-size: 6rem;
+    line-height: 1.2;
+
+    @media only screen and (min-width: $break--small) and (max-width: $break--xLarge) {
+      font-size: clamp(5.2rem, vw(60px), 6rem);
+      line-height: 1.2;
+    }
+
+    @media only screen and (max-width: $break--small) {
+      font-size: 5.2rem;
+      line-height: 1.2;
+    }
+  }
+
+  h2,
+  .h2,
+  .heading--h2 {
+    font-size: 4.8rem;
+    line-height: 1.2;
+
+    @media only screen and (min-width: $break--small) and (max-width: $break--xLarge) {
+      font-size: clamp(3rem, vw(48px), 4.8rem);
+      line-height: 1.2;
+    }
+
+    @media only screen and (max-width: $break--small) {
+      font-size: 3rem;
+      line-height: 1.2;
+    }
+  }
+
+  h3,
+  .h3,
+  .heading--h3 {
+    font-size: 4rem;
+    line-height: 1.2;
+
+    @media only screen and (min-width: $break--small) and (max-width: $break--xLarge) {
+      font-size: clamp(2.5rem, vw(40px), 4rem);
+      line-height: 1.2;
+    }
+
+    @media only screen and (max-width: $break--small) {
+      font-size: 2.5rem;
+      line-height: 1.2;
+    }
+  }
+
+  h4,
+  .h4,
+  .heading--h4 {
+    font-size: 2rem;
+    line-height: 1.2;
+
+    @media only screen and (min-width: $break--small) and (max-width: $break--xLarge) {
+      font-size: clamp(1.6rem, vw(20px), 2rem);
+      line-height: 1.2;
+    }
+
+    @media only screen and (max-width: $break--small) {
+      font-size: 1.6rem;
+      line-height: 1.2;
+    }
+  }
+
+  h5,
+  .h5,
+  .heading--h5 {
+    font-size: 1.7rem;
+    line-height: 1.2;
+
+    @media only screen and (min-width: $break--small) and (max-width: $break--xLarge) {
+      font-size: clamp(1.6rem, vw(30px), 3rem);
+      line-height: 1.2;
+    }
+
+    @media only screen and (max-width: $break--small) {
+      font-size: 1.7rem;
+      line-height: 1.2;
+    }
+  }
+
+  h6,
+  .h6,
+  .heading--h6 {
+    font-size: 1.6rem;
+    line-height: 1.2;
+
+    @media only screen and (max-width: $break--small) {
+      font-size: 1.6rem;
+      line-height: 1.2;
+    }
+  }
+}
+
+/*__________________________________________________________________________________________________________________________________________________________*/
