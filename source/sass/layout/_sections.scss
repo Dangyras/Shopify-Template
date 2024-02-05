@@ -1,0 +1,96 @@
+/*/__________________________________________________________________________________
+: 0. CUSTOM SECTION STYLES [sections 0]
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
+#theme [data-section].section--wrapper {
+  background-color: var(--section--background_1, transparent);
+  padding: var(--section--paddingTop_1, 0rem) 0
+    var(--section--paddingBottom_1, 0rem) 0;
+  margin-bottom: calc(var(--section--marginBottom_1, 0rem));
+
+  /* SECTION CONTENT */
+  .section--content {
+    background-color: var(--content--background_1, transparent);
+    padding: var(--content--paddingTop_1, 0rem)
+      var(--content--paddingSides_1, 0rem) var(--content--paddingBottom_1, 0rem);
+    color: var(--content--colour_1, var(--colour--primary));
+  }
+
+  /* ELEMENT MARGIN */
+  .margin--inner > * {
+    margin-bottom: calc(var(--element--marginBottom_1, 0rem));
+
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  .width--custom {
+    max-width: var(--custom--width_1, 9999px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/*/__________________________________________________________________________________
+: 1. CUSTOM SECTION - BANNER
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
+#theme [data-section="template"] {
+
+}
+
+/*/__________________________________________________________________________________
+:
+: CUSTOM SECTION - MEDIA QUERIES
+:
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
+@media screen and (max-width: $break--large) {
+}
+
+@media screen and (max-width: $break--medium) {
+
+}
+
+@media screen and (max-width: $break--small) {
+  /* [0] */
+  #theme [data-section].section--wrapper {
+    padding: calc(
+        var(--section--paddingTop_1, 0rem) * var(--section--modifierSmall_1, 2)
+      )
+      0
+      calc(
+        var(--section--paddingBottom_1, 0rem) *
+          var(--section--modifierSmall_1, 2)
+      )
+      0;
+    margin-bottom: calc(
+      var(--section--marginBottom_1, 0rem) * var(--section--modifierSmall_1, 2)
+    );
+
+    .section--content {
+      padding: calc(
+          var(--content--paddingTop_1, 0rem) *
+            var(--section--modifierSmall_1, 2)
+        )
+        calc(
+          var(--content--paddingSides_1, 0rem) *
+            var(--section--modifierSmall_1, 2)
+        )
+        calc(
+          var(--content--paddingBottom_1, 0rem) *
+            var(--section--modifierSmall_1, 2)
+        );
+    }
+
+    .margin--inner > * {
+      margin-bottom: calc(
+        var(--element--marginBottom_1, 0rem) *
+          var(--section--modifierSmall_1, 2)
+      );
+    }
+  }
+
+  /* [1] */
+  #theme [data-section="template"] {
+
+  }
+}
