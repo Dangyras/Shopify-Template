@@ -1,0 +1,94 @@
+{% comment %}
+- Parameters:
+  - img (Required - Image object)
+  - classes (Optional - String)
+  - alt (Optional - String)
+  - loading (Optional - String)
+  - img_height (Optional - String)
+  - img_width (Optional - String)
+  - sizes (Optional - String)
+  - widths (Optional - String)
+  - preload (Optional - Boolean)
+  - itemprop (Optional - String)
+  - format (Optional - String)
+  - role (Optional - String)
+  - aria-hidden (Optional - Boolean)
+  - style (Optional - String)
+
+  - Examples
+  {%- render 'image-element',
+    img: section.settings.image,
+    img_width: 2400,
+    loading: section.settings.lazyload_images,
+    classes: classes,
+  -%}
+
+  {%- render 'image-element',
+    img: article.image,
+    sizes: '33vw',
+    widths: '180, 360, 540, 720, 900, 1080',
+  -%}
+{% endcomment %}
+
+{% liquid
+  if loading == 'eager'
+    assign loading = 'eager'
+  elsif loading == false
+    assign loading = 'eager'
+    assign preload = true
+  else
+    assign loading = 'lazy'
+    assign preload = false
+  endif
+
+  assign classes = classes | escape
+  assign alt = alt | escape
+  if alt == blank
+    assign alt = img.alt | default: ''
+  endif
+%}
+
+<div class="image--wrapper">
+  {% if widths != blank %}
+    {% if img_width == blank %}
+      {% assign img_width = widths | split: ',' | last %}
+    {% endif %}
+    {{
+      img
+      | image_url: width: img_width, format: format
+      | image_tag:
+        preload: preload,
+        height: img_height,
+        width: img_tag_width,
+        class: classes,
+        loading: loading,
+        alt: alt,
+        sizes: sizes,
+        widths: widths,
+        itemprop: itemprop,
+        role: role,
+        aria-hidden: ariaHidden,
+        style: style
+    }}
+  {% else %}
+    {% if img_width == blank %}
+      {% assign img_width = img.width | times: 2 | round %}
+    {% endif %}
+    {{
+      img
+      | image_url: width: img_width, format: format
+      | image_tag:
+        preload: preload,
+        height: img_height,
+        width: img_tag_width,
+        class: classes,
+        loading: loading,
+        alt: alt,
+        sizes: sizes,
+        itemprop: itemprop,
+        role: role,
+        aria-hidden: ariaHidden,
+        style: style
+    }}
+  {% endif %}
+</div>
