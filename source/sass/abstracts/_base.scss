@@ -353,71 +353,73 @@ body {
 /*/__________________________________________________________________________________
     : BUTTONS
   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
-#theme .button--primary,
-#theme .button--wrapper a {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+#theme {
+  .button--primary,
+  .button--wrapper a {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 
-  transition: all 250ms ease-in-out;
-  border: 1px solid var(--section--buttonBackground_1, var(--button--bg));
-  background-color: var(--section--buttonBackground_1, var(--button--bg));
-  color: var(--section--buttonText_1, var(--button--text));
-  text-decoration: none;
+    transition: all 250ms ease-in-out;
+    border: 1px solid var(--section--buttonBackground_1, var(--button--bg));
+    background-color: var(--section--buttonBackground_1, var(--button--bg));
+    color: var(--section--buttonText_1, var(--button--text));
+    text-decoration: none;
 
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 
-  text-align: center;
-  line-height: 1.17;
-  letter-spacing: 0.5px;
+    text-align: center;
+    line-height: 1.17;
+    letter-spacing: 0.5px;
 
-  border-radius: 8px;
-  padding: 1.41em 1.77em;
-  font-size: 1.7rem;
-  font-weight: 700;
-  cursor: pointer;
+    border-radius: 8px;
+    padding: 1.41em 1.77em;
+    font-size: 1.7rem;
+    font-weight: 700;
+    cursor: pointer;
 
-  span {
-    display: block;
-    line-height: 1;
+    span {
+      display: block;
+      line-height: 1;
+      color: inherit;
+    }
+
+    &:focus,
+    &:active {
+      outline: none;
+    }
+
+    &:hover {
+      border: 1px solid
+        var(--section--buttonBackgroundHover_1, var(--button--bgHover));
+      background-color: var(
+        --section--buttonBackgroundHover_1,
+        var(--button--bgHover)
+      );
+      color: var(--section--buttonTextHover_1, var(--button--textHover));
+    }
+
+    @media screen and (max-width: $break--small) {
+      font-size: 1.4rem;
+      padding: 0.876em 1.6em;
+    }
+  }
+
+  .button--reset {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
     color: inherit;
   }
-
-  &:focus,
-  &:active {
-    outline: none;
-  }
-
-  &:hover {
-    border: 1px solid
-      var(--section--buttonBackgroundHover_1, var(--button--bgHover));
-    background-color: var(
-      --section--buttonBackgroundHover_1,
-      var(--button--bgHover)
-    );
-    color: var(--section--buttonTextHover_1, var(--button--textHover));
-  }
-
-  @media screen and (max-width: $break--small) {
-    font-size: 1.4rem;
-    padding: 0.876em 1.6em;
-  }
-}
-
-#theme .button--reset {
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  color: inherit;
 }
 
 /*/__________________________________________________________________________________
