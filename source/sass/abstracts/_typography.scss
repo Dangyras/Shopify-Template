@@ -2,10 +2,6 @@
 
 #theme {
   // Paragraphs
-  p {
-    margin: 0 0 1em 0;
-  }
-
   .text--wrapper p {
     margin: 0;
     & + p {
@@ -141,11 +137,6 @@
   .heading--h5 {
     font-size: 1.7rem;
     line-height: 1.2;
-
-    @media only screen and (min-width: $break--small) and (max-width: $break--xLarge) {
-      font-size: clamp(1.6rem, vw(30px), 3rem);
-      line-height: 1.2;
-    }
 
     @media only screen and (max-width: $break--small) {
       font-size: 1.7rem;
