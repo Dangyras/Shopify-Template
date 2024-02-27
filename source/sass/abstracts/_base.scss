@@ -121,26 +121,6 @@
 body {
   color: var(--colour--primary);
   font-family: var(--font--primary);
-  line-height: 1.5;
-  font-size: clamp(1.375rem, 2.225vw, 2rem);
-
-  main {
-    margin: 7.2rem 3.2rem 0 3.2rem;
-    margin: clamp(2rem, vw(72px), 7.2rem) clamp(1.6rem, vw(32px), 3.2rem) 0
-      clamp(1.6rem, vw(32px), 3.2rem);
-    border-radius: 3.8rem;
-    overflow: hidden;
-    background: #f9f7f5;
-    padding: 8.4rem 4.4rem;
-    padding: clamp(2rem, vw(84px), 8.4rem) clamp(2rem, vw(44px), 4.4rem);
-  }
-  @media screen and (max-width: $break--small) {
-    main {
-      margin: 0;
-      border-radius: 0;
-      padding: 8rem 0;
-    }
-  }
 }
 
 .overflow--none,
