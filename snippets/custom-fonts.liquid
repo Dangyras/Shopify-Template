@@ -10,69 +10,72 @@
   Secondary font: Boolean value
   __________________________________________________________________________________
 {% endcomment %}
-
 {% liquid
   assign primary_font = ""
   assign secondary_font = ""
+  assign metaobject_size = 0
 %}
 
-{% for object in shop.metaobjects['custom_font'].values %}
-  {% liquid
-    assign font_title = object.font_title.value
-    assign font_weight = object.font_weight.value
+{% capture metaobject_fonts %}
+  {% for object in shop.metaobjects['custom_font'].values %}
+    {% liquid
+      assign font_title = object.font_title.value
+      assign font_weight = object.font_weight.value
+      assign metaobject_size = metaobject_size | plus: 1
 
-    capture font_srcs
-      for src in object.font_files.value
-        assign font_type = src.url | split: "." | last | split: "?" | first
-        case font_type
-          when "woff"
-            assign font_type = "woff"
-          when "woff2"
-            assign font_type = "woff2"
-          when "ttf"
-            assign font_type = "truetype"
-          when "otf"
-            assign font_type = "opentype"
-        endcase
+      capture font_srcs
+        for src in object.font_files.value
+          assign font_type = src.url | split: "." | last | split: "?" | first
+          case font_type
+            when "woff"
+              assign font_type = "woff"
+            when "woff2"
+              assign font_type = "woff2"
+            when "ttf"
+              assign font_type = "truetype"
+            when "otf"
+              assign font_type = "opentype"
+          endcase
 
-        echo ", url('" | append: src.url | append: "') format('" | append: font_type | append: "')"
-      endfor
-    endcapture
+          echo ", url('" | append: src.url | append: "') format('" | append: font_type | append: "')"
+        endfor
+      endcapture
 
-    if object.primary_font
-      assign primary_font = font_title
-    endif
+      if object.primary_font
+        assign primary_font = font_title
+      endif
 
-    if object.secondary_font
-      assign secondary_font = font_title
-    endif
-  %}
+      if object.secondary_font
+        assign secondary_font = font_title
+      endif
+    %}
 
-  @font-face {
-    font-family: '{{ font_title }}';
-    font-style: normal;
-    font-display: swap;
-    font-weight: {{ font_weight }};
-    src: {{ font_srcs |  remove_first: "," }};
+    @font-face {
+      font-family: '{{ font_title }}';
+      font-style: normal;
+      font-display: swap;
+      font-weight: {{ font_weight }};
+      src: {{ font_srcs |  remove_first: "," }};
+    }
+  {% endfor %}
+
+  :root {
+    {% if primary_font != "" %}
+      --font--primary: "{{ primary_font }}" !important;
+    {% endif %}
+
+    {% if secondary_font != "" %}
+      --font--secondary: "{{ secondary_font }}" !important;
+    {% endif %}
   }
-{% endfor %}
-
-:root {
-  {% if primary_font != "" %}
-    --font--primary: "{{ primary_font }}" !important;
-  {% endif %}
-
-  {% if secondary_font != "" %}
-    --font--secondary: "{{ secondary_font }}" !important;
-  {% endif %}
-}
+{% endcapture %}
 
 {% comment %}
   __________________________________________________________________________________
   : ASSETS
   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 {% endcomment %}
-{% comment %}
+{% capture asset_fonts %}
   @font-face {
     font-family: 'FONT_TITLE';
     font-style: normal;
@@ -80,7 +83,17 @@
     font-weight: 400;
     src: url('{{ 'FONT_FILE_TITLE.woff' | asset_url }}') format('woff'), url('{{ 'FONT_FILE_TITLE.woff2' | asset_url }}') format('woff2');
   }
-  
-  --font--primary: "FONT_TITLE" !important;
-  --font--secondary: "FONT_TITLE" !important;
-{% endcomment %}
+
+  :root {
+    --font--primary: "FONT_TITLE" !important;
+    --font--secondary: "FONT_TITLE" !important;
+  }
+{% endcapture %}
+
+{% liquid
+  if metaobject_size > 0
+    echo metaobject_fonts
+  else 
+    echo asset_fonts
+  endif
+%}
