@@ -2,12 +2,12 @@
   __________________________________________________________________________________
   : METAOBJECT [Custom font]
   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-  REQUIRED INPUTS:
-  Font title: Single line text
-  Font weight: Single line text
+  INPUTS:
+  Font title: Single line text (required)
+  Font weight: Single line text (required)
   Font files: List of files
-  Primary font: Boolean value
-  Secondary font: Boolean value
+  Primary font: Boolean value (required)
+  Secondary font: Boolean value (required)
   __________________________________________________________________________________
 {% endcomment %}
 {% liquid
@@ -50,13 +50,15 @@
       endif
     %}
 
-    @font-face {
-      font-family: '{{ font_title }}';
-      font-style: normal;
-      font-display: swap;
-      font-weight: {{ font_weight }};
-      src: {{ font_srcs |  remove_first: "," }};
-    }
+    {% if font_srcs != blank %}
+      @font-face {
+        font-family: '{{ font_title }}';
+        font-style: normal;
+        font-display: swap;
+        font-weight: {{ font_weight }};
+        src: {{ font_srcs |  remove_first: "," }};
+      }
+    {% endif %}
   {% endfor %}
 
   :root {
