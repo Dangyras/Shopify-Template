@@ -1,6 +1,10 @@
 {% assign ss = section.settings %}
 
 #section__{{ section.id }} {
+  {%- if custom_styles != blank -%}
+    {{ custom_styles }}
+  {%- endif -%}
+
   {%- if ss.section_padding_1 != blank -%}--section--paddingTop_1: {{ ss.section_padding_1 }}rem;{%- endif -%}
   {%- if ss.section_padding_1 != blank -%}--section--paddingBottom_1: {{ ss.section_padding_1 }}rem;{%- endif -%}
   {%- if ss.section_margin_1 != blank -%}--section--marginTop_1: {{ ss.section_margin_1 }}rem;{%- endif %} 
