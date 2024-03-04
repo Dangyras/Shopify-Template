@@ -1,3 +1,28 @@
+{% comment %}
+__________________________________________________________________________________
+: SRCSET
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+INPUTS:
+image: Image object
+start: smallest image size
+end: largest image size
+gap: gap between src sizes
+
+USAGE:
+<img
+  src="{{ image | img_url: "100x" }}"
+  loading="lazy"
+  width="{{ image.width }}"
+  height="{{ image.width | divided_by: image.aspect_ratio }}"
+  srcset="{% render "custom-srcset", image: image, start: 80, end: 350, gap: 15 %}"
+  sizes="(min-width: {{ settings.breakpoint_large | default: "1200" }}px) {{ 141.00 | append: "px" }}, 
+         (min-width: {{ settings.breakpoint_medium | default: "992" }}px) {{ 228.00 | divided_by: 992 | times: 100 | round | append: "vw" }}, 
+         (min-width: {{ settings.breakpoint_small | default: "768" }}px) {{ 223.00 | divided_by: 768 | times: 100 | round | append: "vw" }}, 
+         (min-width: {{ settings.breakpoint_tiny | default: "556" }}px)  {{ 155.00 | divided_by: 556 | times: 100 | round | append: "vw" }}, 
+         {{ 90 | divided_by: 360.00 | times: 100 | round | append: "vw" }}">
+__________________________________________________________________________________
+{% endcomment %}
+
 {% liquid
   assign src_start = start | default: 200
   assign src_end = end | default: 500
