@@ -1,0 +1,21 @@
+{% liquid
+  assign src_start = start | default: 200
+  assign src_end = end | default: 500
+  assign src_gap = gap | default: 100
+  assign src_loop = src_end | minus: src_start | divided_by: src_gap
+  assign src_url = src_start
+  assign width_gap = src_gap | divided_by: src_loop
+  
+  if width_gap < 5
+    assign width_gap = 5
+  endif
+
+  for i in (1..src_loop)
+    assign src_url = src_url | plus: src_gap | append: "x"
+    assign src_width = src_url | remove: "x" | minus: width_gap | append: "w" | prepend: " "
+    unless forloop.first 
+      echo ","
+    endunless
+    echo image | img_url: src_url | append: src_width
+  endfor
+%}
