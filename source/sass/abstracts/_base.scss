@@ -85,12 +85,14 @@
   --font--secondary: #{$font--secondary};
 
   --colour--primary: #{$colour--primary};
+  --colour--primaryRGB: #{hexToRGB($colour--primary)};
   --colour--secondary: #{$colour--secondary};
   --colour--tertiary: #{$colour--tertiary};
 
   --colour--accent: #{$colour--accent};
 
   --colour--border: #{$colour--border};
+  --colour--borderRGB: #{hexToRGB($colour--border)};
 
   --container--width: #{$container--width};
   --container--widthWide: #{$container--widthWide};
