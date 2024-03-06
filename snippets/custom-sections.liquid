@@ -1,4 +1,10 @@
-{% assign ss = section.settings %}
+{% liquid
+  assign ss = section.settings
+  assign breakpoint_large = settings.breakpoint_large | default: 1200
+  assign breakpoint_medium = settings.breakpoint_medium | default: 992
+  assign breakpoint_small = settings.breakpoint_small | default: 768
+  assign breakpoint_tiny = settings.breakpoint_tiny | default: 556
+%}
 
 {%- case type -%}
   {%- when 'template' -%}
