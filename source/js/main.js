@@ -162,20 +162,22 @@ class CustomSection extends HTMLDivElement {
   constructor() {
     super();
     this.utils = new Custom();
+  }
+
+  connectedCallback() {
     this.parent = this.closest("section");
     this.type = this.parent.getAttribute("data-section");
-
     switch (this.type) {
       case "template":
         this.handleTemplateSection();
         break;
 
       default:
-        console.warn(`Section "${ this.type }" is not registered!`);
+        console.warn(`Section "${this.type}" is not registered!`);
         break;
     }
   }
-
+  
   handleTemplateSection() {
     console.log("template");
   }
