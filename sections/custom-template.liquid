@@ -13,7 +13,7 @@
   class="section--wrapper {{ section_classes }}"
   data-section="{{ type }}"
 >
-  <div is="{{ type | replace: "_", "-" }}" class="container container--{{ ss.width }}">
+  <div is="custom-section" class="container container--{{ ss.width }}">
     <div class="section--inner">
       {% render 'custom-sections', section: section, type: type %}
     </div>
