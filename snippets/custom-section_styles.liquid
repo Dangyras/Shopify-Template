@@ -25,6 +25,7 @@
   {%- if ss.content_background_4 != blank -%}--content--background_4: {{ ss.content_background_4 }};{%- endif -%}
 
   {%- if ss.content_text_1 != blank -%}--content--colour_1: {{ ss.content_text_1 }};{%- endif %}
+  {%- if ss.content_text_1 != blank -%}--content--colourRGB_1: {{ ss.content_text_1 | color_extract: 'red' }}, {{ ss.content_text_1 | color_extract: 'green' }}, {{ ss.content_text_1 | color_extract: 'blue' }};{%- endif %}
   {%- if ss.content_text_2 != blank -%}--content--colour_2: {{ ss.content_text_2 }};{%- endif %}
   {%- if ss.content_text_3 != blank -%}--content--colour_3: {{ ss.content_text_3 }};{%- endif %}
   {%- if ss.content_text_4 != blank -%}--content--colour_4: {{ ss.content_text_4 }};{%- endif %}
