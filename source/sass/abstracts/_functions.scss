@@ -8,6 +8,10 @@
   @return calc((#{$px-vw} * 100vw) / #{$base-vw});
 }
 
+@function hexToRGB($hexColor) {
+  @return #{red($hexColor)},#{green($hexColor)},#{blue($hexColor)};
+}
+
 @function calculateRem($size) {
   $remSize: $size / 16px;
   @return #{$remSize}rem;
