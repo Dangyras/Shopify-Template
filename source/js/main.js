@@ -126,6 +126,17 @@ class Custom {
     return params.get(name);
   }
 
+  debounce(func, delay) {
+    let timerId;
+  
+    return (...args) => {
+      clearTimeout(timerId);
+      timerId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  }
+  
   getCookie(cookieName) {
     const name = cookieName + "=";
     const decodedCookie = decodeURIComponent(document.cookie);
