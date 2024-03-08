@@ -60,7 +60,7 @@
     .image {
       filter: brightness(.5);
       height: auto;
-      max-height: var(--app-height);
+      max-height: var(--window-height);
       object-fit: cover;
       width: 100%;
     }
@@ -173,5 +173,12 @@
   /* [1] */
   #theme [data-section="template"] {
 
+  }
+  
+  /* [2] */
+  #theme [data-section="hero"] {
+    .section--overlay {
+      padding: calc(var(--content--paddingTop_1, 0rem)*var(--section--modifierSmall_1, 2)) calc(var(--content--paddingSides_1, 0rem)*var(--section--modifierSmall_1, 2)) calc(var(--content--paddingBottom_1, 0rem)*var(--section--modifierSmall_1, 2));
+    }
   }
 }
