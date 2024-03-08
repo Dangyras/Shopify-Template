@@ -11,4 +11,87 @@
     <div class="section--content">
 
     </div>
+
+  {%- when 'hero' -%}
+    <div class="section--content layout--gridLayers">
+      {% if ss.image_mobile != blank
+        and ss.image_desktop != blank
+        and ss.video_mobile == blank
+        and ss.video_desktop == blank
+      %}
+        <div
+          class="image--wrapper style--fullWidth"
+          style="--desktop--aspectRatio: 1/{{ ss.image_desktop.aspect_ratio }}; --mobile--aspectRatio: 1/{{ ss.image_mobile.aspect_ratio }};"
+        >
+          <picture>
+            <source
+              media="(max-width: {{ breakpoint_small }}px)"
+              width="{{ ss.image_mobile.width }}"
+              height="{{ ss.image_mobile.width | divided_by: ss.image_mobile.aspect_ratio }}"
+              srcset="{% render "custom-srcset", image: ss.image_mobile, start: 250, end: 800, gap: 150 %}"
+              sizes="100vw"
+            >
+            <source
+              media="(min-width: {{ breakpoint_small }}px)"
+              width="{{ ss.image_desktop.width }}"
+              height="{{ ss.image_desktop.width | divided_by: ss.image_desktop.aspect_ratio }}"
+              srcset="{% render "custom-srcset", image: ss.image_desktop, start: 350, end: 4000, gap: 250 %}"
+              sizes="100vw"
+            >
+            <img
+              class="image"
+              src="{{ ss.image_mobile | img_url: "385x" }}"
+              width="{{ ss.image_mobile.width }}"
+              height="{{ ss.image_mobile.width | divided_by: ss.image_mobile.aspect_ratio }}"
+              loading="eager"
+            >
+          </picture>
+        </div>
+      {% endif %}
+
+      {% if ss.video_mobile != blank and ss.video_desktop != blank %}
+        <div
+          class="video--container"
+          style="--desktop--aspectRatio: {{ ss.video_desktop.aspect_ratio }}; --mobile--aspectRatio: {{ ss.video_mobile.aspect_ratio }};"
+          data-video="{ &quot;desktop&quot;: &quot;{{ ss.video_desktop.sources[0].url }}&quot;, &quot;mobile&quot;: &quot;{{ ss.video_mobile.sources[0].url }}&quot; }"
+        >
+          <div class="video--wrapper">
+            <video
+              width="320"
+              height="240"
+              inline
+              muted
+              autoplay
+              loop
+              poster="{{ ss.video_desktop.preview_image |  img_url: 'master' }}"
+              src="{{ ss.video_mobile.sources[0].url }}"
+            ></video>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="section--overlay">
+        <div class="{{ container }}">
+          <div class="grid--wrapper grid--M1">
+            <div class="section-text">
+              {% if ss.heading != blank %}
+                <h2 class="style--textShadow">{{ ss.heading }}</h2>
+              {% endif %}
+
+              {% if ss.text_1 != blank %}
+                <div class="text--wrapper style--textShadow">{{ ss.text_1 }}</div>
+              {% endif %}
+
+              {% if ss.text_2 != blank %}
+                <div class="text--wrapper style--textShadow">{{ ss.text_2 }}</div>
+              {% endif %}
+            </div>
+            <div class="section-aside">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
 {% endcase %}
