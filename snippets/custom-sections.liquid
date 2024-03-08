@@ -52,7 +52,6 @@
       {% if ss.video_mobile != blank and ss.video_desktop != blank %}
         <div
           class="video--container"
-          style="--desktop--aspectRatio: {{ ss.video_desktop.aspect_ratio }}; --mobile--aspectRatio: {{ ss.video_mobile.aspect_ratio }};"
           data-video="{ &quot;desktop&quot;: &quot;{{ ss.video_desktop.sources[0].url }}&quot;, &quot;mobile&quot;: &quot;{{ ss.video_mobile.sources[0].url }}&quot; }"
         >
           <div class="video--wrapper">
