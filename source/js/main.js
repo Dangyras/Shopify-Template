@@ -136,6 +136,22 @@ class Custom {
       }, delay);
     };
   }
+
+  fetchHTML(url, callback) {
+    fetch(url, { cache: "no-cache"})
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.text();
+      })
+      .then((html) => {
+        callback(html);
+      })
+      .catch((error) => {
+        console.error("There was a problem:", error);
+      });
+  }
   
   getCookie(cookieName) {
     const name = cookieName + "=";
