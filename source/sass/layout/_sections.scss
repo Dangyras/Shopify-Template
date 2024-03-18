@@ -29,6 +29,48 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+  
+  @media screen and (max-width: $break--large) {}
+  
+  @media screen and (max-width: $break--medium) {}
+  
+  @media screen and (max-width: $break--small) {
+    padding: calc(
+        var(--section--paddingTop_1, 0rem) * var(--section--modifierSmall_1, 2)
+      )
+      0
+      calc(
+        var(--section--paddingBottom_1, 0rem) *
+          var(--section--modifierSmall_1, 2)
+      )
+      0;
+    margin-bottom: calc(
+      var(--section--marginBottom_1, 0rem) * var(--section--modifierSmall_1, 2)
+    );
+
+    .section--content {
+      padding: calc(
+          var(--content--paddingTop_1, 0rem) *
+            var(--section--modifierSmall_1, 2)
+        )
+        calc(
+          var(--content--paddingSides_1, 0rem) *
+            var(--section--modifierSmall_1, 2)
+        )
+        calc(
+          var(--content--paddingBottom_1, 0rem) *
+            var(--section--modifierSmall_1, 2)
+        );
+    }
+
+    .margin--inner > * {
+      margin-bottom: calc(
+        var(--element--marginBottom_1, 0rem) *
+          var(--section--modifierSmall_1, 2)
+      );
+    }
+  }
 }
 
 /*/__________________________________________________________________________________
@@ -36,6 +78,11 @@
 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
 #theme [data-section="template"] {
 
+  @media screen and (max-width: $break--large) {}
+  
+  @media screen and (max-width: $break--medium) {}
+  
+  @media screen and (max-width: $break--small) {}
 }
 
 /*/__________________________________________________________________________________
@@ -117,66 +164,12 @@
       }
     }
   }
-}
 
-/*/__________________________________________________________________________________
-:
-: CUSTOM SECTION - MEDIA QUERIES
-:
-‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
-@media screen and (max-width: $break--large) {
-}
-
-@media screen and (max-width: $break--medium) {
-
-}
-
-@media screen and (max-width: $break--small) {
-  /* [0] */
-  #theme [data-section].section--wrapper {
-    padding: calc(
-        var(--section--paddingTop_1, 0rem) * var(--section--modifierSmall_1, 2)
-      )
-      0
-      calc(
-        var(--section--paddingBottom_1, 0rem) *
-          var(--section--modifierSmall_1, 2)
-      )
-      0;
-    margin-bottom: calc(
-      var(--section--marginBottom_1, 0rem) * var(--section--modifierSmall_1, 2)
-    );
-
-    .section--content {
-      padding: calc(
-          var(--content--paddingTop_1, 0rem) *
-            var(--section--modifierSmall_1, 2)
-        )
-        calc(
-          var(--content--paddingSides_1, 0rem) *
-            var(--section--modifierSmall_1, 2)
-        )
-        calc(
-          var(--content--paddingBottom_1, 0rem) *
-            var(--section--modifierSmall_1, 2)
-        );
-    }
-
-    .margin--inner > * {
-      margin-bottom: calc(
-        var(--element--marginBottom_1, 0rem) *
-          var(--section--modifierSmall_1, 2)
-      );
-    }
-  }
-
-  /* [1] */
-  #theme [data-section="template"] {
-
-  }
+  @media screen and (max-width: $break--large) {}
   
-  /* [2] */
-  #theme [data-section="hero"] {
+  @media screen and (max-width: $break--medium) {}
+  
+  @media screen and (max-width: $break--small) {
     .section--overlay {
       padding: calc(var(--content--paddingTop_1, 0rem)*var(--section--modifierSmall_1, 2)) calc(var(--content--paddingSides_1, 0rem)*var(--section--modifierSmall_1, 2)) calc(var(--content--paddingBottom_1, 0rem)*var(--section--modifierSmall_1, 2));
     }
