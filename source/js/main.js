@@ -27,6 +27,24 @@ class Custom {
     console.log(this.mobileBreakpoint);
   }
 
+  handleTouchHoverEffect(selector) {
+    const elements = document.querySelectorAll(selector);
+    const touchHandler = (element, action) => {
+      if (action === 'start') {
+        element.classList.add('style--hoverEffect');
+      } else if (action === 'end') {
+        setTimeout(() => {
+          element.classList.remove('style--hoverEffect');
+        }, 200);
+      }
+    };
+  
+    elements.forEach((element) => {
+      element.addEventListener('touchstart', () => touchHandler(element, 'start'));
+      element.addEventListener('touchend', () => touchHandler(element, 'end'));
+    });
+  }
+  
   setElementHeight() {
     const handleElementHeight = () => {
       document.querySelectorAll("[data-height^='target']").forEach((el) => {
