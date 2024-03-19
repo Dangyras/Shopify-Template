@@ -1,4 +1,4 @@
-/* Custom pure event delegation functions.*/
+/* Custom pure event delegation function */
 EventTarget.prototype.delegateListener = function (b, c, d) {
   let a = (a) => {
     let b;
