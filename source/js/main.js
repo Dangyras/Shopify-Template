@@ -76,11 +76,14 @@ class Custom {
   }
 
   setScrollAttributes() {
-    const handleScroll = () =>
-      this.container.setAttribute("data-scrolled", window.scrollY > 0);
-
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("load", handleScroll);
+    const scrollHandler = () => this.container.setAttribute("data-scrolled", window.scrollY > 0);
+    
+    if (this.container) {
+      window.addEventListener("scroll", scrollHandler);
+      window.addEventListener("load", scrollHandler);
+    } else {
+      console.warn("Variable is not set.");
+    }
   }
 
   setStickyElement(selector) {
