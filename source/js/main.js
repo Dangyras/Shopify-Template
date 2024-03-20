@@ -13,8 +13,10 @@ EventTarget.prototype.delegateListener = function (b, c, d) {
   return this.addEventListener(b, a), a;
 };
 
-class Custom {
+class Utils {
   constructor(options = {}, containerSelector) {
+    console.log(options);
+    console.log(containerSelector);
     this.container = document.querySelector(containerSelector || `[data-template]`);
     this.mobileBreakpoint = options.mobileBreakpoint || `768px`;
     this.header = document.querySelector("header");
@@ -206,10 +208,26 @@ class Custom {
   }
 }
 
+class Main extends Utils {
+  constructor(options = {}, containerSelector) {
+    super(options, containerSelector);
+    this.container = document.querySelector(containerSelector || `[data-template]`);
+    this.mobileBreakpoint = options.mobileBreakpoint || `768px`;
+    this.header = document.querySelector("header");
+  }
+
+  init() {
+    this.setElementHeight();
+    this.setScrollAttributes();
+
+    console.log(this.mobileBreakpoint);
+  }
+}
+
 class CustomSection extends HTMLDivElement {
   constructor() {
     super();
-    this.utils = new Custom();
+    this.utils = new Utils();
   }
 
   connectedCallback() {
@@ -231,9 +249,9 @@ class CustomSection extends HTMLDivElement {
   }
 }
 
-const custom = new Custom({
+const main = new Main({
   mobileBreakpoint: "768px"
 });
-custom.init();
+main.init();
 
 customElements.define("custom-section", CustomSection, { extends: "div" });
