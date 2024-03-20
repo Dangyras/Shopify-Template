@@ -232,6 +232,11 @@ class CustomSection extends HTMLDivElement {
 
   connectedCallback() {
     this.parent = this.closest("section");
+    if (!this.parent) {
+      console.error("custom section must be placed inside a <section> element.");
+      return;
+    }
+    
     this.type = this.parent.getAttribute("data-section");
     switch (this.type) {
       case "template":
