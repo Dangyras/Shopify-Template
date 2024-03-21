@@ -197,7 +197,6 @@ body {
 /*/__________________________________________________________________________________
     : GRIDS
   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
-
 #theme {
   /* FLEX */
   .flex--wrapper {
@@ -411,6 +410,17 @@ body {
     padding: 0;
     cursor: pointer;
     color: inherit;
+  }
+
+  .button--loading {
+    .spinner {
+      animation: loading 2s linear infinite;
+      border: 0.2em dotted currentColor;
+      border-radius: 50%;
+      height: 1em;
+      margin: auto;
+      opacity: 0.75;
+      width: 1em;
   }
 }
 
