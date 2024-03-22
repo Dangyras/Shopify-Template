@@ -277,6 +277,24 @@ body {
     max-width: calc(var(--container--width) + 2 * var(--container--padding));
   }
 
+  /* (WIP) */
+  &--gridDefault {
+    display: grid;
+    grid-template-columns: 1fr css-min(50%, calc(var(--container--width) / 2)) css-min(50%, calc(var(--container--width) / 2)) 1fr;
+    padding-left: var(--container--padding);
+    padding-right: var(--container--padding);
+
+    > div {
+      &:nth-child(1n) {
+        grid-column: 2;
+      }
+      
+      &:nth-child(2n) {
+        grid-column: 3;
+      }
+    }
+  }
+
   /* WIDE */
   &--wide {
     max-width: calc(
@@ -322,6 +340,22 @@ body {
       var(--container--padding) / var(--container--modifierSmall)
     );
 
+    &--gridDefault {
+      grid-template-columns: 1fr;
+      padding-left: calc(var(--container--padding) / var(--container--modifierSmall));
+      padding-right: calc(var(--container--padding) / var(--container--modifierSmall));
+      
+      > div {
+        &:nth-child(1n) {
+          grid-column: unset;
+        }
+        
+        &:nth-child(2n) {
+          grid-column: unset;
+        }
+      }
+    }
+    
     &--full {
       padding: 0;
     }
@@ -335,6 +369,11 @@ body {
       var(--container--padding) / var(--container--modifierTiny)
     );
 
+    &--gridDefault {
+      padding-left: calc(var(--container--padding) / var(--container--modifierTiny));
+      padding-right: calc(var(--container--padding) / var(--container--modifierTiny));
+    }
+    
     &--full {
       padding: 0;
     }
