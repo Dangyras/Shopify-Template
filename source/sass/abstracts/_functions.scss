@@ -1,5 +1,18 @@
 @use 'sass:math';
 
+@function css-function( $function, $values... ) {
+	@return 
+		$function
+		+ unquote( '(' )
+		+ $values
+		+ unquote( ')' )
+	;
+}
+
+@function css-min( $values... ) {
+	@return css-function( min, $values );
+}
+
 @function vw($px-vw, $base-vw: $break--xLarge) {
   @return math.div(($px-vw * 100vw), $base-vw);
 }
