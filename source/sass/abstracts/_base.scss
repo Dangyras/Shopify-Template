@@ -77,43 +77,6 @@
 
 :root {
   font-size: calc(#{$size--large} * 62.5%) !important;
-
-  /*/__________________________________________________________________________________
-       : VARIABLES
-    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
-  --font--primary: #{$font--primary};
-  --font--secondary: #{$font--secondary};
-
-  --colour--primary: #{$colour--primary};
-  --colour--primaryRGB: #{hexToRGB($colour--primary)};
-  --colour--secondary: #{$colour--secondary};
-  --colour--tertiary: #{$colour--tertiary};
-
-  --colour--accent: #{$colour--accent};
-
-  --colour--border: #{$colour--border};
-  --colour--borderRGB: #{hexToRGB($colour--border)};
-
-  --container--width: #{$container--width};
-  --container--widthWide: #{$container--widthWide};
-  --container--widthNarrow: #{$container--widthNarrow1};
-  --container--widthNarrow2: #{$container--widthNarrow2};
-  --container--widthNarrow3: #{$container--widthNarrow3};
-
-  --container--padding: #{$container--padding};
-  --container--modifierSmall: #{$container--modifierSmall};
-  --container--modifierTiny: #{$container--modifierTiny};
-
-  --grid--gap: #{$grid--gap};
-  --grid--modifierSmall: #{$grid--modifierSmall};
-  --grid--modifierTiny: #{$grid--modifierTiny};
-
-  --list--gap: #{$list--gap};
-
-  --button--bg: #{$button--bg};
-  --button--text: #{$button--text};
-  --button--bgHover: #{$button--bgHover};
-  --button--textHover: #{$button--textHover};
 }
 
 * {
