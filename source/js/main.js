@@ -1,16 +1,21 @@
 /* Custom pure event delegation function */
-EventTarget.prototype.delegateListener = function (b, c, d) {
-  let a = (a) => {
-    let b;
-    [].slice
-      .call(this.querySelectorAll(c))
-      .reverse()
-      .filter((b) => b.contains(a.target))
-      .forEach((c) => {
-        (void 0 === b || !1 !== b) && (b = d.call(c, a));
-      });
+EventTarget.prototype.delegateListener = function (eventType, selector, callback) {
+  const delegatedCallback = (event) => {
+    let handled = false;
+    const elements = Array.from(this.querySelectorAll(selector)).reverse();
+
+    elements.forEach((element) => {
+      if (element.contains(event.target)) {
+        const result = callback.call(element, event);
+        if (typeof handled === 'undefined' || handled !== false) {
+          handled = result;
+        }
+      }
+    });
   };
-  return this.addEventListener(b, a), a;
+
+  this.addEventListener(eventType, delegatedCallback);
+  return delegatedCallback;
 };
 
 class Utils {
