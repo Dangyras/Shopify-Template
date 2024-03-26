@@ -15,8 +15,6 @@ EventTarget.prototype.delegateListener = function (b, c, d) {
 
 class Utils {
   constructor(options = {}, containerSelector) {
-    console.log(options);
-    console.log(containerSelector);
     this.container = document.querySelector(containerSelector || `[data-template]`);
     this.mobileBreakpoint = options.mobileBreakpoint || `768px`;
     this.header = document.querySelector("header");
@@ -25,8 +23,6 @@ class Utils {
   init() {
     this.setElementHeight();
     this.setScrollAttributes();
-
-    console.log(this.mobileBreakpoint);
   }
 
   handleTouchHoverEffect(selector) {
