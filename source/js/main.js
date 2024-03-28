@@ -29,7 +29,41 @@ class Utils {
     this.setElementHeight();
     this.setScrollAttributes();
   }
-
+  
+  initTimer(container, progressValue, endValue) {
+      if (!(container instanceof Element)) return;
+  
+      const endDate = Date.parse(container.dataset.date);
+      const progressHandler = () => {
+          const today = new Date();
+          let diffTime = (endDate - today) / 1000;
+  
+          if (diffTime <= 0) {
+              clearInterval(timerInterval);
+              container.textContent = endValue;
+              return;
+          }
+  
+          const { days, hours, minutes, seconds } = {
+              days: Math.floor(diffTime / 86400),
+              hours: Math.floor((diffTime % 86400) / 3600),
+              minutes: Math.floor((diffTime % 3600) / 60),
+              seconds: Math.floor(diffTime % 60)
+          };
+  
+          let timerText = progressValue
+              .replace("{ days }", (days > 0 ? `${days} days ` : ""))
+              .replace("{ hours }", (hours > 0 ? `${hours} hrs ` : ""))
+              .replace("{ minutes }", minutes)
+              .replace("{ seconds }", seconds);
+        
+          container.textContent = timerText;
+      };
+  
+      const timerInterval = setInterval(progressHandler, 1000);
+      progressHandler(); // Update immediately
+  }
+  
   handleTouchHoverEffect(selector) {
     const elements = document.querySelectorAll(selector);
     const touchHandler = (element, action) => {
