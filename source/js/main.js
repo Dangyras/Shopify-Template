@@ -36,19 +36,19 @@ class Utils {
       const endDate = Date.parse(container.dataset.date);
       const progressHandler = () => {
           const today = new Date();
-          let diffTime = (endDate - today) / 1000;
+          let timeDifferenceInSeconds = (endDate - today) / 1000;
   
-          if (diffTime <= 0) {
+          if (timeDifferenceInSeconds <= 0) {
               clearInterval(timerInterval);
               container.textContent = endValue;
               return;
           }
   
           const { days, hours, minutes, seconds } = {
-              days: Math.floor(diffTime / 86400),
-              hours: Math.floor((diffTime % 86400) / 3600),
-              minutes: Math.floor((diffTime % 3600) / 60),
-              seconds: Math.floor(diffTime % 60)
+              days: Math.floor(timeDifferenceInSeconds / 86400),
+              hours: Math.floor((timeDifferenceInSeconds % 86400) / 3600),
+              minutes: Math.floor((timeDifferenceInSeconds % 3600) / 60),
+              seconds: Math.floor(timeDifferenceInSeconds % 60)
           };
   
           let timerText = progressValue
