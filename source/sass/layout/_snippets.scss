@@ -1,1 +1,13 @@
-
+#theme {
+  /*/__________________________________________________________________________________
+  : 1. CUSTOM SNIPPET - BANNER
+  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
+  [data-section="template"] {
+  
+    @media screen and (max-width: $break--large) {}
+    
+    @media screen and (max-width: $break--medium) {}
+    
+    @media screen and (max-width: $break--small) {}
+  }
+}
