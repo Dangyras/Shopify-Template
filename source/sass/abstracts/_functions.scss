@@ -22,6 +22,18 @@
   @return calc((#{$px-vw} * 100vw) / #{$base-vw});
 }
 
+@function remToVW($remValue, $viewportWidth: 1440px, $baseFontSize: 10) {
+  $widthValue: $viewportWidth / 1px;
+  $remValue: $remValue / 1rem;
+  $vwValue: (($remValue * $baseFontSize) / $widthValue * 100) * 1vw;
+  @return $vwValue;
+}
+
+@function clampSass($min, $max, $viewportWidth: 1440px, $baseFontSize: 10) {
+  $vwMax: remToVW($max, $viewportWidth, $baseFontSize);
+  @return unquote("clamp(#{$min}, #{$vwMax}, #{$max})");
+}
+
 @function hexToRGB($hexColor) {
   @return #{red($hexColor)},#{green($hexColor)},#{blue($hexColor)};
 }
