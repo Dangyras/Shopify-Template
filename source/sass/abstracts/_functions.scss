@@ -1,23 +1,24 @@
 @use 'sass:math';
 
-@function css-function( $function, $values... ) {
-	@return 
-		$function
-		+ unquote( '(' )
-		+ $values
-		+ unquote( ')' )
-	;
+@function css-function($function, $values...) {
+  $formattedValues: ();
+
+  @each $value in $values {
+    $formattedValues: append($formattedValues, $value);
+  }
+
+  @return #{$function}(#{$formattedValues});
 }
 
-@function css-min( $values... ) {
-	@return css-function( min, $values );
+@function css-min($values...) {
+  @return css-function(min, $values);
 }
 
 @function vw($px-vw, $base-vw: $break--xLarge) {
   @return math.div(($px-vw * 100vw), $base-vw);
 }
 
-@function vw2($px-vw, $base-vw: $break--xLarge) {
+@function vwCalc($px-vw, $base-vw: $break--xLarge) {
   @return calc((#{$px-vw} * 100vw) / #{$base-vw});
 }
 
