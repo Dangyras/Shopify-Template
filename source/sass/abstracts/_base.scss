@@ -197,6 +197,12 @@ body {
     .style--spanFull {
       grid-column: 1/-1;
     }
+
+    &.grid--12cols {
+      grid-auto-columns: 1fr;
+      grid-template-columns:  repeat(12, 1fr);
+      grid-template-rows: auto;
+    }
   }
 
   @media screen and (max-width: $break--small) {
