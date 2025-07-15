@@ -13,8 +13,6 @@
   assign breakpoint_tiny = settings.breakpoint_tiny | default: 556
 %}
 
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-
 {%- case type -%}
 
   <div class="section--content">
