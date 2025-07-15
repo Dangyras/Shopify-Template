@@ -1,6 +1,9 @@
-/*/__________________________________________________________________________________
-     : SASS VARIABLES
-  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
+@use "sass:color";
+
+@function hex-to-rgb($hex) {
+  @return "#{color.channel($hex, 'red', $space: rgb)}, #{color.channel($hex, 'green', $space: rgb)}, #{color.channel($hex, 'blue', $space: rgb)}";
+}
+
 // Breakpoints -->
 $break--nano:   375px;
 $break--tiny:   556px;
@@ -9,33 +12,21 @@ $break--medium: 992px;
 $break--large:  1280px;
 $break--xLarge:  1400px;
 
-// Colours -->     
-$colour--primary: #000; 
-$colour--secondary: #000; 
-$colour--tertiary: #000; 
+// Scheme -->
+$schema_1--background: #121212; 
+$schema_1--text: #121212; 
+$schema_1--text_2: #121212; 
+$schema_1--accent: #121212; 
+$schema_1--buttonBg: #121212; 
+$schema_1--buttonBgHover: #121212; 
+$schema_1--buttonLb: #121212; 
+$schema_1--buttonLbHover: #121212; 
+$schema_1--border: #121212; 
 
-$colour--accent: #000;
-$colour--accent_2: #000;
-
-// Button -->
-$button--bg: #000;
-$button--bgHover: #000;
-$button--text: #000;
-$button--textHover: #000;
-
-$button--bg_2: transparent;
-$button--bgHover_2: transparent;
-$button--text_2: #000;
-$button--textHover_2: #000;
-
-// Other -->
-$colour--border: #000;
-$colour--border_2: #DEDEDE;
-  
-$input--border: #000;
-$input--background: transparent;
-$input--placeholder: #000;
-$input--background: #fff;
+// Colours -->    
+$colour--primary: #135414; 
+$colour--secondary: #191919; 
+$colour--tertiary: #FFFFFF; 
 
 // Misc -->
 $misc--1: #000;
@@ -43,15 +34,17 @@ $misc--2: #000;
 $misc--3: #000;
 
 // Container -->
-$container--width: 1240px;
-$container--widthWide:  1440px;
-$container--widthNarrow1:  960px;
+$container--width: 1215px;
+$container--widthWide:  1570px;
+$container--widthNarrow:  1030px;
 $container--widthNarrow2:  1150px;
 $container--widthNarrow3:  768px;
 
-$container--padding: 5rem;
-$container--modifierSmall: 2.5;
-$container--modifierTiny: 2.5;
+$container--padding: 2.4rem;
+$container--modifierXLarge: 1.2;
+$container--modifierLarge: 1.2;
+$container--modifierSmall: 1.5;
+$container--modifierTiny: 1.5;
 
 // Gid -->
 $grid--gap: 3rem;
@@ -59,51 +52,154 @@ $grid--modifierSmall: 2;
 $grid--modifierTiny: 2;
 
 // List -->
-$list--gap: 0.5rem;
+$list--gap: 0.8rem;
 
 // Fonts -->   
-$font--primary: 'Arial', sans-serif;
-$font--secondary: 'Arial', sans-serif;
+$font--primary: "", sans-serif;
+$font--secondary: "", sans-serif;
 
 // REM Size -->
+$size--base: 10px;
 $size--large: 1.0;
 $size--xlarge: 0.9;
 
-/*/__________________________________________________________________________________
-     : CSS VARIABLES
-  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
-:root {
-  --font--primary: #{$font--primary};
-  --font--secondary: #{$font--secondary};
+// Text sizes -->
+$text--titleLarge: 5.6rem;
+$text--titleMedium: 5.6rem;
+$text--titleSmall: 2.8rem;
+$text--titleTiny: 2.8rem;
 
-  --colour--primary: #{$colour--primary};
-  --colour--primaryRGB: #{hexToRGB($colour--primary)};
-  --colour--secondary: #{$colour--secondary};
-  --colour--tertiary: #{$colour--tertiary};
+$text--title2Large: 4.8rem;
+$text--title2Medium: 4.8rem;
+$text--title2Small: 2.8rem;
+$text--title2Tiny: 2.8rem;
 
-  --colour--accent: #{$colour--accent};
+$text--h1Large: 4rem;
+$text--h1Medium: 4rem;
+$text--h1Small: 2.8rem;
+$text--h1Tiny: 2.8rem;
 
-  --colour--border: #{$colour--border};
-  --colour--borderRGB: #{hexToRGB($colour--border)};
+$text--h2Large: 3.2rem;
+$text--h2Medium: 3.2rem;
+$text--h2Small: 2.6rem;
+$text--h2Tiny: 2.6rem;
 
-  --container--width: #{$container--width};
-  --container--widthWide: #{$container--widthWide};
-  --container--widthNarrow: #{$container--widthNarrow1};
-  --container--widthNarrow2: #{$container--widthNarrow2};
-  --container--widthNarrow3: #{$container--widthNarrow3};
+$text--h3Large: 2.7rem;
+$text--h3Medium: 2.7rem;
+$text--h3Small: 2.4rem;
+$text--h3Tiny: 2.4rem;
 
-  --container--padding: #{$container--padding};
-  --container--modifierSmall: #{$container--modifierSmall};
-  --container--modifierTiny: #{$container--modifierTiny};
+$text--h4Large: 2.2rem;
+$text--h4Medium: 2.2rem;
+$text--h4Small: 2.2rem;
+$text--h4Tiny: 2.2rem;
 
-  --grid--gap: #{$grid--gap};
-  --grid--modifierSmall: #{$grid--modifierSmall};
-  --grid--modifierTiny: #{$grid--modifierTiny};
+$text--h5Large: 2rem;
+$text--h5Medium: 2rem;
+$text--h5Small: 1.8rem;
+$text--h5Tiny: 1.8rem;
 
-  --list--gap: #{$list--gap};
+$text--h6Large: 1.8rem;
+$text--h6Medium: 1.8rem;
+$text--h6Small: 1.8rem;
+$text--h6Tiny: 1.8rem;
 
-  --button--bg: #{$button--bg};
-  --button--text: #{$button--text};
-  --button--bgHover: #{$button--bgHover};
-  --button--textHover: #{$button--textHover};
+$text--bodyLarge: 1.6rem;
+$text--bodyMedium: 1.6rem;
+$text--bodySmall: 1.6rem;
+$text--bodyTiny: 1.6rem;
+
+// Mixins
+@mixin button-style($break-small: 768px) {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  transition: all 250ms ease-in-out;
+  border: 1px solid var(--section--buttonBackground_1, var(--button--border));
+  background-color: var(--section--buttonBackground_1, var(--button--bg));
+  color: var(--section--buttonText_1, var(--button--text));
+  text-decoration: none;
+
+  display: inline-flex;
+  gap: 0.5em;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  font-size: 1.6rem;
+  padding: 0.75em 1.5em;
+  padding: 0.7em 1.5em;
+  border-radius: 100px;
+  cursor: pointer;
+
+  letter-spacing: normal;
+  min-width: 8.75em;
+  line-height: 1.25;
+  font-weight: bold;
+  
+  // text-transform: uppercase;
+
+  span {
+    display: block;
+    line-height: 1;
+    color: inherit;
+  }
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+
+  &:hover {
+    border: 1px solid var(--section--buttonBackground_1, var(--section--buttonBackgroundHover_1, var(--button--borderHover)));
+    background-color: var(--section--buttonBackground_1, var(--section--buttonBackgroundHover_1, var(--button--bgHover)));
+    color: var(--section--buttonText_1, var(--section--buttonTextHover_1, var(--button--textHover)));
+  }
+
+  svg {
+    height: 1.35em;
+    width: auto;
+    display: block;
+    fill: currentColor;
+  }
+
+  &.style--alternate {
+    border-radius: 1rem;
+  }
+
+  &.style--reverse {
+    border: 1px solid var(--section--buttonBackgroundHover_1, var(--button--borderHover));
+    background-color: var(--section--buttonBackgroundHover_1, var(--button--bgHover));
+    color: var(--section--buttonTextHover_1, var(--button--textHover));
+
+    &:hover {
+      border: 1px solid var(--section--buttonBackground_1, var(--button--border));
+      background-color: var(--section--buttonBackground_1, var(--button--bg));
+      color: var(--section--buttonText_1, var(--button--text));
+    }
+  }
+
+  @media screen and (max-width: $break-small) {
+    font-size: 1.4rem;
+    padding: 0.876em 1.6em;
+  }
+}
+
+@mixin button-styleColour($background: --section--buttonBackground_1, $backgroundHover: buttonBackgroundHover_1, $colour: --section--buttonText_1, $colourHover: buttonTextHover_1, $border: --default, $borderHover: --default) {
+  border-color: var($border, var($background));
+  background-color: var($background, var(--button--bg));
+  color: var($colour, var(--button--text));
+
+  &:hover {
+    border-color: var($borderHover, var($backgroundHover));
+    background-color: var($backgroundHover, var(--button--bgHover));
+    color: var($colourHover, var(--button--textHover));
+  }
 }

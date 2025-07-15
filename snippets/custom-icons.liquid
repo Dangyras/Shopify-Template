@@ -1,0 +1,17 @@
+{%- capture icon -%}
+  {%- case type -%}
+  {%- when 'chevron' -%}
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path stroke="{{ icon_stroke }}" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.667" d="m5 7.5 5 5 5-5"/></svg>
+
+  {%- when 'divider' -%}
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16"><path fill="currentColor" fill-opacity=".6" d="m6.53 2.47 5 5a.75.75 0 0 1 0 1.062l-5 5a.751.751 0 1 1-1.062-1.063L9.938 8l-4.47-4.47A.751.751 0 1 1 6.53 2.469v.001Z"/></svg>
+    
+  {%- when 'list' -%}
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="{{ icon_fill }}"/><path stroke="{{ icon_stroke }}" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m14 7-5.5 5.5L6 10"/></svg>
+  {%- endcase -%}
+{%- endcapture -%}
+
+{{- icon | replace: '<', '%3C' | replace: '>', '%3E' | replace: '"', '%22' | replace: '#', '%23' | replace: '|', '%7C' | replace: '^', '%5E' | replace: '`', '%60' | replace: '[', '%5B' | replace: ']', '%5D' | replace: ' ', '%20' | replace: '+', '%2B' -}}
+
+
+

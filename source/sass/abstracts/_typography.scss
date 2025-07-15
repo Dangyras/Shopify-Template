@@ -1,7 +1,12 @@
+@use "_variables" as *;
+@use "_functions" as *;
+
 /* ------------------------------------------------------------------------------------------------------------------------------------------------[Text]---*/
 
 #theme {
-  // Paragraphs
+  letter-spacing: normal;
+  line-height: 1.333;
+  
   .text--wrapper p {
     margin: 0;
     & + p {
@@ -11,32 +16,43 @@
 
   // Links
   a {
-    color: var(--colour--primary);
     text-decoration: none;
+    color: inherit;
+  }
+
+  .style--text {
+    font-family: var(--font--primary);
+    font-weight: normal;
   }
 
   // Headings
-  h1,
-  .h1,
-  h2,
-  .h2,
-  h3,
-  .h3,
-  h4,
-  .h4,
-  h5,
-  .h5,
-  h6,
-  .h6,
-  .heading--h1,
-  .heading--h2,
-  .heading--h3,
-  .heading--h4,
-  .heading--h5,
-  .heading--h6 {
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: normal;
+    margin-top: 0;
+    font-weight: 700;
+    color: inherit;
+  }
+
+  .text--wrapper {
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1em;
+      span {
+        font-weight: inherit !important;
+      }
+    }
+  }
+
+  .heading--h1, h1.heading,
+  .heading--h2, h2.heading,
+  .heading--h3, h3.heading,
+  .heading--h4, h4.heading,
+  .heading--h5, h5.heading,
+  .heading--h6, h6.heading,
+  .heading--h7, h7.heading  {
     font-family: var(--font--secondary);
     margin-top: 0;
     font-weight: 700;
+    line-height: 1.2;
     letter-spacing: normal;
 
     a,
@@ -49,111 +65,96 @@
     &.style--text {
       font-family: var(--font--primary);
     }
+
+    &.style--sizeBody {
+      font-size: inherit;
+    }
+
   }
 
-  .heading--title {
-    font-size: 8rem;
-    line-height: 1.125;
-
-    @media only screen and (min-width: $break--small) and (max-width: $break--xLarge) {
-      font-size: clamp(4.4rem, vw(83px), 8.3rem);
-    }
-
-    @media only screen and (max-width: $break--small) {
-      font-size: 4.4rem;
-    }
+  div .heading--title, title.heading {
+    @include headings($text--titleLarge, $text--titleSmall, $text--titleTiny);
   }
 
-  h1,
-  .h1,
-  .heading--h1 {
-    font-size: 6rem;
-    line-height: 1.2;
 
-    @media only screen and (min-width: $break--small) and (max-width: $break--xLarge) {
-      font-size: clamp(5.2rem, vw(60px), 6rem);
-      line-height: 1.2;
-    }
-
-    @media only screen and (max-width: $break--small) {
-      font-size: 5.2rem;
-      line-height: 1.2;
-    }
+  div .heading--h1, h1.heading {
+    @include headings($text--h1Large, $text--h1Small, $text--h1Tiny);
   }
 
-  h2,
-  .h2,
-  .heading--h2 {
-    font-size: 4.8rem;
-    line-height: 1.2;
-
-    @media only screen and (min-width: $break--small) and (max-width: $break--xLarge) {
-      font-size: clamp(3rem, vw(48px), 4.8rem);
-      line-height: 1.2;
-    }
-
-    @media only screen and (max-width: $break--small) {
-      font-size: 3rem;
-      line-height: 1.2;
-    }
+  div .heading--h2, h2.heading {
+    @include headings($text--h2Large, $text--h2Small, $text--h2Tiny);
   }
 
-  h3,
-  .h3,
-  .heading--h3 {
-    font-size: 4rem;
-    line-height: 1.2;
-
-    @media only screen and (min-width: $break--small) and (max-width: $break--xLarge) {
-      font-size: clamp(2.5rem, vw(40px), 4rem);
-      line-height: 1.2;
-    }
-
-    @media only screen and (max-width: $break--small) {
-      font-size: 2.5rem;
-      line-height: 1.2;
-    }
+  div .heading--h3, h3.heading {
+    @include headings($text--h3Large, $text--h3Small, $text--h3Tiny);
   }
 
-  h4,
-  .h4,
-  .heading--h4 {
-    font-size: 2rem;
-    line-height: 1.2;
-
-    @media only screen and (min-width: $break--small) and (max-width: $break--xLarge) {
-      font-size: clamp(1.6rem, vw(20px), 2rem);
-      line-height: 1.2;
-    }
-
-    @media only screen and (max-width: $break--small) {
-      font-size: 1.6rem;
-      line-height: 1.2;
-    }
+  div .heading--h4, h4.heading {
+    @include headings($text--h4Large, $text--h4Small, $text--h4Tiny);
   }
 
-  h5,
-  .h5,
-  .heading--h5 {
-    font-size: 1.7rem;
-    line-height: 1.2;
-
-    @media only screen and (max-width: $break--small) {
-      font-size: 1.7rem;
-      line-height: 1.2;
-    }
+  div .heading--h5, h5.heading {
+    @include headings($text--h5Large, $text--h5Small, $text--h5Tiny);
   }
 
-  h6,
-  .h6,
-  .heading--h6 {
-    font-size: 1.6rem;
-    line-height: 1.2;
+  div .heading--h6, h6.heading {
+    @include headings($text--h6Large, $text--h6Small, $text--h6Tiny);
+  }
 
-    @media only screen and (max-width: $break--small) {
-      font-size: 1.6rem;
-      line-height: 1.2;
-    }
+  h1:not(.text-body) {
+    @include headings($text--h1Large, $text--h1Small, $text--h1Tiny);
+  }
+
+  h2:not(.text-body) {
+    @include headings($text--h2Large, $text--h2Small, $text--h2Tiny);
+  }
+
+  h3:not(.text-body) {
+    @include headings($text--h3Large, $text--h3Small, $text--h3Tiny);
+  }
+
+  h4:not(.text-body) {
+    @include headings($text--h4Large, $text--h4Small, $text--h4Tiny);
+  }
+
+  h5:not(.text-body) {
+    @include headings($text--h5Large, $text--h5Small, $text--h5Tiny);
+  }
+
+  div .heading--h1 {
+    @include headings($text--h1Large, $text--h1Small, $text--h1Tiny);
+  }
+
+  div .heading--h2 {
+    @include headings($text--h2Large, $text--h2Small, $text--h2Tiny);
+  }
+
+  div .heading--h3 {
+    @include headings($text--h3Large, $text--h3Small, $text--h3Tiny);
+  }
+
+  div .heading--h4 {
+    @include headings($text--h4Large, $text--h4Small, $text--h4Tiny);
+  }
+
+  div .heading--h5 {
+    @include headings($text--h5Large, $text--h5Small, $text--h5Tiny);
+  }
+
+  div .heading--h6 {
+    @include headings($text--h6Large, $text--h6Small, $text--h6Tiny);
+  }
+
+  div .heading--h7 {
+    @include headings($text--bodyLarge, $text--bodySmall, $text--bodyTiny);
+  }
+
+  div .heading--p {
+    @include headings($text--bodyLarge, $text--bodySmall, $text--bodyTiny);
+  }
+  
+  div .heading--title2, title2.heading {
+    @include headings($text--title2Large, $text--title2Small, $text--title2Tiny);
   }
 }
 

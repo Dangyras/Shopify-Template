@@ -7,33 +7,41 @@
 
   {%- if ss.section_padding_1 != blank -%}--section--paddingTop_1: {{ ss.section_padding_1 }}rem;{%- endif -%}
   {%- if ss.section_padding_1 != blank -%}--section--paddingBottom_1: {{ ss.section_padding_1 }}rem;{%- endif -%}
+  {%- if ss.section_padding_bottom_1 != blank -%}--section--paddingBottom_1: {{ ss.section_padding_bottom_1 }}rem;{%- endif -%}
   {%- if ss.section_margin_1 != blank -%}--section--marginTop_1: {{ ss.section_margin_1 }}rem;{%- endif %} 
   {%- if ss.section_margin_1 != blank -%}--section--marginBottom_1: {{ ss.section_margin_1 }}rem;{%- endif %} 
 
   {%- if ss.content_padding_1 != blank -%}--content--paddingTop_1: {{ ss.content_padding_1 }}rem;{%- endif -%}
   {%- if ss.content_padding_1 != blank -%}--content--paddingBottom_1: {{ ss.content_padding_1 }}rem;{%- endif -%}
   {%- if ss.content_padding_2 != blank -%}--content--paddingSides_1: {{ ss.content_padding_2 }}rem;{%- endif -%} 
+  {%- if ss.content_padding_3 != blank -%}--content--padding_3: {{ ss.content_padding_3 }}rem;{%- endif -%} 
 
-  {%- if ss.content_width_1 != 0 and ss.content_width_1 != blank -%}--content--width_1: {{ ss.content_width_1 }}rem;{%- endif -%} 
-  {%- if ss.custom_width_1 != 0 and ss.custom_width_1 != blank -%}--custom--width_1: {{ ss.custom_width_1 }}rem;{%- endif -%}  
-    
-  {%- if ss.section_background_image != blank -%}--section--bgImage: url({{ ss.section_background_image | img_url: "2000x" }});{%- endif -%}
+  {%- if ss.content_width_1 != 0 -%}--content--width_1: {{ ss.content_width_1 }}rem;{%- endif -%} 
+  {%- if ss.custom_width_1 != 0 -%}--custom--width_1: {{ ss.custom_width_1 }}rem;{%- endif -%} 
+  {% if bg_images %}
+    {%- if ss.section_background_image_1 != blank -%}--section--bgImage_1: url({{ ss.section_background_image_1 | image_url: width: 4000 }});{%- endif -%}
+    {%- if ss.section_background_image_2 != blank -%}--section--bgImage_2: url({{ ss.section_background_image_2 | image_url: width: 4000 }});{%- endif -%}
+  {% endif %}
   {%- if ss.section_background_1 != blank -%}--section--background_1: {{ ss.section_background_1 }};{%- endif -%}
+
   {%- if ss.content_background_1 != blank -%}--content--background_1: {{ ss.content_background_1 }};{%- endif -%}
   {%- if ss.content_background_2 != blank -%}--content--background_2: {{ ss.content_background_2 }};{%- endif -%}
   {%- if ss.content_background_3 != blank -%}--content--background_3: {{ ss.content_background_3 }};{%- endif -%}
   {%- if ss.content_background_4 != blank -%}--content--background_4: {{ ss.content_background_4 }};{%- endif -%}
+  {%- if ss.content_background_5 != blank -%}--content--background_5: {{ ss.content_background_5 }};{%- endif -%}
 
   {%- if ss.content_text_1 != blank -%}--content--colour_1: {{ ss.content_text_1 }};{%- endif %}
   {%- if ss.content_text_1 != blank -%}--content--colourRGB_1: {{ ss.content_text_1 | color_extract: 'red' }}, {{ ss.content_text_1 | color_extract: 'green' }}, {{ ss.content_text_1 | color_extract: 'blue' }};{%- endif %}
   {%- if ss.content_text_2 != blank -%}--content--colour_2: {{ ss.content_text_2 }};{%- endif %}
   {%- if ss.content_text_3 != blank -%}--content--colour_3: {{ ss.content_text_3 }};{%- endif %}
   {%- if ss.content_text_4 != blank -%}--content--colour_4: {{ ss.content_text_4 }};{%- endif %}
-
-  {%- if ss.border_colour_1 != blank -%}--border--colour_1: {{ ss.border_colour_1 }};{%- endif %}
+  {%- if ss.content_text_5 != blank -%}--content--colour_5: {{ ss.content_text_5 }};{%- endif %}
   
   {%- if ss.content_accent_1 != blank -%}--content--accent_1: {{ ss.content_accent_1 }};{%- endif -%}
   {%- if ss.content_accent_2 != blank -%}--content--accent_2: {{ ss.content_accent_2 }};{%- endif -%}
+  {%- if ss.content_accent_3 != blank -%}--content--accent_3: {{ ss.content_accent_3 }};{%- endif -%}
+  {%- if ss.content_accent_4 != blank -%}--content--accent_4: {{ ss.content_accent_4 }};{%- endif -%}
+  {%- if ss.content_accent_5 != blank -%}--content--accent_5: {{ ss.content_accent_5 }};{%- endif -%}
 
   {%- if ss.button_text_1 != blank -%}--section--buttonText_1: {{ ss.button_text_1 }};{%- endif %}
   {%- if ss.button_text_1 != blank -%}--section--buttonTextHover_1: {{ ss.button_text_1 }};{%- endif %}
@@ -57,6 +65,18 @@
       --section--modifierSmall_1: {{ 2 }};
     {% else %}
       --section--modifierSmall_1: {{ ss.mobile_modifier_1 | abs | divided_by: 100.00 | minus: 1 | abs }};
+    {% endif %}
+  {%- endif -%}
+
+  {%- if ss.mobile_modifier_2 != blank -%}
+    {% if ss.mobile_modifier_2 > 0 %}
+      --section--modifierSmall_2: {{ ss.mobile_modifier_2 | divided_by: 100.00 | plus: 1 }};
+    {% elsif ss.mobile_modifier_2 == 0 %}
+      --section--modifierSmall_2: {{ 1 }};
+    {% elsif ss.mobile_modifier_2 == "-100" %}
+      --section--modifierSmall_2: {{ 2 }};
+    {% else %}
+      --section--modifierSmall_2: {{ ss.mobile_modifier_2 | abs | divided_by: 100.00 | minus: 1 | abs }};
     {% endif %}
   {%- endif -%}
 }

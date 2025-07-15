@@ -1,0 +1,246 @@
+{% assign ss = section.settings %}
+{% assign type = "Text" | downcase | replace: " ", "_" %}
+
+{% capture section_classes -%}
+  {%- if ss.desktop %}hide--smUp {% endif -%}
+  {%- if ss.mobile %}hide--smDown {% endif -%}
+  {%- if ss.mirror %}style--mirror {% endif -%}
+  {%- if ss.section_margin_1_options %}margin--{{ ss.section_margin_1_options }}{% endif -%}
+{%- endcapture %}
+
+<section
+  id="section__{{ section.id }}"
+  class="section--wrapper {{ section_classes }}"
+  data-section="{{ type }}"
+>
+  <div class="container container--{{ ss.width }}">
+    <div class="section--inner">
+      {% render 'custom-sections', section: section, type: type, metafields: true %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "• Text",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Content settings"
+      },
+      {
+        "type": "inline_richtext",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "checkbox",
+        "id": "heading_center",
+        "default": false,
+        "label": "Center heading"
+      },
+      {
+        "type": "checkbox",
+        "id": "decoration",
+        "default": false,
+        "label": "Decoration"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "checkbox",
+        "id": "center",
+        "default": false,
+        "label": "Center text"
+      },
+      {
+         "type":      "select",
+         "id":        "size",
+         "label":     "Text: Size",
+         "options": [
+           { "value": "default", "label": "Default" },
+           { "value": "medium", "label": "Medium" },
+           { "value": "large", "label": "Large" }
+         ],
+        "default":   "default"
+      },
+      {
+        "type": "html",
+        "id": "html",
+        "label": "Custom Html"
+      },
+      {
+        "type": "header",
+        "content": "Section settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "desktop",
+        "default": false,
+        "label": "Hide on desktop"
+      },
+      {
+        "type": "checkbox",
+        "id": "mobile",
+        "default": false,
+        "label": "Hide on mobile"
+      },
+      {
+        "type": "checkbox",
+        "id": "h1",
+        "default": false,
+        "label": "Heading: H1"
+      },
+      {
+        "type": "checkbox",
+        "id": "dropdown",
+        "default": false,
+        "label": "Dropdown"
+      },
+      {
+         "type":      "select",
+         "id":        "dropdown_style",
+         "label":     "Dropdown style",
+         "options": [
+           { "value": "1", "label": "1" },
+           { "value": "2", "label": "2" }
+         ],
+        "default":   "1"
+      },
+      {
+        "type": "header",
+        "content": "Colours"
+      },
+      {
+        "type": "color",
+        "id": "section_background_1",
+        "label": "Background: Section"
+      },
+      {
+        "type": "color",
+        "id": "content_background_1",
+        "label": "Background: Content"
+      },
+      {
+        "type": "color",
+        "id": "content_background_2",
+        "label": "Background: Content 2"
+      },
+      {
+        "type": "color",
+        "id": "content_text_1",
+        "label": "Colour: Text 1"
+      },
+      {
+        "type": "color",
+        "id": "content_text_2",
+        "label": "Colour: Text 2"
+      },
+      {
+        "type": "color",
+        "id": "content_accent_1",
+        "label": "Colour: Accent"
+      },
+      {
+        "type": "color",
+        "id": "button_text_1",
+        "label": "Button: Text"
+      },
+      {
+        "type": "color",
+        "id": "button_background_1",
+        "label": "Button: Background"
+      }, 
+      {
+        "type": "header",
+        "content": "Spacing"
+      },
+      {
+         "type":      "select",
+         "id":        "width",
+         "label":     "Width: Section",
+         "options": [
+           { "value": "default", "label": "Default" },
+           { "value": "narrow", "label": "Narrow" },
+           { "value": "wide", "label": "Wide" },
+           { "value": "full", "label": "Full width" },
+           { "value": "padding", "label": "Full width with padding" }
+         ],
+        "default":   "default"
+      },
+      {
+        "type": "range",
+        "id": "section_margin_1",
+        "label": "Margin: Section Bottom",
+        "min": -25,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+         "type":      "select",
+         "id":        "section_margin_1_options",
+         "label":     "Margin: Visible",
+         "options": [
+           { "value": "mobile", "label": "Mobile" },
+           { "value": "desktop", "label": "Desktop" },
+           { "value": "default", "label": "Both" }
+         ],
+        "default":   "default"
+      },
+      {
+        "type": "range",
+        "id": "section_padding_1",
+        "label": "Padding: Section Top/Bottom",
+        "min": 0,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "content_padding_1",
+        "label": "Padding: Content Top/Bottom",
+        "min": 0,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "content_padding_2",
+        "label": "Padding: Content Sides",
+        "min": 0,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "mobile_modifier_1",
+        "label": "Mobile Modifier",
+        "min": -100,
+        "max": 100,
+        "step": 2,
+        "unit": "%",
+        "default": -50
+      }
+	],
+    "presets": [
+      {
+        "name": "• Text"
+      }
+    ]
+  }
+{% endschema %}
+      
+{% style %}
+  {% render "custom-section_styles" %}
+{% endstyle %}
+
+
+
+

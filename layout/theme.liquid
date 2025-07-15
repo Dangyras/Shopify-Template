@@ -1,0 +1,62 @@
+<!doctype html>
+<html class="js" lang="{{ request.locale.iso_code }}">
+  <head>
+    {% style %}
+      /* @font-face {
+        font-family: "";
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+        src: url("{{ ".ttf" |  asset_url }}") format("truetype");
+      } */
+      
+      :root {
+        {% liquid 
+          assign icon_fill = "#196D1A"
+          assign icon_stroke = "#196D1A"
+        %}
+
+        --icon-list: url('{{ 'icon-checkmark_circle.svg' | asset_url }}');
+        --icon-list_encoded: url("data:image/svg+xml,{% render "custom-icons", type: "list" | icon_fill: icon_fill, icon_stroke: icon_stroke %}");
+        --icon-chevron_encoded: url("data:image/svg+xml,{% render "custom-icons", type: "chevron" | icon_fill: icon_fill, icon_stroke: icon_stroke %}");
+
+        --icon-title: url('{{ 'icon-title.svg' | asset_url }}');
+      }
+    {% endstyle %}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script> 
+
+    {% if template contains 'index' %}
+      {{ 'custom.homepage_styles.min.css' | asset_url | stylesheet_tag: preload: true }}
+    {% elsif template contains 'product' %}
+      {{ 'custom.product_styles.min.css' | asset_url | stylesheet_tag: preload: true }}
+    {% elsif template contains 'collection' %}
+      {{ 'custom.collection_styles.min.css' | asset_url | stylesheet_tag: preload: true }}
+    {% else %}
+      {{ 'custom.main_styles.min.css' | asset_url | stylesheet_tag: preload: true }}
+    {% endif %}
+        
+    <style>
+      :root {
+        {{ settings.colour_overwrites }}
+      }
+    </style>
+
+    {{ 'custom.css' | asset_url | stylesheet_tag: preload: true }}
+
+    <script src="{{ 'custom.main_scripts.min.js' | asset_url }}" defer="defer"></script>
+  </head>
+
+  <body id="theme" data-template="{{ template }}">
+
+    <script>
+      window.utils = {
+        moneyFormat: {{ shop.money_format | json }},
+        moneyWithCurrencyFormat: {{ shop.money_with_currency_format | json }},
+      };
+    </script>
+
+    <div data-snippet="body-overlay"></div>
+  </body>
+</html>

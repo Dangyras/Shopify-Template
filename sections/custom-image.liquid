@@ -1,5 +1,5 @@
 {% assign ss = section.settings %}
-{% assign type = "template" | downcase | replace: " ", "_" %}
+{% assign type = "Image" | downcase | replace: " ", "_" %}
 
 {% capture section_classes -%}
   {%- if ss.desktop %}hide--smUp {% endif -%}
@@ -13,7 +13,7 @@
   class="section--wrapper {{ section_classes }}"
   data-section="{{ type }}"
 >
-  <div is="custom-section" class="container container--{{ ss.width }}">
+  <div class="container container--{{ ss.width }}">
     <div class="section--inner">
       {% render 'custom-sections', section: section, type: type %}
     </div>
@@ -22,13 +22,33 @@
 
 {% schema %}
   {
-    "name": "• Template",
+    "name": "• Image",
     "settings": [
       {
         "type": "header",
         "content": "Content settings"
       },
-      
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "url",
+        "id": "image_url",
+        "label": "URL"
+      },
+      {
+        "type": "checkbox",
+        "id": "h1",
+        "default": false,
+        "label": "H1"
+      },
       {
         "type": "header",
         "content": "Section settings"
@@ -61,6 +81,11 @@
       },
       {
         "type": "color",
+        "id": "content_background_2",
+        "label": "Background: Content 2"
+      },
+      {
+        "type": "color",
         "id": "content_text_1",
         "label": "Colour: Text"
       },
@@ -90,6 +115,7 @@
          "options": [
            { "value": "default", "label": "Default" },
            { "value": "narrow", "label": "Narrow" },
+           { "value": "wide", "label": "Wide" },
            { "value": "full", "label": "Full width" },
            { "value": "padding", "label": "Full width with padding" }
          ],
@@ -118,7 +144,16 @@
       {
         "type": "range",
         "id": "section_padding_1",
-        "label": "Padding: Section Top/Bottom",
+        "label": "Padding: Section Top",
+        "min": 0,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "section_padding_bottom_1",
+        "label": "Padding: Section Bottom",
         "min": 0,
         "max": 25,
         "step": 0.5,
@@ -155,7 +190,7 @@
 	],
     "presets": [
       {
-        "name": "• Template"
+        "name": "• Image"
       }
     ]
   }
@@ -164,3 +199,7 @@
 {% style %}
   {% render "custom-section_styles" %}
 {% endstyle %}
+
+
+
+

@@ -5,92 +5,1075 @@
   assign breakpoint_small = settings.breakpoint_small | default: 768
   assign breakpoint_tiny = settings.breakpoint_tiny | default: 556
 %}
+{% liquid
+  assign ss = section.settings
+  assign breakpoint_large = settings.breakpoint_large | default: 1200
+  assign breakpoint_medium = settings.breakpoint_medium | default: 992
+  assign breakpoint_small = settings.breakpoint_small | default: 768
+  assign breakpoint_tiny = settings.breakpoint_tiny | default: 556
+%}
+
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
 
 {%- case type -%}
-  {%- when 'template' -%}
-    <div class="section--content">
 
+  <div class="section--content">
+    {% if ss.image != blank %}
+      <div class="section-aside">
+        <h2 class="heading heading--h3">{{ ss.title }}</h2>
+
+        <ul class="list list--none">
+          <li>{{ ss.subtitle  }}</li>
+          {% for block in section.blocks %}
+            <li>
+              <div class="icon--wrapper" style="background-image: url({{ block.settings.image |  image_url: width: 50 }});"></div>
+              <div class="text--wrapper">{{ block.settings.text }}</div>
+            </li>
+          {% endfor %}
+        </ul>
+
+        <div class="image--wrapper">
+          <img
+            src="{{ ss.image |  image_url: width: 20 }}"
+            loading="lazy"
+            alt="{{ ss.title }}"
+            width="{{ ss.image.width }}"
+            height="{{ ss.image.width | divided_by: ss.image.aspect_ratio }}"
+            srcset="{% render "custom-srcset", image: ss.image, start: 360, end: 650, gap: 40 %}"
+            sizes="
+              (min-width: {{ breakpoint_large | default: "1200" }}px) {{ 580 | append: "px" }},
+              (min-width: {{ breakpoint_medium | default: "992" }}px) {{ 432.00 | divided_by: 992 | times: 100 | round | append: "vw" }},
+              (min-width: {{ breakpoint_small | default: "768" }}px) {{ 328.00 | divided_by: 768 | times: 100 | round | append: "vw" }},
+              (min-width: {{ breakpoint_tiny | default: "556" }}px)  {{ 540.00 | divided_by: 556 | times: 100 | round | append: "vw" }},
+              {{ 360.00 | divided_by: 360 | times: 100 | round | append: "vw" }}
+            "
+          >
+        </div>
+      </div>
+    {% endif %}
+    <div class="form--wrapper">
+      {%- liquid
+        assign contact_form_class = 'isolate'
+        if settings.animations_reveal_on_scroll
+          assign contact_form_class = 'isolate scroll-trigger animate--slide-in'
+        endif
+      -%}
+      {%- form 'contact', id: 'ContactForm', class: contact_form_class -%}
+        {%- if form.posted_successfully? -%}
+          <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
+            {{- 'icon-success.svg' | inline_asset_content -}}
+            {{ 'templates.contact.form.post_success' | t }}
+          </h2>
+        {%- elsif form.errors -%}
+          <div class="form__message">
+            <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
+              {{- 'icon-error.svg' | inline_asset_content -}}
+              {{ 'templates.contact.form.error_heading' | t }}
+            </h2>
+          </div>
+          <ul class="form-status-list caption-large" role="list">
+            <li>
+              <a href="#ContactForm-email" class="link">
+                {{ form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email }}
+              </a>
+            </li>
+          </ul>
+        {%- endif -%}
+
+        <div class="field--group">
+          <div class="field">
+            <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
+            <input
+              class="field__input"
+              autocomplete="name"
+              type="text"
+              id="ContactForm-name"
+              name="contact[{{ 'templates.contact.form.name' | t }}]"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              placeholder="{{ 'custom.contact.first_name_placeholder' | t }}"
+            >
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="ContactForm-name">Pavardė</label>
+            <input
+              class="field__input"
+              autocomplete="name"
+              type="text"
+              id="ContactForm-name"
+              name="contact[last_{{ 'templates.contact.form.name' | t }}]"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              placeholder="{{ 'custom.contact.last_name_placeholder' | t }}"
+            >
+          </div>
+        </div>
+
+        
+        <div class="field--group">
+          <div class="field field--with-error">
+            <label class="field__label" for="ContactForm-email">{{- 'templates.contact.form.email' | t }} <span aria-hidden="true">*</span></label>
+            <input
+              autocomplete="email"
+              type="email"
+              id="ContactForm-email"
+              class="field__input"
+              name="contact[email]"
+              spellcheck="false"
+              autocapitalize="off"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              aria-required="true"
+              {% if form.errors contains 'email' %}
+                aria-invalid="true"
+                aria-describedby="ContactForm-email-error"
+              {% endif %}
+              placeholder="{{ 'custom.contact.mail_placeholder' | t }}"
+            >
+            {%- if form.errors contains 'email' -%}
+              <small class="contact__field-error" id="ContactForm-email-error">
+                <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+                <span class="form__message">
+                  <span class="svg-wrapper">
+                    {{- 'icon-error.svg' | inline_asset_content -}}
+                  </span>
+                  {{- form.errors.translated_fields.email | capitalize }}
+                  {{ form.errors.messages.email -}}
+                </span>
+              </small>
+            {%- endif -%}
+          </div>
+          <div class="field">
+            <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
+            <input
+              type="tel"
+              id="ContactForm-phone"
+              class="field__input"
+              autocomplete="tel"
+              name="contact[{{ 'templates.contact.form.phone' | t }}]"
+              pattern="[0-9\-]*"
+              value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+              placeholder="{{ 'custom.contact.phone_placeholder' | t }}"
+            >
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="form__label field__label" for="ContactForm-body">
+            {{- 'templates.contact.form.comment' | t -}}
+          </label>
+          <textarea
+            rows="10"
+            id="ContactForm-body"
+            class="text-area field__input"
+            name="contact[{{ 'templates.contact.form.comment' | t }}]"
+            placeholder="{{ 'custom.contact.message_placeholder' | t }}"
+          >
+            {{- form.body -}}
+          </textarea>
+        </div>
+        
+        <div class="contact__button">
+          <button type="submit" class="button button--primary">
+            {{ 'templates.contact.form.send' | t }}
+          </button>
+        </div>
+      {%- endform -%}
     </div>
+  </div>
 
-  {%- when 'hero' -%}
-    <div class="section--content layout--gridLayers">
-      {% if ss.image_mobile != blank
-        and ss.image_desktop != blank
-        and ss.video_mobile == blank
-        and ss.video_desktop == blank
-      %}
-        <div
-          class="image--wrapper style--fullWidth"
-          style="--desktop--aspectRatio: 1/{{ ss.image_desktop.aspect_ratio }}; --mobile--aspectRatio: 1/{{ ss.image_mobile.aspect_ratio }};"
-        >
-          <picture>
-            <source
-              media="(max-width: {{ breakpoint_small }}px)"
-              width="{{ ss.image_mobile.width }}"
-              height="{{ ss.image_mobile.width | divided_by: ss.image_mobile.aspect_ratio }}"
-              srcset="{% render "custom-srcset", image: ss.image_mobile, start: 250, end: 800, gap: 150 %}"
-              sizes="100vw"
-            >
-            <source
-              media="(min-width: {{ breakpoint_small }}px)"
-              width="{{ ss.image_desktop.width }}"
-              height="{{ ss.image_desktop.width | divided_by: ss.image_desktop.aspect_ratio }}"
-              srcset="{% render "custom-srcset", image: ss.image_desktop, start: 350, end: 4000, gap: 250 %}"
-              sizes="100vw"
-            >
+{%- when 'simple_banner' -%}
+  <div class="section--content">
+    <div class="grid--wrapper grid--sm-1">
+      <div class="grid--item  {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        {% if ss.title != blank or ss.text != blank %}
+          <div class="content-header ">
+            {% if ss.title != blank %}
+              {% if ss.h1 %}
+                <h1 class="heading heading--{% if ss.small %}h2{% else %}h1{% endif %} {% if ss.decoration %}style--decoration{% endif %}">{{ ss.title }}</h1>
+              {% else %}
+                <h2 class="heading heading--{% if ss.small %}h2{% else %}h1{% endif %} {% if ss.decoration %}style--decoration{% endif %}">{{ ss.title }}</h2>
+              {% endif %}
+            {% endif %}
+      
+            {% if ss.text != blank %}
+              <div class="text--wrapper">{{ ss.text | replace: '<ul', '<ul class="list list--image"' }}</div>
+            {% endif %}
+
+            {% if ss.button != blank %}
+              <div class="button--wrapper">{{ ss.button | replace: 'href', 'class="button--primary" href' }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+        
+      </div>
+
+      <div class="grid--item element-image">
+        {% if ss.image_desktop != blank %}
+          <div data-style="--mobile-bg: url({{ ss.image_mobile | image_url: width: 2000 }}); --mob-ratio: {{ ss.aspect_m }}; --desktop-bg: url({{ ss.image_desktop | image_url: width: 2000 }}); --desktop-ratio: {{ ss.aspect_d }};" 
+          class="image--wrapper style--bg bg-lazy">
+
+          </div>
+        {% else %}
+          <div class="image--wrapper">
             <img
-              class="image"
-              src="{{ ss.image_mobile | img_url: "385x" }}"
-              width="{{ ss.image_mobile.width }}"
-              height="{{ ss.image_mobile.width | divided_by: ss.image_mobile.aspect_ratio }}"
-              loading="eager"
+              src="{{ ss.image |  image_url: width: 20 }}"
+              loading="lazy"
+              alt="{{ ss.title }}"
+              width="{{ ss.image.width }}"
+              height="{{ ss.image.width | divided_by: ss.image.aspect_ratio }}"
+              srcset="{% render "custom-srcset", image: ss.image, start: 360, end: 650, gap: 40 %}"
+              sizes="
+                (min-width: {{ breakpoint_large | default: "1200" }}px) {{ 580 | append: "px" }},
+                (min-width: {{ breakpoint_medium | default: "992" }}px) {{ 432.00 | divided_by: 992 | times: 100 | round | append: "vw" }},
+                (min-width: {{ breakpoint_small | default: "768" }}px) {{ 328.00 | divided_by: 768 | times: 100 | round | append: "vw" }},
+                (min-width: {{ breakpoint_tiny | default: "556" }}px)  {{ 540.00 | divided_by: 556 | times: 100 | round | append: "vw" }},
+                {{ 360.00 | divided_by: 360 | times: 100 | round | append: "vw" }}
+              "
             >
-          </picture>
-        </div>
-      {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 
-      {% if ss.video_mobile != blank and ss.video_desktop != blank %}
-        <div
-          class="video--container"
-          data-video="{ &quot;desktop&quot;: &quot;{{ ss.video_desktop.sources[0].url }}&quot;, &quot;mobile&quot;: &quot;{{ ss.video_mobile.sources[0].url }}&quot; }"
+{%- when 'carousel' -%}
+  <div class="section--content">
+    {% if ss.title != blank or ss.text_1 != blank %}
+      <div class="content-header ">
+          
+        {% if ss.title != blank %}
+          {% if ss.h1 %}
+            <h1 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}">{{ ss.title }}</h1>
+          {% else %}
+            <h2 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}">{{ ss.title }}</h2>
+          {% endif %}
+        {% endif %}
+  
+        {% if ss.text_1 != blank %}
+          <div class="text--wrapper">{{ ss.text_1 }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+    <slider-element data-snippet="slider_element" style="--desktop-size:  {{ ss.slides }}; --tablet-size:  {{ ss.slides_tablet }}; --mobile-size:  {{ ss.slides_mobile }};" class="slider-element" 
+    data-settings='{"slidesPerView": {{ ss.slides_mobile }}, "slidesPerGroup": 1, "autoplay": {% if ss.autoplay_delay != null and ss.autoplay_delay > 0 %}{ "delay" : {{ ss.autoplay_delay | times: 1000 }} }{% else %} false{% endif %}, "centeredSlides": {{ ss.center }}, "loop": {% if ss.loop %}true{% else %}false{% endif %}, "spaceBetween": {{ ss.gap_mobile }},
+          "breakpoints": {
+            "{{ breakpoint_small }}": {"slidesPerView": {{ ss.slides_tablet }}, "slidesPerGroup": {{ ss.group_desktop }},"centeredSlides": {{ ss.center }}, "spaceBetween": {{ ss.gap }}},
+            "{{ breakpoint_large }}": {"slidesPerView": {{ ss.slides }}, "slidesPerGroup": {{ ss.group_desktop }}, "centeredSlides": {{ ss.center }}, "spaceBetween": {{ ss.gap }}}
+          }}'>
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="swiper-slide">  
+              <div class="slide--inner select--none">
+                {% assign width = breakpoint_large | divided_by: ss.slides %}
+                
+                {% assign slides_desktop = ss.slides | plus: 0 %}
+                {% assign slides_tablet = ss.slides_tablet | plus: 0 %}
+                {% assign slides_mobile = ss.slides_mobile | plus: 0 %}
+                
+                {% assign image_width_desktop = 1200.00 | divided_by: slides_desktop %}
+                {% assign image_width_tablet = 768.00 | divided_by: slides_tablet %}
+                {% assign image_width_mobile = 360.00 | divided_by: slides_mobile %}
+                {% assign image_width_desktop2 = 1200 | divided_by: slides_desktop %}
+
+                {% if ss.width == "default2" and slides_desktop == 1 %}
+                  {% assign image_width_desktop = 1900.00 %}
+                  {% assign image_width_desktop2 = 1900 %}
+                {% endif %}
+                <div>
+                  {% if block.settings.image_mobile != blank %}
+                    <picture data-test="{{ image_width_desktop }}">
+                      <source
+                        media="(max-width: {{ breakpoint_small }}px)"
+                        
+                        width="{{ block.settings.image_mobile.width }}"
+                        height="{{ block.settings.image_mobile.width | divided_by: block.settings.image_mobile.aspect_ratio }}"
+                        srcset="{% render "custom-srcset", image: block.settings.image_mobile, start: 150, end: image_width_desktop2, gap: 30 %}"
+                        sizes="
+                          (min-width: {{ breakpoint_large | default: "1200" }}px) {{ image_width_desktop | append: "px" }},
+                          (min-width: {{ breakpoint_small | default: "768" }}px) {{ image_width_tablet | divided_by: 768 | times: 100 | round | append: "vw" }},
+                          {{ image_width_mobile | divided_by: 360 | times: 100 | round | append: "vw" }}
+                        "
+                      />
+                      <source
+                        media="(min-width: {{ breakpoint_small }}px)"
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}"
+                        srcset="{% render "custom-srcset", image: block.settings.image, start: 700, end: image_width_desktop2, gap: 130 %}"
+                        sizes="
+                          (min-width: {{ breakpoint_large | default: "1200" }}px) {{ image_width_desktop | append: "px" }},
+                          (min-width: {{ breakpoint_small | default: "768" }}px) {{ image_width_tablet | divided_by: 768 | times: 100 | round | append: "vw" }},
+                          {{ image_width_mobile | divided_by: 360 | times: 100 | round | append: "vw" }}
+                        "
+                      />
+                      <img class="image" src="{{ block.settings.image_mobile | img_url: "385x" }}" alt="{{ block.settings.image_mobile.alt }}"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                      />
+                    </picture>
+                  {% else %}
+
+                  
+                    {% if block.settings.url != blank %}
+                      <a href="{{ block.settings.url }}" class="image--wrapper">
+                        <img
+                          data-test="{{ image_width_tablet }}"
+                          {% if forloop.first %}data-height="set"{% endif %}
+                          src="{{ block.settings.image |  image_url: width: 20 }}"
+                          loading="lazy"
+                          alt="{{ block.settings.title }}"
+                          width="{{ block.settings.image.width }}"
+                          height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}"
+                          srcset="{% render "custom-srcset", image: block.settings.image, start: 150, end: image_width_desktop2, gap: 30 %}"
+                          sizes="
+                            (min-width: {{ breakpoint_large | default: "1200" }}px) {{ image_width_desktop | append: "px" }},
+                            (min-width: {{ breakpoint_small | default: "768" }}px) {{ image_width_tablet | divided_by: 768 | times: 100 | round | append: "vw" }},
+                            {{ image_width_mobile | divided_by: 360 | times: 100 | round | append: "vw" }}
+                          "
+                        >
+                      </a>
+                    {% else %}
+                    <div class="image--wrapper">
+                      <img
+                        data-test="{{ image_width_tablet }}"
+                        {% if forloop.first %}data-height="set"{% endif %}
+                        src="{{ block.settings.image |  image_url: width: 20 }}"
+                        loading="lazy"
+                        alt="{{ block.settings.title }}"
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}"
+                        srcset="{% render "custom-srcset", image: block.settings.image, start: 150, end: image_width_desktop2, gap: 30 %}"
+                        sizes="
+                          (min-width: {{ breakpoint_large | default: "1200" }}px) {{ image_width_desktop | append: "px" }},
+                          (min-width: {{ breakpoint_small | default: "768" }}px) {{ image_width_tablet | divided_by: 768 | times: 100 | round | append: "vw" }},
+                          {{ image_width_mobile | divided_by: 360 | times: 100 | round | append: "vw" }}
+                        "
+                      >
+                    </div>
+                    {% endif %}
+
+                  {% endif %}
+
+                  {% if block.settings.button != blank %}
+                    <div class="button--wrapper">{{ block.settings.button }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% if ss.navigation_style == "1" %}
+        <div class="swiper-button-prev show--smUp"></div>
+        <div class="swiper-button-next show--smUp"></div>
+          
+        <div class="swiper-pagination"></div>
+      {% elsif ss.navigation_style == "2" %}
+        <div class="container container--{{ ss.width }}">
+          <div class="navigation--wrapper">
+            <div class="counter--wrapper">
+              <div class="swiper-counter" data-current="01" data-total="0{{ section.blocks.size }}">01 / <span>0{{ section.blocks.size }}</span></div>
+            </div>
+
+            <div class="pagination--wrapper">
+              <div class="swiper-pagination style--progressbar"></div>
+            </div>
+            <div class="arrows--wrapper">
+              <div class="swiper-button-prev show--smUp0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path fill="currentColor" d="M6.287 11.038h9.74v-1.6h-9.74l4.48-4.48-1.14-1.12-6.4 6.4 6.4 6.4 1.14-1.12-4.48-4.48Z"/></svg>
+              </div>
+              <div class="swiper-button-next show--smUp0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path fill="currentColor" d="M13.713 11.038h-9.74v-1.6h9.74l-4.48-4.48 1.14-1.12 6.4 6.4-6.4 6.4-1.14-1.12 4.48-4.48Z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="swiper-button-prev show--smUp"></div>
+        <div class="swiper-button-next show--smUp"></div>
+          
+        <div class="swiper-pagination"></div>
+      {% endif %}
+    </slider-element>
+  </div>
+
+{%- when 'collection_categories' -%}
+  <div class="section--content">
+    {% assign categories = collection.metafields.custom.categories.value %}
+    {% if categories == blank %}
+      <style>#section__{{ section.id }} { display: none !important;}</style>
+    {% endif %}
+    {% for category in categories %}
+      <div class="slider--wrapper">
+        <h2 class="heading heading--h1">{{ category.title }}</h2>
+        {% liquid 
+          assign category_items = category.collections.value
+          assign slides_desktop = category.slides_desktop | default: 4
+          assign slides_mobile = category.slides_mobile | default: 1.2
+          assign slides_tablet = slides_desktop | minus: slides_mobile
+          assign is_slider = "true"
+          if category.slider == false
+            assign is_slider = "false"
+          endif
+        %}
+        
+        {% if is_slider == "true" %}
+        <slider-element 
+          data-snippet="slider_element" 
+          style="--desktop-size:  {{ slides_desktop }}; --tablet-size:  {{ slides_tablet }}; --mobile-size:  {{ slides_mobile }};" 
+          class="slider-element style--even" 
+          data-settings='{
+            "slidesPerView": {{ slides_mobile }}, 
+            "centeredSlides": false,
+            "autoplay": false, 
+            "loop": true, 
+            "spaceBetween": 16,
+            "breakpoints": {
+              "{{ breakpoint_small }}": {"slidesPerView": {{ slides_tablet }}, "centeredSlides": false, "spaceBetween": 16},
+              "{{ breakpoint_large }}": {"slidesPerView": {{ slides_desktop }}, "centeredSlides": false, "spaceBetween": 16}
+            }
+          }'
         >
-          <div class="video--wrapper">
-            <video
-              width="320"
-              height="240"
-              inline
-              muted
-              autoplay
-              loop
-              poster="{{ ss.video_desktop.preview_image |  img_url: 'master' }}"
-              src="{{ ss.video_mobile.sources[0].url }}"
-            ></video>
-          </div>
-        </div>
-      {% endif %}
+          
+          <div class="swiper-button-prev show--smUp"></div>
 
-      <div class="section--overlay">
-        <div class="{{ container }}">
-          <div class="grid--wrapper grid--M1">
-            <div class="section-text">
-              {% if ss.heading != blank %}
-                <h2 class="style--textShadow">{{ ss.heading }}</h2>
-              {% endif %}
-
-              {% if ss.text_1 != blank %}
-                <div class="text--wrapper style--textShadow">{{ ss.text_1 }}</div>
-              {% endif %}
-
-              {% if ss.text_2 != blank %}
-                <div class="text--wrapper style--textShadow">{{ ss.text_2 }}</div>
-              {% endif %}
-            </div>
-            <div class="section-aside">
-
+          <div class="swiper">
+            <div class="swiper-wrapper">
+              {% for category_item in category_items %}
+                <div class="swiper-slide">  
+                  <div class="slide--inner select--none">
+                    {% render "custom-snippets", type: "category-card", content: category_item, slides_desktop: slides_desktop, slides_mobile: slides_mobile, slides_tablet: slides_tablet, first: forloop.first %}
+                  </div>
+                </div>
+              {% endfor %}
             </div>
           </div>
+                
+          <div class="swiper-button-next show--smUp"></div>
+          <div class="swiper-pagination hide--lgUp"></div>
+        </slider-element>
+        {% else %}
+          <div class="grid--wrapper">
+            
+              {% for category_item in category_items %}
+                <div class="grid--item">  
+                  <div class="slide--inner select--none">
+                    {% render "custom-snippets", type: "category-card", content: category_item, slides_desktop: slides_desktop, slides_mobile: slides_mobile, slides_tablet: slides_tablet, first: forloop.first %}
+                  </div>
+                </div>
+              {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+{%- when 'liquid_container' -%}
+  <div class="section--content">
+    <div class="liquid--wrapper">
+      {{ ss.liquid_code }}
+    </div>
+  </div>
+
+{%- when 'featured_article' -%}
+  <div class="section--content">
+    <div class="grid--wrapper grid--sm-1">
+      <div class="grid--item {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        {% if ss.title != blank or ss.text_1 != blank %}
+          <div class="content-header ">
+            {% if ss.title != blank %}
+              {% if ss.h1 %}
+                <h1 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}"><span>{{ ss.title }}</span></h1>
+              {% else %}
+                <h2 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}"><span>{{ ss.title }}</span></h2>
+              {% endif %}
+            {% endif %}
+          </div>
+      
+          {% if ss.text != blank %}
+            <div class="text--wrapper">{{ ss.text }}</div>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      <div class="grid--item">
+        <div class="image--wrapper">
+          <img
+            src="{{ ss.image |  image_url: width: 20 }}"
+            loading="lazy"
+            alt="{{ ss.title }}"
+            width="{{ ss.image.width }}"
+            height="{{ ss.image.width | divided_by: ss.image.aspect_ratio }}"
+            srcset="{% render "custom-srcset", image: ss.image, start: 360, end: 550, gap: 40 %}"
+            sizes="
+              (min-width: {{ breakpoint_large | default: "1200" }}px) {{ 529 | append: "px" }},
+              (min-width: {{ breakpoint_medium | default: "992" }}px) {{ 432.00 | divided_by: 992 | times: 100 | round | append: "vw" }},
+              (min-width: {{ breakpoint_small | default: "768" }}px) {{ 328.00 | divided_by: 768 | times: 100 | round | append: "vw" }},
+              (min-width: {{ breakpoint_tiny | default: "556" }}px)  {{ 540.00 | divided_by: 556 | times: 100 | round | append: "vw" }},
+              {{ 360.00 | divided_by: 360 | times: 100 | round | append: "vw" }}
+            "
+          >
         </div>
       </div>
     </div>
+  </div>
+
+
+{%- when 'icons' -%}
+  <div class="section--content">
+    <div class="section--content  text--center">
+      {% if ss.heading != blank or ss.text_1 != blank %}
+        <div class="content-header ">
+          {% if ss.heading != blank %}
+            {% if ss.h1 %}
+              <h1 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}"><span>{{ ss.heading }}</span></h1>
+            {% else %}
+              <h2 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}"><span>{{ ss.heading }}</span></h2>
+            {% endif %}
+          {% endif %}
+
+          {% if ss.text_1 != blank %}
+            <div class="text--wrapper">{{ ss.text_1 }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+      
+      {% if section.blocks.size > 0 %}
+        <ul class="list list--none grid--wrapper grid--lg{{ ss.columns }} grid--sm{{ ss.columns_m }}">
+          {% for block in section.blocks %}
+            <li class="grid--item">
+              <div class="image--wrapper">
+                <img src="{{ block.settings.image |  image_url: width: 110 }}" loading="lazy" alt="{{  block.settings.title }}" {% if forloop.first %}data-height="set"{% endif %}>
+              </div>
+
+              {% if block.settings.title != blank %}
+                <h5 class="subheading heading--h5">{{ block.settings.title }}</h5>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <div class="text--wrapper style--colourAlt">{{ block.settings.text }}</div>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+  </div>
+
+{%- when 'text' -%}
+  <div class="section--content">
+    <div class="section--content ">
+      {% if ss.dropdown %}
+        {% if ss.heading != blank and ss.text != blank %}
+          <dropdown-element class="style--{{ ss.dropdown_style }}">
+            <button type="button" class="button--reset dropdown-header {% if true %}is-open{% endif %}" aria-controls="dropdown_0_header_{{ section.id }}" data-dropwdown="trigger">
+              <span>{{ ss.heading }}</span>
+              <svg  class="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 7"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 1 6 6 1 1"/></svg>
+            </button>
+            <div id="dropdown_0_header_{{ section.id }}" data-dropwdown="body" {% if true %}class="is-open"{% endif %}>
+              <div class="dropdown--inner" data-title="Header 2" data-index="2">
+                {{ ss.text }}
+              </div>
+            </div>
+          </dropdown-element>
+        {% endif %}
+      {% else %}
+        {% if ss.heading != blank or ss.text != blank %}
+          <div class="content-header {% if ss.heading_center %}text--center{% endif %}">
+
+            {% if ss.heading != blank %}
+              {% if ss.h1 %}
+                <h1 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}"><span>{{ ss.heading }}</span></h1>
+              {% else %}
+                <h2 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}"><span>{{ ss.heading }}</span></h2>
+              {% endif %}
+            {% endif %}
+
+            {% if ss.text_1 != blank %}
+              <div class="text--wrapper {% if ss.center %}text--center{% endif %}">{{ ss.text_1 }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if ss.text != blank %}
+          <div class="text--wrapper style--colourAlt style--{{ ss.size }} {% if ss.center %}text--center{% endif %}">
+            {{ ss.text | replace: "section__title", "heading heading--h2 text--center style--decoration" }}
+          </div>
+        {% endif %}
+        
+        {% if template contains "collection" %}
+          <style>
+            #section__{{ section.id }} .faq {
+              text-align: center;
+            }
+          </style>
+          <script>
+            const convertFAQ = () => {
+              document.querySelectorAll('#section__{{ section.id }} .faq__wrapper .accordion-item').forEach((item, index) => {
+                  const question = item.querySelector('.accordion-header')?.childNodes[0]?.textContent.trim();
+                  const answer = item.querySelector('.accordion-content .inner-content')?.textContent.trim();
+                  
+                  if (question && answer) {
+                      const dropdown = document.createElement('dropdown-element');
+                      const uniqueId = `custom_dropdowns_gAh4MR${index + 1}_header`;
+                      
+                      dropdown.innerHTML = `
+                          <button type="button" class="button--reset dropdown-header" aria-controls="${uniqueId}" data-dropwdown="trigger" aria-expanded="false">
+                              <span>${question}</span>
+                              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 7">
+                                  <path stroke="#001C70" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 1 6 6 1 1"></path>
+                              </svg>
+                          </button>
+                          <div id="${uniqueId}" data-dropwdown="body">
+                              <div class="dropdown--inner" data-title="Header ${index + 1}" data-index="${index + 1}">
+                                  <p>${answer}</p>
+                              </div>
+                          </div>
+                      `;
+                      
+                      item.replaceWith(dropdown);
+                  }
+              });
+            };
+
+            document.addEventListener("DOMContentLoaded", convertFAQ);
+          </script>
+        {% endif %}
+        {%  if ss.heading == blank and ss.text_1 == blank and ss.text == blank %}
+          <style>
+            #section__{{ section.id }} {
+              display: none;
+            }
+          </style>
+        {% endif %}
+      {% endif %}
+  </div>
+
+{%- when 'image' -%}
+  <div class="section--content">
+    {% if ss.image_url != blank %}
+      <div class="image--wrapper">
+        <img
+          src="{{ ss.image_url }}"
+          loading="lazy"
+          alt="{{ ss.title }}"
+        >
+
+        {% if ss.title != blank %}
+          <div class="overlay--wrapper">
+            {% if ss.h1 %}
+              <h1 class="heading heading--h1">{{ ss.title }}</h1>
+            {% else %}
+              <h2 class="heading heading--h1">{{ ss.title }}</h2>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% elsif section.settings.image != blank %}
+      <div class="image--wrapper">
+        <img
+          src="{{ ss.image |  image_url: width: 20 }}"
+          loading="lazy"
+          alt="{{ ss.title }}"
+          width="{{ ss.image.width }}"
+          height="{{ ss.image.width | divided_by: ss.image.aspect_ratio }}"
+          srcset="{% render "custom-srcset", image: ss.image, start: 360, end: 1750, gap: 70 %}"
+          sizes="
+            (min-width: {{ breakpoint_large | default: "1200" }}px) {{ 1750 | append: "px" }},
+            (min-width: {{ breakpoint_medium | default: "992" }}px) {{ 432.00 | divided_by: 992 | times: 100 | round | append: "vw" }},
+            (min-width: {{ breakpoint_small | default: "768" }}px) {{ 328.00 | divided_by: 768 | times: 100 | round | append: "vw" }},
+            (min-width: {{ breakpoint_tiny | default: "556" }}px)  {{ 540.00 | divided_by: 556 | times: 100 | round | append: "vw" }},
+            {{ 360.00 | divided_by: 360 | times: 100 | round | append: "vw" }}
+          "
+        >
+
+        {% if ss.title != blank %}
+          <div class="overlay--wrapper">
+            {% if ss.h1 %}
+              <h1 class="heading heading--h1">{{ ss.title }}</h1>
+            {% else %}
+              <h2 class="heading heading--h1">{{ ss.title }}</h2>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+{%- when 'featured_collections' -%}
+  <div class="section--content">
+    {% if ss.title != blank or ss.text_1 != blank %}
+      <div class="content-header ">
+        
+        {% if ss.title != blank %}
+          <div>
+            {% if ss.h1 %}
+              <h1 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}">{{ ss.title }}</h1>
+            {% else %}
+              <h2 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}">{{ ss.title }}</h2>
+            {% endif %}
+            <div>
+              <div class="swiper-button-prev show--smUp">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path fill="currentColor" d="M6.287 11.038h9.74v-1.6h-9.74l4.48-4.48-1.14-1.12-6.4 6.4 6.4 6.4 1.14-1.12-4.48-4.48Z"/></svg>
+              </div>
+              <div class="swiper-button-next show--smUp">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path fill="currentColor" d="M13.713 11.038h-9.74v-1.6h9.74l-4.48-4.48 1.14-1.12 6.4 6.4-6.4 6.4-1.14-1.12 4.48-4.48Z"/></svg>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if ss.text_1 != blank %}
+          <div class="text--wrapper">{{ ss.text_1 }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <slider-element 
+      data-snippet="slider_element" 
+      style="--desktop-size:  4;--tablet-size:  3; --mobile-size:  1.2;" 
+      class="slider-element0 slider-thumbs" 
+      data-settings='{
+        "slidesPerView": 1.2, 
+        "centeredSlides": false,
+        "autoplay": false, 
+        "loop": true, 
+        "spaceBetween": 12,
+        "breakpoints": {
+          "{{ breakpoint_small }}": {"slidesPerView": 3, "centeredSlides": false, "spaceBetween": 16},
+          "{{ breakpoint_large }}": {"slidesPerView": 4, "centeredSlides": false, "spaceBetween": 16}
+        }
+      }'
+      >
+      <div class="swiper">
+        <div class="swiper-wrapper style--even">
+          {% for block in section.blocks %}
+            <div class="swiper-slide">  
+              <div class="slide--inner select--none">
+
+                <div class="item--inner" data-snippet="collection-card">
+                  <a  href="{{ block.settings.url }}" class="image--wrapper">
+                      <img
+                      src="{{ block.settings.image |  image_url: width: 20 }}"
+                      loading="lazy"
+                      alt="{{ product.title }}"
+                      width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.width | divided_by: block.settings.image.aspect_ratio }}"
+                      srcset="{% render "custom-srcset", image: block.settings.image, start: 150, end: 290, gap: 10 %}"
+                      sizes="
+                        (min-width: {{ breakpoint_large | default: "1200" }}px) {{ 290 | append: "px" }},
+                        (min-width: {{ breakpoint_medium | default: "992" }}px) {{ 188.00 | divided_by: 992 | times: 100 | round | append: "vw" }},
+                        (min-width: {{ breakpoint_small | default: "768" }}px) {{ 220.00 | divided_by: 768 | times: 100 | round | append: "vw" }},
+                        (min-width: {{ breakpoint_tiny | default: "556" }}px)  {{ 220.00 | divided_by: 556 | times: 100 | round | append: "vw" }},
+                        {{ 220.00 | divided_by: 360 | times: 100 | round | append: "vw" }}
+                      "
+                    >
+
+                    {% if block.settings.badge_label != blank %}
+                    <div class="element-overlay">
+                      
+                      <span class="element-badge"style="--icon: url('{{ block.settings.badge_icon |  image_url: width: 30 }}');">
+                        {{ block.settings.badge_label }}
+                      </span>
+                    </div>
+                    {% endif %}
+                  </a>
     
+                  <div class="meta--wrapper">
+                    <h5 class="headings heading--p element-label">{{ block.settings.title }}</h5>
+                    <span class="element-type">{{ product.type }}</span>
+    
+
+                    <div class="element-badges">
+                      {{ block.settings.meta_text }}
+                    </div>
+                  
+                    <a class="button--primary element-button" href="{{ block.settings.url }}">{{ section.settings.button }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+            
+      <div class="swiper-pagination  show--smDown"></div>
+    </slider-element>
+  </div>
+
+{%- when 'logos' -%}
+  <div class="section--content">
+    <slider-element 
+      data-snippet="slider_element" 
+      style="--desktop-size:  4;--tablet-size:  4; --mobile-size: 1.42;" 
+      class="slider-element" 
+      data-settings='{
+        "slidesPerView": 1.42, 
+        "centeredSlides": false, 
+        "autoplay": false, 
+        "loop": true, 
+        "spaceBetween": 0,
+        "breakpoints": {
+          "{{ breakpoint_small }}": {"slidesPerView": 4, "centeredSlides": false, "spaceBetween": 16},
+          "{{ breakpoint_large }}": {"slidesPerView": 4, "centeredSlides": false, "spaceBetween": 16}
+        }}'
+      >
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="swiper-slide">  
+              <div class="slide--inner select--none">
+                  {% if block.settings.svg != blank %}
+                    <div class="svg--wrapper">
+                      {{ block.settings.svg }}
+                    </div>
+                  {% else %}
+                    <div class="image--wrapper">
+                      <img src="{{ block.settings.image |  image_url: width: 70 }}" loading="lazy" alt="{{  block.settings.title }}" {% if forloop.first %}data-height="set"{% endif %}>
+                    </div>
+                  {% endif %}
+
+                  <div class="text--group {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+                    <h3 class="heading heading--h6">{{ block.settings.title }}</h3>
+                    <div class="text--wrapper">{{ block.settings.text }}</div>
+                  </div>
+              </div>
+              </div>
+          {% endfor %}
+        </div>
+      </div>
+    </slider-element>
+  </div>
+
+{%- when 'banner' -%}
+  <div class="section--content">
+    <div class="grid--wrapper grid--sm-1">
+      <div class="grid--item  {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        {% if ss.title != blank or ss.text != blank %}
+          <div class="content-header ">
+            {% if ss.icon != blank %}
+              <div class="image--wrapper element-banner">
+                <img src="{{ ss.icon |  image_url: height: 50 }}" alt="{{ ss.title }}" loading="lazy">
+              </div>
+            {% endif %}
+
+            {% if ss.title != blank %}
+              {% if ss.h1 %}
+                <h1 class="heading heading--{% if ss.small %}h2{% else %}h1{% endif %} {% if ss.decoration %}style--decoration{% endif %}">{{ ss.title }}</h1>
+              {% else %}
+                <h2 class="heading heading--{% if ss.small %}h2{% else %}h1{% endif %} {% if ss.decoration %}style--decoration{% endif %}">{{ ss.title }}</h2>
+              {% endif %}
+            {% endif %}
+      
+            {% if ss.text != blank %}
+              <div class="text--wrapper">{{ ss.text | replace: '<ul', '<ul class="list list--image"' }}</div>
+            {% endif %}
+
+            {% if ss.button != blank %}
+              <div class="button--wrapper">{{ ss.button | replace: 'href', 'class="button--primary" href' }}</div>
+            {% endif %}
+
+            {% if section.blocks.size > 0 %}
+              <ul class="list list--none text--center flex--wrapper element-blocks">
+                {% for block in section.blocks %}
+                  {% if block.type == "block_bottom" %}{%  continue %}{% endif %}
+                  <li class="flex--item {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+                    <span class="heading heading--h3">{{ block.settings.title }}</span>
+                    <div class="text--wrapper">{{ block.settings.text }}</div>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        {% endif %}
+        
+      </div>
+
+      <div class="grid--item element-image">
+        {% if ss.image_desktop != blank %}
+          <div style="--mobile-bg: url({{ ss.image_mobile | image_url: width: 2000 }}); --mob-ratio: {{ ss.aspect_m }}; --desktop-bg: url({{ ss.image_desktop | image_url: width: 600 }}); --desktop-ratio: {{ ss.aspect_d }};" class="image--wrapper style--bg">
+            <style>
+              #section__{{ section.id }} .element-image .image--wrapper.style--bg {
+                aspect-ratio: var(--desktop-ratio, 1);
+              }
+              #section__{{ section.id }} .element-image .image--wrapper.style--bg:before {
+                background-image: url({{ ss.image_desktop | image_url: width: 600 }});
+              }
+              @media screen and (max-width: {{breakpoint_small}}px) {
+                #section__{{ section.id }} .element-image .image--wrapper.style--bg {
+                  aspect-ratio: var(--mob-ratio, 1);
+                }
+                #section__{{ section.id }} .element-image .image--wrapper.style--bg:before {
+                  background-image: url({{ ss.image_mobile | image_url: width: 2000 }});
+                }
+              }
+            </style>
+          </div>
+        {% else %}
+          <div class="image--wrapper">
+            <img
+              src="{{ ss.image |  image_url: width: 20 }}"
+              loading="lazy"
+              alt="{{ ss.title }}"
+              width="{{ ss.image.width }}"
+              height="{{ ss.image.width | divided_by: ss.image.aspect_ratio }}"
+              srcset="{% render "custom-srcset", image: ss.image, start: 360, end: 650, gap: 40 %}"
+              sizes="
+                (min-width: {{ breakpoint_large | default: "1200" }}px) {{ 580 | append: "px" }},
+                (min-width: {{ breakpoint_medium | default: "992" }}px) {{ 432.00 | divided_by: 992 | times: 100 | round | append: "vw" }},
+                (min-width: {{ breakpoint_small | default: "768" }}px) {{ 328.00 | divided_by: 768 | times: 100 | round | append: "vw" }},
+                (min-width: {{ breakpoint_tiny | default: "556" }}px)  {{ 540.00 | divided_by: 556 | times: 100 | round | append: "vw" }},
+                {{ 360.00 | divided_by: 360 | times: 100 | round | append: "vw" }}
+              "
+            >
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="grid--wrapper grid-blocks">
+      {% for block in section.blocks %}
+        {% if block.type != "block_bottom" %}{%  continue %}{% endif %}
+        <div class="grid--item {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            <div class="image--wrapper"><img src="{{ block.settings.image |  image_url: width: 70 }}" alt="{{ block.settings.title }}" loading="lazy"></div>
+            <div>
+              <h3 class="subheading heading--h6">
+                <span data-height="equal">{{ block.settings.title }}</span>
+              </h3>
+              <div class="text--wrapper">{{ block.settings.text }}</div>
+            </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+{%- when 'related_products' -%}
+  <div class="section--content">
+    {% if ss.title != blank or ss.text_1 != blank %}
+      <div class="content-header ">
+        {% if ss.title != blank %}
+          <div>
+            {% if ss.h1 %}
+              <h1 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}">{{ ss.title }}</h1>
+            {% else %}
+              <h2 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}">{{ ss.title }}</h2>
+            {% endif %}
+
+            <div>
+              <div class="swiper-button-prev show--smUp">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path fill="currentColor" d="M6.287 11.038h9.74v-1.6h-9.74l4.48-4.48-1.14-1.12-6.4 6.4 6.4 6.4 1.14-1.12-4.48-4.48Z"/></svg>
+              </div>
+              <div class="swiper-button-next show--smUp">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path fill="currentColor" d="M13.713 11.038h-9.74v-1.6h9.74l-4.48-4.48 1.14-1.12 6.4 6.4-6.4 6.4-1.14-1.12 4.48-4.48Z"/></svg>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+  
+        {% if ss.text_1 != blank %}
+          <div class="text--wrapper">{{ ss.text_1 }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% assign featured_collection = ss.collection %}
+
+    <slider-element 
+      data-snippet="slider_element" 
+      style="--desktop-size:  4;--tablet-size:  3; --mobile-size:  1.2;" 
+      class="slider-element0" 
+      data-settings='{
+        "slidesPerView": 1.2, 
+        "centeredSlides": false,
+        "autoplay": false, 
+        "loop": true, 
+        "spaceBetween": 12,
+        "breakpoints": {
+          "{{ breakpoint_small }}": {"slidesPerView": 3, "centeredSlides": false, "spaceBetween": 16},
+          "{{ breakpoint_large }}": {"slidesPerView": 4, "centeredSlides": false, "spaceBetween": 16}
+        }
+      }' 
+      {% if ss.collection_json != blank %}data-content='{{ ss.collection_json | remove: "[" | remove: "]" | remove: '"' | remove: ' ' }}'{% endif %}
+    >
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          {% if ss.collection_json == blank %}
+            {% for product in featured_collection.products limit: 4 %}
+              <div class="swiper-slide">  
+                <div class="slide--inner select--none">
+                  {% render 'card-product',
+                    card_product: product,
+                    show_secondary_image: false,
+                    show_vendor: false,
+                    show_rating: false,
+                    lazy_load: lazy_load,
+                    skip_styles: false,
+                    quick_add: false,
+                    section_id: section.id,
+                    variant_object: true
+                  %}
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+            
+      <div class="swiper-pagination  show--smDown"></div>
+    </slider-element>
+  </div>
+
+{%- when 'dropdowns' -%}
+  <div class="section--content">
+    {% capture content_blocks %}
+      {% for block in section.blocks %}
+        {% assign headerSelector = section.id | append: forloop.index | append: "_header" %}
+        {% assign body_selector = section.id | append: forloop.index | append: "_body" %}
+        {% assign headerContent = block.settings.header %}
+        {% assign bodyContent = block.settings.body %}
+        
+        {% if headerContent != blank and bodyContent != blank %}
+          {% assign content_size = content_size | plus: 1 %}
+          <dropdown-element>
+            <button type="button" class="button--reset dropdown-header" aria-controls="{{ headerSelector }}" data-dropwdown="trigger">
+              <span>{{ headerContent }}</span>
+
+              <div class="html-icon"></div>
+              <svg  class="arrow hide" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 7"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 1 6 6 1 1"/></svg>
+            </button>
+            <div id="{{ headerSelector }}" data-dropwdown="body">
+              <div class="dropdown--inner" data-title="Header 2" data-index="2">
+                {{ bodyContent }}
+              </div>
+            </div>
+          </dropdown-element>
+        {% endif %}
+      {% endfor %}
+    {% endcapture %}
+
+    {% if content_size > 0 %}
+      {% if ss.heading != blank or ss.text_1 != blank %}
+        <div class="content-header text--center">
+          
+          {% if ss.heading != blank %}
+            {% if ss.h1 %}
+              <h1 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}">{{ ss.heading }}</h1>
+            {% else %}
+              <h2 class="heading heading--h1 {% if ss.decoration %}style--decoration{% endif %}">{{ ss.heading }}</h2>
+            {% endif %}
+          {% endif %}
+    
+          {% if ss.text_1 != blank %}
+            <div class="text--wrapper">{{ ss.text_1 }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+                  
+      <div class="dropdown--group">
+        {{ content_blocks }}
+      </div>
+    {% endif %}
+  </div>
+
 {% endcase %}

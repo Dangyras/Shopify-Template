@@ -1,4 +1,140 @@
+{% liquid
+  assign breakpoint_large = settings.breakpoint_large | default: 1200
+  assign breakpoint_medium = settings.breakpoint_medium | default: 992
+  assign breakpoint_small = settings.breakpoint_small | default: 768
+  assign breakpoint_tiny = settings.breakpoint_tiny | default: 556
+%}
+
 {%- case type -%}
-  {%- when 'snippet' -%}
+
+{%- when 'breadcrumbs' -%}
+  <div data-snippet="breadcrumbs">
+    {% unless template == 'index' or template == 'cart' or template == 'list-collections' or template == '404' %}
+      {% assign t = template | split: '.' | first %}
+      <nav class="breadcrumbs" role="navigation" aria-label="breadcrumbs">
+        <ul class="list list--none">
+          <li>
+            <a href="/" title="Home">Pagrindinis</a>
+          </li>
+          <li class="element-divider">
+            {% render "custom-snippets", type: "divider" %}
+          </li>
+          {% case t %}
+            {% when 'page' %}
+              <li>
+                <a href="{{ page.url }}" aria-current="page">{{ page.title }}</a>
+              </li>
+      
+            {% when 'product' %}
+              {% if collection.url %}
+                <li>
+                  {{ collection.title | link_to: collection.url }}
+                </li>
+              {% endif %}
+      
+              <li>
+                <a href="{{ product.url }}" aria-current="page">{{ product.title }}</a>
+              </li>
+      
+            {% when 'collection' and collection.handle %}
+              {% if current_tags %}
+                <li>{{ collection.title | link_to: collection.url }}</li>
+                <li>
+                  {% capture tag_url %}{{ collection.url }}/{{ current_tags | join: "+"}}{% endcapture %}
+                  <a href="{{ tag_url }}" aria-current="page">{{ current_tags | join: " + "}}</a>
+                </li>
+              {% else %}
+                <li>
+                  <a href="{{ collection.url }}" aria-current="page">{{ collection.title }}</a>
+                </li>
+              {% endif %}
+      
+            {% when 'blog' %}
+              {% if current_tags %}
+                <li>{{ blog.title | link_to: blog.url }}</li>
+                <li>
+                  {% capture tag_url %}{{blog.url}}/tagged/{{ current_tags | join: "+" }}{% endcapture %}
+                  <a href="{{ tag_url }}" aria-current="page">{{ current_tags | join: " + " }}</a>
+                </li>
+              {% else %}
+                <li>
+                  <a href="{{ blog.url }}" aria-current="page">{{ blog.title }}</a>
+                </li>
+              {% endif %}
+      
+            {% when 'article' %}
+              <li>{{ blog.title | link_to: blog.url }}</li>
+              <li>
+                <a href="{{ article.url }}" aria-current="page">{{ article.title }}</a>
+              </li>
+      
+            {% else %}
+              <li aria-current="page">
+                <a href="{{ request.path }}" aria-current="page">{{ page_title }}</a>
+              </li>
+          {% endcase %}
+        </ul>
+      </nav>
+    {% endunless %}
+  </div>
+
+{%- when 'category_card' -%}
+  <div data-snippet="category_card">
+    <div class="image--wrapper" {% if first %}data-height="set"{% endif %}>
+      {% liquid
+        assign modifier_desktop = 1
+        assign modifier_mobile = 1
+
+        assign base_width_desktop = 250.00
+        assign base_width_tablet = 176.00
+        assign base_width_mobile = 133.00
+        assign container_width_desktop = 1570
+        assign container_width_tablet = 768
+        assign container_width_mobile = 360
+        assign gap = 16
+      
+        assign total_gaps_desktop = gap | times: slides_desktop | minus: gap
+        assign modifier_desktop = container_width_desktop | times: 1.00 | minus: total_gaps_desktop | divided_by: slides_desktop | divided_by: base_width_desktop
+
+        assign total_gaps_tablet = gap | times: slides_tablet | minus: gap
+        assign modifier_tablet = container_width_tablet | times: 1.00 | minus: total_gaps_tablet | divided_by: slides_tablet | divided_by: base_width_tablet
+
+        assign total_gaps_mobile = gap | times: slides_mobile | minus: gap
+        assign modifier_mobile = container_width_mobile | times: 1.00 | minus: total_gaps_mobile | divided_by: slides_mobile | divided_by: base_width_mobile
+      %}
+
+      <img
+        src="{{ content.image |  image_url: width: 20 }}"
+        loading="lazy"
+        alt="{{ product.title }}"
+        width="{{ content.image.value.width }}"
+        height="{{ content.image.value.width | divided_by: content.image.value.aspect_ratio }}"
+        srcset="{% render "custom-srcset", image: content.image, start: 150, end: 600, gap: 30 %}"
+        sizes="
+          (min-width: {{ breakpoint_large | default: "1200" }}px) {{ base_width_desktop | times: modifier_desktop | append: "px" }},
+          (min-width: {{ breakpoint_small | default: "768" }}px) {{ base_width_tablet | times: modifier_tablet | divided_by: 768 | times: 100 | round | append: "vw" }},
+          {{ base_width_mobile | times: modifier_mobile | divided_by: 360 | times: 100 | round | append: "vw" }}
+        "
+      >
+    </div>
+    {% if content.card_title != blank %}
+      <h3 class="heading heading--p text--center">{{ content.card_title }} </h3>
+    {% endif %}    
+    
+    {% if content.button != blank %}
+      <div class="buttons--wrapper">{{ content.button |  metafield_tag }}</div>
+    {% endif %}
+  </div>
+
+{%- when 'popup_element' -%}
+  <div class="{{ class }}" style="--bg: {{ active_color }}; --mobile-pos: {{ mobile_position }};" data-snippet="tooltip">
+    <div class="tooltip--button">
+      {{ tooltip_button  }}
+    </div>
+
+    <div class="tooltip--body">
+      {{ tooltip_body  }}
+    </div>
+  </div>
 
 {% endcase %}

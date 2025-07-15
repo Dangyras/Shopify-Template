@@ -1,0 +1,254 @@
+{% assign ss = section.settings %}
+{% assign type = "Featured Collections" | downcase | replace: " ", "_" %}
+
+{% capture section_classes -%}
+  {%- if ss.desktop %}hide--smUp {% endif -%}
+  {%- if ss.mobile %}hide--smDown {% endif -%}
+  {%- if ss.mirror %}style--mirror {% endif -%}
+  {%- if ss.section_margin_1_options %}margin--{{ ss.section_margin_1_options }}{% endif -%}
+{%- endcapture %}
+
+<section
+  id="section__{{ section.id }}"
+  class="section--wrapper {{ section_classes }}"
+  data-section="{{ type }}"
+>
+  <div class="container container--{{ ss.width }}">
+    <div class="section--inner">
+      {% render 'custom-sections', section: section, type: type %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "• Featured Collections",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Content settings"
+      },
+      {
+        "type": "inline_richtext",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "text",
+        "id": "button",
+        "label": "Button"
+      },
+      {
+        "type": "header",
+        "content": "Section settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "desktop",
+        "default": false,
+        "label": "Hide on desktop"
+      },
+      {
+        "type": "checkbox",
+        "id": "mobile",
+        "default": false,
+        "label": "Hide on mobile"
+      },
+      {
+        "type": "checkbox",
+        "id": "h1",
+        "default": false,
+        "label": "Heading: H1"
+      },
+      {
+        "type": "header",
+        "content": "Colours"
+      },
+      {
+        "type": "color",
+        "id": "section_background_1",
+        "label": "Background: Section"
+      },
+      {
+        "type": "color",
+        "id": "content_background_1",
+        "label": "Background: Content"
+      },
+      {
+        "type": "color",
+        "id": "content_background_2",
+        "label": "Background: Content 2"
+      },
+      {
+        "type": "color",
+        "id": "content_background_3",
+        "label": "Background: Content 3"
+      },
+      {
+        "type": "color",
+        "id": "content_text_1",
+        "label": "Colour: Text 1"
+      },
+      {
+        "type": "color",
+        "id": "content_text_2",
+        "label": "Colour: Text 2"
+      },
+      {
+        "type": "color",
+        "id": "content_text_3",
+        "label": "Colour: Text 3"
+      },
+      {
+        "type": "color",
+        "id": "content_accent_1",
+        "label": "Colour: Accent"
+      },
+      {
+        "type": "color",
+        "id": "button_text_1",
+        "label": "Button: Text"
+      },
+      {
+        "type": "color",
+        "id": "button_background_1",
+        "label": "Button: Background"
+      }, 
+      {
+        "type": "color",
+        "id": "button_text_2",
+        "label": "Button 2: Icon"
+      },
+      {
+        "type": "color",
+        "id": "button_background_2",
+        "label": "Button 2: Background"
+      }, 
+      {
+        "type": "header",
+        "content": "Spacing"
+      },
+      {
+         "type":      "select",
+         "id":        "width",
+         "label":     "Width: Section",
+         "options": [
+           { "value": "default", "label": "Default" },
+           { "value": "narrow", "label": "Narrow" },
+           { "value": "wide", "label": "Wide" },
+           { "value": "full", "label": "Full width" },
+           { "value": "padding", "label": "Full width with padding" }
+         ],
+        "default":   "default"
+      },
+      {
+        "type": "range",
+        "id": "section_margin_1",
+        "label": "Margin: Section Bottom",
+        "min": -25,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+         "type":      "select",
+         "id":        "section_margin_1_options",
+         "label":     "Margin: Visible",
+         "options": [
+           { "value": "mobile", "label": "Mobile" },
+           { "value": "desktop", "label": "Desktop" },
+           { "value": "default", "label": "Both" }
+         ],
+        "default":   "default"
+      },
+      {
+        "type": "range",
+        "id": "section_padding_1",
+        "label": "Padding: Section Top/Bottom",
+        "min": 0,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "content_padding_1",
+        "label": "Padding: Content Top/Bottom",
+        "min": 0,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "content_padding_2",
+        "label": "Padding: Content Sides",
+        "min": 0,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "mobile_modifier_1",
+        "label": "Mobile Modifier",
+        "min": -100,
+        "max": 100,
+        "step": 2,
+        "unit": "%",
+        "default": -50
+      }
+	],
+    "blocks": [
+      {
+        "type": "block",
+        "name": "Block",
+        "settings": [
+            {
+                "type":"image_picker",
+                "id":"badge_icon",
+                "label":"Badge Icon"
+            },
+            {
+                "type":"text",
+                "id":"badge_label",
+                "label":"Badge Label"
+            },
+            {
+                "type":"image_picker",
+                "id":"image",
+                "label":"Image"
+            },
+            {
+                "type":"text",
+                "id":"title",
+                "label":"Heading"
+            },
+            {
+                "type":"richtext",
+                "id":"meta_text",
+                "label":"Tags"
+            },
+            {
+                "type":"url",
+                "id":"url",
+                "label":"URL"
+            }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "• Featured Collections"
+      }
+    ]
+  }
+{% endschema %}
+      
+{% style %}
+  {% render "custom-section_styles" %}
+{% endstyle %}
+
+
+
+
