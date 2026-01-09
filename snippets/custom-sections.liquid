@@ -15,6 +15,31 @@
 
 {%- case type -%}
 
+{%- when 'simple_image' -%}
+  <div class="image--wrapper">
+    <img
+      {% assign sizes = "360.00, 556.00, 768.00, 992.00, 1200.00, 1540.00, 300:1650" | split: ", " %}
+      {% if ss.width == "" %}
+      {% endif %}
+      {% assign image_object = ss.image %}
+      src="{{ image_object | image_url: width: sizes[0] }}"
+      loading="lazy"
+      alt="{{ image_object.alt | default: ss.title | escape }}"
+      width="{{ image_object.width }}"
+      height="{{ image_object.width | divided_by: image_object.aspect_ratio | round }}"
+      srcset="{% render 'custom-srcset', image: image_object, image_settings: sizes.last %}"
+      sizes="
+        (min-width: {{ breakpoint_largeX }}px) {{ sizes[5] }}px,
+        (min-width: {{ breakpoint_large }}px) {{ sizes[4] | divided_by: breakpoint_large | times: 100 | round }}vw,
+        (min-width: {{ breakpoint_medium }}px) {{ sizes[3] | divided_by: breakpoint_medium | times: 100 | round }}vw,
+        (min-width: {{ breakpoint_small }}px) {{ sizes[2] | divided_by: breakpoint_small | times: 100 | round }}vw,
+        (min-width: {{ breakpoint_tiny }}px) {{ sizes[1] | divided_by: breakpoint_tiny | times: 100 | round }}vw,
+        {{ sizes[0] | divided_by: breakpoint_base | times: 100 | round }}vw
+      "
+    >
+  </div>
+
+{%- when 'form_template' -%}
   <div class="section--content">
     {% if ss.image != blank %}
       <div class="section-aside">
