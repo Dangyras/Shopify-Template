@@ -27,6 +27,7 @@ class Utils {
     this.initHeightEqualizer();
     this.initFeatureScripts();
     this.initResizeObserver();
+    this.initImageSizeLogging();
   }
 
   initFeatureScripts() {
@@ -886,6 +887,48 @@ class SelectElement extends HTMLElement {
       const text = item.textContent.toLowerCase();
       item.style.display = text.includes(query) ? '' : 'none';
     });
+  }
+
+  initImageSizeLogging() {
+    const rootStyles = getComputedStyle(document.documentElement);
+    const breakpoints = rootStyles.getPropertyValue('--breakpoints').replaceAll("px", "").split(', ').map(v => v.trim()).map(Number);
+    const widthsCollected = new Map();
+    let lastLoggedWidth = null;
+
+    console.log("Breakpoints: ", breakpoints);
+
+    const tryLogAll = () => {
+      if (widthsCollected.size === breakpoints.length) {
+        const widths = breakpoints.map(bp => widthsCollected.get(bp));
+        const min = Math.min(...widths);
+        const max = Math.max(...widths);
+        const widthsStr = widths.map(w => w.toFixed(2)).join(', ');
+        console.log(`${widthsStr}, ${min.toFixed(0)}:${max.toFixed(0)}`);
+      }
+    };
+
+    window.addEventListener('resize', () => {
+      const width = Math.floor(window.innerWidth);
+      if (breakpoints.includes(width) && width !== lastLoggedWidth) {
+        lastLoggedWidth = width;
+        if (window.temp1 instanceof HTMLElement) {
+          const renderedWidth = window.temp1.clientWidth;
+          widthsCollected.set(width, renderedWidth);
+          console.log(`\n[Viewport ${width}px] temp1 rendered size: ${renderedWidth.toFixed(2)}`);
+          tryLogAll();
+        } else {
+          console.log(`\n[Viewport ${width}px] temp1 is not set or not an element.`);
+        }
+      }
+    });
+
+    const initWidth = Math.floor(window.innerWidth);
+    if (breakpoints.includes(initWidth) && window.temp1 instanceof HTMLElement) {
+      const renderedWidth = window.temp1.clientWidth;
+      widthsCollected.set(initWidth, renderedWidth);
+      console.log(`\n[Viewport ${initWidth}px] temp1 rendered size: ${renderedWidth.toFixed(2)}`);
+      tryLogAll();
+    }
   }
 }
 
