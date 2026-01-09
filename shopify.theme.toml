@@ -2,4 +2,4 @@
 theme = ""
 store = ""
 password  = ""
-ignore = ["config/*", "locales/*","templates/*","source/*","source/js/*","source/sass/*","source/sass/layout/*","source/sass/abstracts/*", "package.json", ".gitignore", "sections/footer-group.json", "sections/header-group.json", "assets/custom.css"]
+ignore = ["config/*", "locales/*","templates/*","source/*","source/js/*","source/sass/*","source/sass/layout/*","source/sass/abstracts/*", "package.json", ".gitignore", "sections/footer-group.json", "sections/header-group.json", "assets/custom.css", "assets/custom.css.liquid"]
