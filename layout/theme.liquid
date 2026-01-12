@@ -21,6 +21,32 @@
         --icon-chevron_encoded: url("data:image/svg+xml,{% render "custom-icons", type: "chevron" | icon_fill: icon_fill, icon_stroke: icon_stroke %}");
 
         --icon-title: url('{{ 'icon-title.svg' | asset_url }}');
+
+        --container--width: 1280px;
+        --container--padding: 1.6rem;
+
+        --container--widthWide: #{$container--widthWide};
+        --container--widthNarrow: #{$container--widthNarrow};
+        --container--widthNarrow2: #{$container--widthNarrow2};
+        --container--widthNarrow3: #{$container--widthNarrow3};
+
+        --container--modifierLarge: #{$container--modifierLarge};
+        --container--modifierSmall: #{$container--modifierSmall};
+        --container--modifierTiny: #{$container--modifierTiny};
+
+        --page-width: calc(var(--container--width) + 2*var(--container--padding));
+      }
+
+      #theme .page-width {
+        padding-left: calc(var(--container--padding) / var(--container--modifierTiny));
+        padding-right: calc(var(--container--padding) / var(--container--modifierTiny));
+      }
+      
+      @media screen and (min-width: 750px) {
+        #theme .page-width {
+          padding-left: calc(var(--container--padding));
+          padding-right: calc(var(--container--padding));
+        }
       }
     {% endstyle %}
 
