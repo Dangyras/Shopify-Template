@@ -4,6 +4,7 @@ class Utils {
     Utils.instance = this;
 
     this.settings = {
+      dev: false,
       hideClass: "hide",
       defaultBgColor: "#000",
     };
