@@ -1,0 +1,257 @@
+{% liquid
+  assign ss = section.settings
+
+  assign breakpoint_xlarge = settings.breakpoint_xlarge | default: 1300
+  assign breakpoint_large = settings.breakpoint_large | default: 1200
+  assign breakpoint_medium = settings.breakpoint_medium | default: 992
+  assign breakpoint_small = settings.breakpoint_small | default: 768
+  assign breakpoint_tiny = settings.breakpoint_tiny | default: 556
+  assign breakpoint_base = settings.breakpoint_base | default: 360
+
+  capture section_classes
+    if ss.desktop
+      echo "hide--smUp "
+    endif
+    if ss.mobile 
+      echo "hide--smDown " 
+    endif
+    if ss.mirror
+      echo "style--mirror "
+    endif
+    if ss.hide_overflow
+      echo "style--hidden "
+    endif
+    if ss.section_margin_1_options
+      echo "margin--" | append: ss.section_margin_1_options
+    endif
+  endcapture
+
+  assign total_count = 10
+%}
+
+<section id="section__{{ section.id }}" class="section--wrapper {{ section_classes }}" data-section="{{ "Dynamic Grid" | downcase | replace: " ", "_" }}">
+  <div class="container container--{{ ss.width }}">
+    <div class="section--content layout--spacing">
+      {% if ss.text_header != blank %}
+        <div class="section-header {% if ss.width == "padding" %}container--default{% endif %}">
+          <div class="text--wrapper text--{{ ss.alignment }}">
+            {% render "custom-text", content: ss.text_header, type: ss.heading_type %}
+          </div>
+        </div>
+      {% endif %}
+
+        <div class="section-main">
+            <dynamic-grid 
+              style="--progress: {{ 3.00 | divided_by: total_count | times: 100 }}%;"
+              data-source="" 
+              data-total=""
+              data-current=""
+            >
+              <div class="grid--wrapper style--lg3" data-container>
+                
+              </div>
+
+              <div class="section-footer">
+                {% render "custom-snippets", type: "load_more", count: blog.articles_count, label: "articles" %}
+              </div>
+            </dynamic-grid>
+        </div>
+
+        {% if ss.text_footer != blank %}
+          <div class="section-footer">
+            <div class="text--wrapper text--{{ ss.alignment_footer }}">
+              {% render "custom-text", content: ss.text_footer, type: ss.heading_type_footer %}
+            </div>
+          </div>
+        {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "• Dynamic Grid",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Content settings"
+      },
+      {
+        "type": "richtext",
+        "id": "text_header",
+        "label": "Heading"
+      },
+      {
+         "type":      "select",
+         "id":        "heading_type",
+         "label":     "Heading: Type",
+         "options": [
+           { "value": "default", "label": "Default" },
+           { "value": "h1", "label": "H1" },
+           { "value": "h2", "label": "H2" },
+           { "value": "h3", "label": "H3" },
+           { "value": "classes", "label": "H1 -> Button" },
+         ],
+        "default":   "default"
+      },
+      {
+        "type": "text_alignment",
+        "id": "alignment",
+        "label": "Text alignment",
+        "default": "left"
+        },
+      {
+        "type": "header",
+        "content": "Section settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "desktop",
+        "default": false,
+        "label": "Hide on desktop"
+      },
+      {
+        "type": "checkbox",
+        "id": "mobile",
+        "default": false,
+        "label": "Hide on mobile"
+      },
+      {
+        "type": "header",
+        "content": "Colours"
+      },
+      {
+        "type": "color",
+        "id": "section_background_1",
+        "label": "Background: Section"
+      },
+      {
+        "type": "color",
+        "id": "content_background_1",
+        "label": "Background: Content"
+      },
+      {
+        "type": "color",
+        "id": "content_text_1",
+        "label": "Colour: Text 1"
+      },
+      {
+        "type": "color",
+        "id": "content_accent_1",
+        "label": "Colour: Accent"
+      },
+      {
+        "type": "color",
+        "id": "button_text_1",
+        "label": "Button: Text"
+      },
+      {
+        "type": "color",
+        "id": "button_text_hover_1",
+        "label": "Button: Text (hover)"
+      },
+      {
+        "type": "color",
+        "id": "button_background_1",
+        "label": "Button: Background"
+      }, 
+      {
+        "type": "color",
+        "id": "button_background_hover_1",
+        "label": "Button: Background (hover)"
+      }, 
+      {
+        "type": "header",
+        "content": "Spacing"
+      },
+      {
+         "type":      "select",
+         "id":        "width",
+         "label":     "Width: Section",
+         "options": [
+           { "value": "default", "label": "Default" },
+           { "value": "narrow", "label": "Narrow" },
+           { "value": "wide", "label": "Wide" },
+           { "value": "full", "label": "Full width" },
+           { "value": "padding", "label": "Full width with padding" }
+         ],
+        "default":   "default"
+      },
+      {
+        "type": "range",
+        "id": "section_margin_1",
+        "label": "Margin: Section Bottom",
+        "min": -25,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+         "type":      "select",
+         "id":        "section_margin_1_options",
+         "label":     "Margin: Visible",
+         "options": [
+           { "value": "mobile", "label": "Mobile" },
+           { "value": "desktop", "label": "Desktop" },
+           { "value": "default", "label": "Both" }
+         ],
+        "default":   "default"
+      },
+      {
+        "type": "range",
+        "id": "section_padding_1",
+        "label": "Padding: Section Top/Bottom",
+        "min": 0,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "content_padding_1",
+        "label": "Padding: Content Top/Bottom",
+        "min": 0,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "content_padding_2",
+        "label": "Padding: Content Sides",
+        "min": 0,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "element_spacing_1",
+        "label": "Elements: Spacing",
+        "min": 0,
+        "max": 25,
+        "step": 0.5,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "mobile_modifier_1",
+        "label": "Mobile Modifier",
+        "min": -100,
+        "max": 100,
+        "step": 2,
+        "unit": "%",
+        "default": -50
+      }
+	],
+    "presets": [
+      {
+        "name": "• Dynamic Grid"
+      }
+    ]
+  }
+{% endschema %}
+      
+{% style %}
+  {% render "custom-section_styles" %}
+{% endstyle %}

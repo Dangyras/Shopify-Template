@@ -934,3 +934,175 @@ class SelectElement extends HTMLElement {
 }
 
 customElements.define('select-element', SelectElement);
+
+class DynamicGrid extends HTMLElement {
+  constructor() {
+    super();
+
+    this.totalCount = parseInt(this.getAttribute("data-total"));
+    this.currentCount = parseInt(this.getAttribute("data-current"));
+    this.page = 1;
+    this.cache = new Map();
+
+    this.CACHE_VERSION = "v1";
+    this.TTL = 1000 * 60 * 30; // 30 minutes
+    this.MAX_ENTRIES = 15; // max pages stored per collection
+  }
+
+  connectedCallback() {
+    this.baseUrl = this.getAttribute("data-source");
+    this.container = this.querySelector("[data-container]");
+    this.loadButton = this.querySelector("[data-load]");
+
+    // Scope cache per collection
+    this.storageKey = `dynamic-grid-cache:${this.baseUrl}`;
+
+    if (this.loadButton) {
+      this.loadButton.addEventListener("click", () => {
+        this.page++;
+        this.loadContent();
+      });
+    }
+    
+    this.closest("section").addEventListener("click", (e) => {
+      const button = e.target.closest("button[data-filter]");
+      if (!button) return;
+      
+      this.currentCount = parseInt(button.getAttribute("data-current")) || 3;
+      this.totalCount = parseInt(button.getAttribute("data-total"));
+      this.baseUrl = button.getAttribute("data-source");
+      this.page = 1;
+      this.container.innerHTML = `<div style="order: 99;" class="grid-item hide"></div>`;
+
+      this.loadContent();
+      this.closest("section").querySelectorAll("button[data-filter]").forEach(el => {
+        el.classList.toggle("style--selected", el === button);
+      });
+    });
+  }
+
+  getStorage() {
+    const stored = localStorage.getItem(this.storageKey);
+    if (!stored) return this.createEmptyStorage();
+
+    try {
+      const parsed = JSON.parse(stored);
+      if (!parsed.version || parsed.version !== this.CACHE_VERSION) {
+        localStorage.removeItem(this.storageKey);
+        return this.createEmptyStorage();
+      }
+
+      return parsed;
+    } catch {
+      localStorage.removeItem(this.storageKey);
+      return this.createEmptyStorage();
+    }
+  }
+
+  setStorage(data) {
+    localStorage.setItem(this.storageKey, JSON.stringify(data));
+  }
+
+  createEmptyStorage() {
+    return {version: this.CACHE_VERSION, entries: {}};
+  }
+
+  getValidCachedEntry(storage, url) {
+    const entry = storage.entries[url];
+    if (!entry) return null;
+
+    if (Date.now() - entry.timestamp > this.TTL) {
+      delete storage.entries[url];
+      this.setStorage(storage);
+      return null;
+    }
+
+    return entry.html;
+  }
+
+  pruneOldEntries(storage) {
+    const keys = Object.keys(storage.entries);
+
+    if (keys.length <= this.MAX_ENTRIES) return;
+
+    const sorted = keys.sort((a, b) => storage.entries[a].timestamp - storage.entries[b].timestamp);
+    const entriesToRemove = sorted.slice(0, keys.length - this.MAX_ENTRIES);
+
+    entriesToRemove.forEach(key => {
+      delete storage.entries[key];
+    });
+
+    this.setStorage(storage);
+  }
+
+  updateMetaContent() {
+    this.currentCount = this.querySelectorAll("[data-container] > div:not(.hide)").length;
+
+    this.querySelector("[data-count]").textContent = this.currentCount;
+    this.querySelector("[data-total]").textContent = this.totalCount;
+    
+    this.style.setProperty('--progress', (this.currentCount / this.totalCount * 100) + "%");
+    this.querySelector("[data-load]").setAttribute("data-hide", this.currentCount >= this.totalCount);
+    this.container.classList.toggle("style--sectionLoading", false);
+  }
+
+  async loadContent() {
+    if (!this.container || !this.baseUrl) return;
+    this.container.classList.toggle("style--sectionLoading", true);
+
+    const fetchUrl = `${this.baseUrl}&page=${this.page}`;
+
+    if (this.cache.has(fetchUrl)) {
+      this.container.insertAdjacentHTML("beforeend", this.cache.get(fetchUrl));
+      this.updateMetaContent();
+      return;
+    }
+
+    const storage = this.getStorage();
+
+    const cachedHtml = this.getValidCachedEntry(storage, fetchUrl);
+    if (cachedHtml) {
+      this.cache.set(fetchUrl, cachedHtml);
+      this.container.insertAdjacentHTML("beforeend", cachedHtml);
+      this.updateMetaContent();
+      return;
+    }
+
+    try {
+      const response = await fetch(fetchUrl);
+      if (!response.ok) throw new Error("Fetch failed");
+
+      const html = await response.text();
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+      const newItems = doc.querySelector("[data-container]")?.innerHTML;
+
+      if (!newItems) {
+        if (this.loadButton) this.loadButton.remove();
+        return;
+      }
+
+      // Save in memory
+      this.cache.set(fetchUrl, newItems);
+
+      // Save in localStorage
+      storage.entries[fetchUrl] = {
+        html: newItems,
+        timestamp: Date.now()
+      };
+
+      // Cleanup if too large
+      this.pruneOldEntries(storage);
+
+      this.setStorage(storage);
+
+      this.container.insertAdjacentHTML("beforeend", newItems);
+      this.updateMetaContent();
+
+    } catch (error) {
+      console.error("DynamicGrid load error:", error);
+    }
+  }
+}
+customElements.define("dynamic-grid", DynamicGrid);
