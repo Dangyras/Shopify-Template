@@ -1,62 +1,40 @@
-@use "_variables" as *;
-@use "_functions" as *;
+@use "variables" as *;
+@use "functions" as *;
+@use "mixins" as *;
 
 /* ------------------------------------------------------------------------------------------------------------------------------------------------[Text]---*/
 
 #theme {
   letter-spacing: normal;
-  line-height: 1.333;
+  line-height: $text--lineHeight;
   
-  .text--wrapper p {
-    margin: 0;
-    & + p {
-      margin-top: 1em;
-    }
+  // BUTTONS
+  [type="button"] {
+    font-family: var(--font--primary);
   }
 
-  // Links
+  // LINKS
   a {
     text-decoration: none;
     color: inherit;
   }
 
-  .style--text {
-    font-family: var(--font--primary);
-    font-weight: normal;
-  }
-
-  // Headings
-  h1, h2, h3, h4, h5, h6 {
-    letter-spacing: normal;
-    margin-top: 0;
-    font-weight: 700;
-    color: inherit;
-  }
-
-  .text--wrapper {
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 1em;
-      span {
-        font-weight: inherit !important;
-      }
-    }
-  }
-
+  // HEADINGS
+  h1, h2, h3, h4, h5, h6,
   .heading--h1, h1.heading,
   .heading--h2, h2.heading,
   .heading--h3, h3.heading,
   .heading--h4, h4.heading,
   .heading--h5, h5.heading,
-  .heading--h6, h6.heading,
-  .heading--h7, h7.heading  {
+  .heading--h6, h6.heading {
     font-family: var(--font--secondary);
-    margin-top: 0;
-    font-weight: 700;
-    line-height: 1.2;
     letter-spacing: normal;
+    margin-top: 0;
+    font-weight: 500;
+    color: inherit;
+    line-height: 1.2;
 
-    a,
-    span {
+    a, span {
       color: inherit;
       text-decoration: none;
       font-weight: inherit;
@@ -64,97 +42,126 @@
 
     &.style--text {
       font-family: var(--font--primary);
+      font-weight: normal;
     }
 
     &.style--sizeBody {
       font-size: inherit;
     }
 
+    &.style--margin0 {
+      margin: 0;
+    }
   }
 
-  div .heading--title, title.heading {
+  h1:not(.text-body), .heading--h1, h1.style--heading, div .heading--h1 {
+    @include headings($text--h1Large, $text--h1Small, $text--h1Tiny);
+  }
+
+  h2:not(.text-body), .heading--h2, h2.style--heading, div .heading--h2 {
+    @include headings($text--h2Large, $text--h2Small, $text--h2Tiny);
+  }
+
+  h3:not(.text-body), .heading--h3, h3.style--heading, div .heading--h3 {
+    @include headings($text--h3Large, $text--h3Small, $text--h3Tiny);
+  }
+
+  h4:not(.text-body), .heading--h4, h4.style--heading, div .heading--h4 {
+    @include headings($text--h4Large, $text--h4Small, $text--h4Tiny);
+  }
+
+  h5:not(.text-body), .heading--h5, h5.style--heading, div .heading--h5 {
+    @include headings($text--h5Large, $text--h5Small, $text--h5Tiny);
+  }
+
+  h6:not(.text-body), .heading--h6, h6.style--heading, div .heading--h6 {
+    @include headings($text--h6Large, $text--h6Small, $text--h6Tiny);
+  }
+  
+  div .heading--title {
     @include headings($text--titleLarge, $text--titleSmall, $text--titleTiny);
-  }
-
-
-  div .heading--h1, h1.heading {
-    @include headings($text--h1Large, $text--h1Small, $text--h1Tiny);
-  }
-
-  div .heading--h2, h2.heading {
-    @include headings($text--h2Large, $text--h2Small, $text--h2Tiny);
-  }
-
-  div .heading--h3, h3.heading {
-    @include headings($text--h3Large, $text--h3Small, $text--h3Tiny);
-  }
-
-  div .heading--h4, h4.heading {
-    @include headings($text--h4Large, $text--h4Small, $text--h4Tiny);
-  }
-
-  div .heading--h5, h5.heading {
-    @include headings($text--h5Large, $text--h5Small, $text--h5Tiny);
-  }
-
-  div .heading--h6, h6.heading {
-    @include headings($text--h6Large, $text--h6Small, $text--h6Tiny);
-  }
-
-  h1:not(.text-body) {
-    @include headings($text--h1Large, $text--h1Small, $text--h1Tiny);
-  }
-
-  h2:not(.text-body) {
-    @include headings($text--h2Large, $text--h2Small, $text--h2Tiny);
-  }
-
-  h3:not(.text-body) {
-    @include headings($text--h3Large, $text--h3Small, $text--h3Tiny);
-  }
-
-  h4:not(.text-body) {
-    @include headings($text--h4Large, $text--h4Small, $text--h4Tiny);
-  }
-
-  h5:not(.text-body) {
-    @include headings($text--h5Large, $text--h5Small, $text--h5Tiny);
-  }
-
-  div .heading--h1 {
-    @include headings($text--h1Large, $text--h1Small, $text--h1Tiny);
-  }
-
-  div .heading--h2 {
-    @include headings($text--h2Large, $text--h2Small, $text--h2Tiny);
-  }
-
-  div .heading--h3 {
-    @include headings($text--h3Large, $text--h3Small, $text--h3Tiny);
-  }
-
-  div .heading--h4 {
-    @include headings($text--h4Large, $text--h4Small, $text--h4Tiny);
-  }
-
-  div .heading--h5 {
-    @include headings($text--h5Large, $text--h5Small, $text--h5Tiny);
-  }
-
-  div .heading--h6 {
-    @include headings($text--h6Large, $text--h6Small, $text--h6Tiny);
-  }
-
-  div .heading--h7 {
-    @include headings($text--bodyLarge, $text--bodySmall, $text--bodyTiny);
   }
 
   div .heading--p {
     @include headings($text--bodyLarge, $text--bodySmall, $text--bodyTiny);
   }
-  
-  div .heading--title2, title2.heading {
-    @include headings($text--title2Large, $text--title2Small, $text--title2Tiny);
+
+  // TEXT CONTAINER
+  .text--wrapper {
+    p {
+      margin: 0;
+      & + p {
+        margin-top: 1em;
+      }
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin:  0 0 1.6rem 0;
+      line-height: 1.25;
+    }
+
+    &.style--large {
+      font-size: 1.8rem;
+    }
+
+    &.style--margin0 {
+      * {
+        margin:  0;
+      }
+    }
+
+    &.style--centerBlock {
+      max-width: 77rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media screen and (max-width: $break--small) {
+      &.style--large {
+        font-size: 1.6rem;
+      }
+    }
+  }
+
+  // RESPONSIVE TEXT BLOCK
+  .text--wrapper.style--container {
+    container-type: inline-size;
+
+    .heading--h1 {
+      font-size: clamp(3.6rem, 8cqi, 5.4rem);
+      @media only screen and (max-width: $break--small) {
+        font-size: clamp(1.6rem, 5.3cqi, 3.6rem);
+      }
+    }
+
+    .heading--h2 {
+      font-size: clamp(3.2rem, 7.1cqi, 4.8rem);
+      @media only screen and (max-width: $break--small) {
+        font-size: clamp(1.6rem, 4.7cqi, 3.2rem);
+      }
+    }
+
+    .heading--h3 {
+      font-size: clamp(2.4rem, 4.7cqi, 3.2rem);
+      @media only screen and (max-width: $break--small) {
+        font-size: clamp(1.6rem, 3.6cqi, 2.4rem);
+      }
+    }
+
+    .heading--h4 {
+      font-size: clamp(2rem, 3cqi, 2rem);
+      @media only screen and (max-width: $break--small) {
+        font-size: clamp(2rem, 3cqi, 2rem);
+      }
+    }
+
+    .button {
+      font-size: clamp(1.4rem, 2.4cqi, 1.6rem);
+      gap: clamp(.4rem, .75cqi, .5em);
+      padding: clamp(.65em, 1.2cqi, .813em) clamp(1.1em, 2.2cqi, 1.5em);
+      border-radius: clamp(.8rem, 1.8cqi, 1.2rem);
+      min-width: clamp(7rem, 13cqi, 8.75em);
+    }
   }
 }
 
