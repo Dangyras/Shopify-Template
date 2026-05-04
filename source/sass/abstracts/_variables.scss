@@ -1,30 +1,40 @@
 @use "sass:color";
 
-@function hex-to-rgb($hex) {
-  @return "#{color.channel($hex, 'red', $space: rgb)}, #{color.channel($hex, 'green', $space: rgb)}, #{color.channel($hex, 'blue', $space: rgb)}";
-}
-
 // Breakpoints -->
 $break--nano:   375px;
 $break--tiny:   556px;
 $break--small:  768px;
 $break--medium: 992px;
-$break--large:  1280px;
+$break--large:  1200px;
 $break--xLarge:  1400px;
 
+$breakpoints: (
+  xm: 375px,
+  sm: 556px,
+  mm: 768px,
+  md: 992px,
+  lg: 1200px,
+  xl: 1400px
+);
+
 // Scheme -->
-$schema_1--background: #121212; 
-$schema_1--text: #121212; 
-$schema_1--text_2: #121212; 
-$schema_1--accent: #121212; 
-$schema_1--buttonBg: #121212; 
-$schema_1--buttonBgHover: #121212; 
-$schema_1--buttonLb: #121212; 
-$schema_1--buttonLbHover: #121212; 
-$schema_1--border: #121212; 
+$colour--white_1: #FFFFFF;
+
+$colour--black_1: #000000;
+
+// BUTTONS -->
+$buttons--radius_base: 0.8rem;
+$buttons--padding_base: 0.813em 1.5em;
+
+$buttons--text_1: $colour--black_5;
+$buttons--textHover_1: $colour--black_5;
+$buttons--background_1: $colour--teal_1;
+$buttons--backgroundHover_1: $colour--teal_3;
+$buttons--border_1: $colour--teal_1;
+$buttons--borderHover_1: $colour--teal_3;
 
 // Colours -->    
-$colour--primary: #135414; 
+$colour--primary: $colour--black_2; 
 $colour--secondary: #191919; 
 $colour--tertiary: #FFFFFF; 
 
@@ -34,34 +44,38 @@ $misc--2: #000;
 $misc--3: #000;
 
 // Container -->
-$container--width: 1215px;
+$container--width: 1280px;
 $container--widthWide:  1570px;
-$container--widthNarrow:  1030px;
-$container--widthNarrow2:  1150px;
-$container--widthNarrow3:  768px;
+$container--widthNarrow:  940px;
 
-$container--padding: 2.4rem;
-$container--modifierXLarge: 1.2;
-$container--modifierLarge: 1.2;
-$container--modifierSmall: 1.5;
-$container--modifierTiny: 1.5;
+$container--padding: 1.6rem;
+$container--modifierXLarge: 1;
+$container--modifierLarge: 1;
+$container--modifierSmall: 1;
+$container--modifierTiny: 1;
 
 // Gid -->
-$grid--gap: 3rem;
-$grid--modifierSmall: 2;
-$grid--modifierTiny: 2;
+$grid--gap: 2.4rem;
+$grid--modifierSmall: 1;
+$grid--modifierTiny: 1;
+
+$gridSmall--gap: 1.2rem;
+$gridSmall--modifierSmall: 1;
+$gridSmall--modifierTiny: 1;
 
 // List -->
 $list--gap: 0.8rem;
 
 // Fonts -->   
-$font--primary: "", sans-serif;
-$font--secondary: "", sans-serif;
+$font--primary: "Inter", sans-serif;
+$font--secondary: "Inter", sans-serif;
 
 // REM Size -->
 $size--base: 10px;
 $size--large: 1.0;
 $size--xlarge: 0.9;
+
+$text--lineHeight: 1.333;
 
 // Text sizes -->
 $text--titleLarge: 5.6rem;
@@ -69,33 +83,38 @@ $text--titleMedium: 5.6rem;
 $text--titleSmall: 2.8rem;
 $text--titleTiny: 2.8rem;
 
-$text--title2Large: 4.8rem;
-$text--title2Medium: 4.8rem;
-$text--title2Small: 2.8rem;
-$text--title2Tiny: 2.8rem;
+$text--h1Large: 5.4rem;
+$text--h1Medium: 5.44rem;
+$text--h1Small: 3.6rem;
+$text--h1Tiny: 3.6rem;
 
-$text--h1Large: 4rem;
-$text--h1Medium: 4rem;
-$text--h1Small: 2.8rem;
-$text--h1Tiny: 2.8rem;
+$text--h2Large: 4.8rem;
+$text--h2Medium: 4.8rem;
+$text--h2Small: 3.2rem;
+$text--h2Tiny: 3.2rem;
 
-$text--h2Large: 3.2rem;
-$text--h2Medium: 3.2rem;
-$text--h2Small: 2.6rem;
-$text--h2Tiny: 2.6rem;
+$text--h35Large: 4rem;
+$text--h35Medium: 4rem;
+$text--h35Small: 2.4rem;
+$text--h35Tiny: 2.4rem;
 
-$text--h3Large: 2.7rem;
-$text--h3Medium: 2.7rem;
+$text--h3Large: 3.2rem;
+$text--h3Medium: 3.2rem;
 $text--h3Small: 2.4rem;
 $text--h3Tiny: 2.4rem;
 
-$text--h4Large: 2.2rem;
-$text--h4Medium: 2.2rem;
-$text--h4Small: 2.2rem;
-$text--h4Tiny: 2.2rem;
+$text--h45Large: 2.4rem;
+$text--h45Medium: 2.4rem;
+$text--h45Small: 2rem;
+$text--h45Tiny: 2rem;
 
-$text--h5Large: 2rem;
-$text--h5Medium: 2rem;
+$text--h4Large: 2rem;
+$text--h4Medium: 2rem;
+$text--h4Small: 2rem;
+$text--h4Tiny: 2rem;
+
+$text--h5Large: 1.8rem;
+$text--h5Medium: 1.8rem;
 $text--h5Small: 1.8rem;
 $text--h5Tiny: 1.8rem;
 
@@ -108,98 +127,3 @@ $text--bodyLarge: 1.6rem;
 $text--bodyMedium: 1.6rem;
 $text--bodySmall: 1.6rem;
 $text--bodyTiny: 1.6rem;
-
-// Mixins
-@mixin button-style($break-small: 768px) {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-
-  transition: all 250ms ease-in-out;
-  border: 1px solid var(--section--buttonBackground_1, var(--button--border));
-  background-color: var(--section--buttonBackground_1, var(--button--bg));
-  color: var(--section--buttonText_1, var(--button--text));
-  text-decoration: none;
-
-  display: inline-flex;
-  gap: 0.5em;
-  justify-content: center;
-  align-items: center;
-
-  text-align: center;
-  font-size: 1.6rem;
-  padding: 0.75em 1.5em;
-  padding: 0.7em 1.5em;
-  border-radius: 100px;
-  cursor: pointer;
-
-  letter-spacing: normal;
-  min-width: 8.75em;
-  line-height: 1.25;
-  font-weight: bold;
-  
-  // text-transform: uppercase;
-
-  span {
-    display: block;
-    line-height: 1;
-    color: inherit;
-  }
-
-  &:focus,
-  &:active {
-    outline: none;
-  }
-
-  &:hover {
-    border: 1px solid var(--section--buttonBackground_1, var(--section--buttonBackgroundHover_1, var(--button--borderHover)));
-    background-color: var(--section--buttonBackground_1, var(--section--buttonBackgroundHover_1, var(--button--bgHover)));
-    color: var(--section--buttonText_1, var(--section--buttonTextHover_1, var(--button--textHover)));
-  }
-
-  svg {
-    height: 1.35em;
-    width: auto;
-    display: block;
-    fill: currentColor;
-  }
-
-  &.style--alternate {
-    border-radius: 1rem;
-  }
-
-  &.style--reverse {
-    border: 1px solid var(--section--buttonBackgroundHover_1, var(--button--borderHover));
-    background-color: var(--section--buttonBackgroundHover_1, var(--button--bgHover));
-    color: var(--section--buttonTextHover_1, var(--button--textHover));
-
-    &:hover {
-      border: 1px solid var(--section--buttonBackground_1, var(--button--border));
-      background-color: var(--section--buttonBackground_1, var(--button--bg));
-      color: var(--section--buttonText_1, var(--button--text));
-    }
-  }
-
-  @media screen and (max-width: $break-small) {
-    font-size: 1.4rem;
-    padding: 0.876em 1.6em;
-  }
-}
-
-@mixin button-styleColour($background: --section--buttonBackground_1, $backgroundHover: buttonBackgroundHover_1, $colour: --section--buttonText_1, $colourHover: buttonTextHover_1, $border: --default, $borderHover: --default) {
-  border-color: var($border, var($background));
-  background-color: var($background, var(--button--bg));
-  color: var($colour, var(--button--text));
-
-  &:hover {
-    border-color: var($borderHover, var($backgroundHover));
-    background-color: var($backgroundHover, var(--button--bgHover));
-    color: var($colourHover, var(--button--textHover));
-  }
-}
