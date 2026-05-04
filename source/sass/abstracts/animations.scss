@@ -1,0 +1,118 @@
+/* ------------------------------------------------------------------------------------------------------------------------------------------[Animations]---*/
+
+/*/__________________________________________________________________________________
+  : AUTOFILL COLOUR
+  : Changes autofill colour
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
+@keyframes autofill {
+  0%,
+  100% {
+    color: var(--colour--primary);
+    background: transparent;
+    border: 1px solid var(--colour--border);
+  }
+}
+
+@-webkit-keyframes autofill {
+  0%,
+  100% {
+    color: var(--colour--primary);
+    background: transparent;
+    border: 1px solid var(--colour--border);
+  }
+}
+
+/*/__________________________________________________________________________________
+  : FADEIN
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  0.1% {
+    display: block;
+    opacity: 0;
+  }
+
+  100% {
+    display: block;
+    opacity: 1;
+  }
+}
+
+/*/__________________________________________________________________________________
+  : SPINNER
+  : Changes autofill colour
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
+@-webkit-keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scroll_v {
+  0% {
+      background-position: 0 0
+  }
+
+  to {
+      background-position: 0 -3850px
+  }
+}
+
+@keyframes scroll_h {
+  0% {
+      background-position: 0 0
+  }
+
+  to {
+      background-position: -991px 0
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/*__________________________________________________________________________________________________________________________________________________________*/
