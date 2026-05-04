@@ -26,12 +26,12 @@ $colour--black_1: #000000;
 $buttons--radius_base: 0.8rem;
 $buttons--padding_base: 0.813em 1.5em;
 
-$buttons--text_1: $colour--black_5;
-$buttons--textHover_1: $colour--black_5;
-$buttons--background_1: $colour--teal_1;
-$buttons--backgroundHover_1: $colour--teal_3;
-$buttons--border_1: $colour--teal_1;
-$buttons--borderHover_1: $colour--teal_3;
+$buttons--text_1: $colour--white_1;
+$buttons--textHover_1: $colour--white_1;
+$buttons--background_1: $colour--black_1;
+$buttons--backgroundHover_1: color.adjust($colour--black_1, $lightness: -10%);
+$buttons--border_1: $colour--black_1;
+$buttons--borderHover_1: color.adjust($colour--black_1, $lightness: -10%);
 
 // Colours -->    
 $colour--primary: $colour--black_2; 
