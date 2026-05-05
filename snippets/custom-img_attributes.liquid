@@ -1,0 +1,108 @@
+{% comment %} {% if picture_tag %}
+<picture>
+    {% liquid
+    assign image_object_mobile = ss.image_mobile
+    assign image_object_desktop = ss.image_desktop
+    assign sizes = "376.00, 556.00, 768.00, 992.00, 1280.00, 1400.00, 376:1400" | split: ", "
+    %}
+    <source
+    media="(max-width: {{ breakpoint_small }}px)"
+    width="{{ image_object_mobile.width }}"
+    height="{{ image_object_mobile.width | divided_by: image_object_mobile.aspect_ratio }}"
+    {% render "custom-img_attributes", image: image_object_mobile, sizes: sizes, section: section %}
+    />
+    <source
+    media="(min-width: {{ breakpoint_small }}px)"
+    width="{{ image_object_desktop.width }}"
+    height="{{ image_object_desktop.width | divided_by: image_object_desktop.aspect_ratio }}"
+    {% render "custom-img_attributes", image: image_object_desktop, sizes: sizes, section: section %}
+    />
+    <img class="image {% if bs.auto %}style--auto{% endif %}" src="{{ image_object_mobile | img_url: "385x" }}" alt="{{ image_object_mobile.alt }}"
+    loading="eager" fetchpriority="high" decoding="async"
+    />
+</picture>
+
+{% else %}
+    <img
+        {% liquid
+        assign image_object = ss.image_desktop
+        assign sizes = "360.00, 541.00, 753.00, 977.00, 1185.00, 1385.00, 360:1385" | split: ", "
+        %}
+        loading="lazy"
+        alt="{{ image_object.alt | default: bs.title | escape }}"
+        width="{{ image_object.width }}"
+        height="{{ image_object.width | divided_by: image_object.aspect_ratio | round }}"
+        src="{{ image_object | image_url: width: sizes[0] }}"
+        {% render "custom-img_attributes", image: image_object, sizes: sizes, section: section %}
+    >
+{% endif %} {% endcomment %}
+
+{% liquid
+    assign breakpoint_xlarge = settings.breakpoint_xlarge | default: 1300
+    assign breakpoint_large = settings.breakpoint_large | default: 1200
+    assign breakpoint_medium = settings.breakpoint_medium | default: 992
+    assign breakpoint_small = settings.breakpoint_small | default: 768
+    assign breakpoint_tiny = settings.breakpoint_tiny | default: 556
+    assign breakpoint_base = settings.breakpoint_base | default: 360
+
+    assign modiefier = 1
+    if section.blocks.size > 0
+        assign modiefier = section.blocks.size
+    endif
+
+    assign image_settings = sizes.last
+
+    assign large_size = sizes[5] | times: 1.00 | divided_by: modiefier | append: "px"
+    if section.settings.width == "full"
+        assign large_size = sizes[5] | divided_by: breakpoint_large | times: 100 | divided_by: modiefier | round | append: "vw"
+    endif
+
+
+    if section.blocks.size > 0
+        assign size_modiefier = 1.00 | divided_by: section.blocks.size
+    endif
+    
+    assign size_modiefier = size_modiefier | default: 1
+
+    assign start = image_settings | split: ":" | first | times: 1 | times: size_modiefier
+    assign end = image_settings | split: ":" | last | times: 1 | times: size_modiefier
+    assign src_count = 5
+
+    if section.settings.width == "full"
+        assign src_count = 10
+        assign end = end | times: 1.5 | round
+    endif
+
+    assign gap = end | minus: start | divided_by: src_count
+    assign src_start = start | default: 200
+    assign src_end = end | default: 500 | round
+    assign src_gap = gap | default: 100
+
+    assign src_loop = src_end | minus: src_start | divided_by: src_gap | round
+    assign width_gap = src_gap | divided_by: src_loop
+%}
+
+{%- capture srcset -%}
+    {%- for i in (0..src_loop) -%}
+        {%- assign src_gap_current = src_gap | times: i -%}
+        {%- assign current_width = src_start | plus: src_gap_current | round -%}
+        {%- assign current_width_basic = src_start | plus: src_gap_current -%}
+        {%- assign descriptor = current_width_basic | round | append: "w" -%}
+        {%- if current_width > src_end -%}{%- break -%}{%- endif -%}
+        {%- unless forloop.first -%}, {%- endunless -%}https:{{- image | image_url: width: current_width | append: " " | append: descriptor -}}
+    {%- endfor -%}
+{%- endcapture -%}
+ 
+{% capture size_attributes %}
+    srcset="{{ srcset }}"
+    sizes="
+        (min-width: {{ breakpoint_xlarge }}px) {{ large_size }},
+        (min-width: {{ breakpoint_large }}px) {{ sizes[4] | divided_by: breakpoint_large | times: 100 | divided_by: modiefier | round }}vw,
+        (min-width: {{ breakpoint_medium }}px) {{ sizes[3] | divided_by: breakpoint_medium | times: 100 | divided_by: modiefier | round }}vw,
+        (min-width: {{ breakpoint_small }}px) {{ sizes[2] | divided_by: breakpoint_small | times: 100 | round }}vw,
+        (min-width: {{ breakpoint_tiny }}px) {{ sizes[1] | divided_by: breakpoint_tiny | times: 100 | round }}vw,
+        {{ sizes[0] | divided_by: breakpoint_base | times: 100 | round }}vw
+    "
+{% endcapture %}
+
+{{ size_attributes }}
