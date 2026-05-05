@@ -23,8 +23,13 @@ $colour--white_1: #FFFFFF;
 $colour--black_1: #000000;
 
 // BUTTONS -->
+$buttons--size_base: 1.6rem;
 $buttons--radius_base: 0.8rem;
 $buttons--padding_base: 0.813em 1.5em;
+
+$buttons--size_large: 1.8rem;
+$buttons--radius_large: 0.8rem;
+$buttons--padding_large: 1em 1.75em;
 
 $buttons--text_1: $colour--white_1;
 $buttons--textHover_1: $colour--white_1;
