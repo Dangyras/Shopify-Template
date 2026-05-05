@@ -1,22 +1,99 @@
-{% liquid
-  assign src_start = start | default: 200
-  assign src_end = end | default: 500
-  assign src_gap = gap | default: 100
-  assign src_loop = src_end | minus: src_start | divided_by: src_gap
-  assign src_url = src_start
-  assign width_gap = src_gap | divided_by: src_loop
-  
-  if width_gap < 10
-    assign width_gap = 10
-  endif
+{% comment %} <div class="image--wrapper">
+  <img
+  {% assign sizes = "41.00, 41.00, 41.00, 62.00, 62.00, 62.00, 41:62" | split: ", " %}
+  {% assign image_object = ss.image %}
+  src="{{ image_object | image_url: width: sizes[0] }}"
+  loading="lazy"
+  alt="{{ image_object.alt | escape }}"
+  width="{{ image_object.width }}"
+  height="{{ image_object.width | divided_by: image_object.aspect_ratio | round }}"
+  srcset="{% render 'custom-srcset', image: image_object, image_settings: sizes.last %}"
+  sizes="
+      (min-width: {{ breakpoint_largeX }}px) {{ sizes[5] }}px,
+      (min-width: {{ breakpoint_large }}px) {{ sizes[4] | divided_by: breakpoint_large | times: 100 | round }}vw,
+      (min-width: {{ breakpoint_medium }}px) {{ sizes[3] | divided_by: breakpoint_medium | times: 100 | round }}vw,
+      (min-width: {{ breakpoint_small }}px) {{ sizes[2] | divided_by: breakpoint_small | times: 100 | round }}vw,
+      (min-width: {{ breakpoint_tiny }}px) {{ sizes[1] | divided_by: breakpoint_tiny | times: 100 | round }}vw,
+      {{ sizes[0] | divided_by: breakpoint_base | times: 100 | round }}vw
+  "
+  >
+</div> {% endcomment %}
 
-  for i in (1..src_loop)
-    assign src_url = src_url | plus: src_gap | append: "x"
-    assign src_width = src_url | remove: "x" | minus: width_gap | append: "w" | prepend: " "
-    unless forloop.first 
-      echo ","
-    endunless
-    echo "https:"
-    echo image | img_url: src_url | append: src_width
-  endfor
+{% liquid
+  assign breakpoint_max = settings.breakpoint_max | default: 2400
+  assign breakpoint_largeX = settings.breakpoint_large | default: 1540
+  assign breakpoint_large = settings.breakpoint_large | default: 1200
+  assign breakpoint_medium = settings.breakpoint_medium | default: 992
+  assign breakpoint_small = settings.breakpoint_small | default: 768
+  assign breakpoint_tiny = settings.breakpoint_tiny | default: 556
+  assign breakpoint_base = settings.breakpoint_base | default: 360
+
+  if image_settings != blank
+    assign start = image_settings | split: ":" | first | times: 1
+    assign end = image_settings | split: ":" | last | times: 1
+    assign gap = end | minus: start | divided_by: 5
+    
+    assign modiefier = modiefier | default: 1
+    if image.aspect_ratio > 1
+      assign modiefier0 = image.aspect_ratio | times: 1.0
+      assign modiefier0 = 1
+    endif
+
+    assign src_start = start | default: 200
+    assign src_end = end | default: 500
+    assign src_end = src_end | times: modiefier | round
+    assign src_gap = gap | default: 100
+    assign src_loop = src_end | minus: src_start | divided_by: src_gap
+    assign width_gap = src_gap | divided_by: src_loop
+
+    if width_gap < 10
+      assign width_gap = 10
+    endif
+
+    for i in (1..src_loop)
+      assign src_gap_current = src_gap | times: i
+      assign current_width = src_start | plus: src_gap_current  | times: modiefier | round
+      assign current_width_basic = src_start | plus: src_gap_current
+      if testing
+        echo src_start | append: "-"
+        echo src_gap | append: "-"
+        echo i | append: "-"
+        echo current_width | append: "w,<br>"
+        continue
+      endif
+      if current_width > src_end
+        break
+      endif
+      assign descriptor = current_width_basic | append: "w"
+      unless forloop.first
+        echo ", "
+      endunless
+      echo "https:"
+      echo image | image_url: width: current_width
+      echo " "
+      echo descriptor
+    endfor
+  else
+    assign src_start = start | default: 200
+    assign src_end = end | default: 500
+    assign src_gap = gap | default: 100
+    assign src_loop = src_end | minus: src_start | divided_by: src_gap | round
+    assign src_url = src_start
+    assign width_gap = src_gap | divided_by: src_loop
+  
+    if width_gap < 10
+      assign width_gap = 10
+    endif
+
+    for i in (1..src_loop)
+      assign src_url = src_url | plus: src_gap | append: "x"
+      assign src_width = src_url | remove: "x" | minus: width_gap | append: "w" | prepend: " "
+      unless forloop.first 
+        echo ","
+      endunless
+      echo "https:"
+      echo image | img_url: src_url | append: src_width
+    endfor
+
+  endif
 %}
