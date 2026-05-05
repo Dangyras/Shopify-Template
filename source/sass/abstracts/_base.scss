@@ -294,34 +294,41 @@
     : CONTAINERS
   ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/*/
 #theme {
-  .container {
+  %container-base {
     width: unset;
     margin: auto;
     padding-left: var(--container--padding);
     padding-right: var(--container--padding);
+  }
 
+  .container {
     /* DEFAULT */
     &--default {
+      @extend %container-base;
       max-width: calc(var(--container--width) + 2 * var(--container--padding));
     }
     
     /* WIDE */
     &--wide {
+      @extend %container-base;
       max-width: calc(var(--container--widthWide) + 2 * var(--container--padding));
     }
 
     /* NARROW */
     &--narrow {
+      @extend %container-base;
       max-width: calc(var(--container--widthNarrow) + 2 * var(--container--padding));
     }
 
     /* FULL WITH PADDING */
     &--padding {
+      @extend %container-base;
       max-width: 100%;
     }
 
     /* FULL */
     &--full {
+      @extend %container-base;
       max-width: 100%;
       padding: 0;
       width: unset;
@@ -378,10 +385,7 @@
   }
 
   .shopify-policy__container {
-    width: unset;
-    margin: auto;
-    padding-left: var(--container--padding);
-    padding-right: var(--container--padding);
+    @extend %container-base;
     max-width: calc(var(--container--widthNarrow) + 2 * var(--container--padding));
 
     @media screen and (max-width: $break--small) {
