@@ -1,0 +1,97 @@
+{% capture class_value %} heading {{ class }} {% endcapture %}
+{% if type == "h1" %}
+  {{ content
+    | replace: '<h1', '<h1 class="heading heading--h1"' | replace: 'heading ', class_value
+    | replace: '<h2', '<h1 class="heading heading--h2"' | replace: 'heading ', class_value
+    | replace: '</h2>', '</h1>'
+    | replace: '<h3', '<h1 class="heading heading--h3"' | replace: 'heading ', class_value
+    | replace: '</h3>', '</h1>'
+    | replace: '<h4', '<h1 class="heading heading--h4"' | replace: 'heading ', class_value
+    | replace: '</h4>', '</h1>'
+    | replace: '<h5', '<h1 class="heading heading--h5"' | replace: 'heading ', class_value
+    | replace: '</h5>', '</h1>'
+    | replace: '<h6', '<h1 class="heading heading--h6"' | replace: 'heading ', class_value
+    | replace: '</h6>', '</h1>'
+  }}
+{% elsif type == "h2" %}
+  {{ content
+    | replace: '<h2', '<h2 class="heading heading--h2"' | replace: 'heading ', class_value
+    | replace: '<h1', '<h2 class="heading heading--h1"' | replace: 'heading ', class_value
+    | replace: '</h1>', '</h2>'
+    | replace: '<h3', '<h2 class="heading heading--h3"' | replace: 'heading ', class_value
+    | replace: '</h3>', '</h2>'
+    | replace: '<h4', '<h2 class="heading heading--h4"' | replace: 'heading ', class_value
+    | replace: '</h4>', '</h2>'
+    | replace: '<h5', '<h2 class="heading heading--h5"' | replace: 'heading ', class_value
+    | replace: '</h5>', '</h2>'
+    | replace: '<h6', '<h2 class="heading heading--h6"' | replace: 'heading ', class_value
+    | replace: '</h6>', '</h2>'
+  }}
+{% elsif type == "h3" %}
+  {{ content
+    | replace: '<h3', '<h3 class="heading heading--h3"' | replace: 'heading ', class_value
+    | replace: '<h1', '<h3 class="heading heading--h1"' | replace: 'heading ', class_value
+    | replace: '</h1>', '</h3>'
+    | replace: '<h2', '<h3 class="heading heading--h2"' | replace: 'heading ', class_value
+    | replace: '</h2>', '</h3>'
+    | replace: '<h4', '<h3 class="heading heading--h4"' | replace: 'heading ', class_value
+    | replace: '</h4>', '</h3>'
+    | replace: '<h5', '<h3 class="heading heading--h5"' | replace: 'heading ', class_value
+    | replace: '</h5>', '</h3>'
+    | replace: '<h6', '<h3 class="heading heading--h6"' | replace: 'heading ', class_value
+    | replace: '</h6>', '</h3>'
+  }}
+{% elsif type == "h4" %}
+  {{ content
+    | replace: '<h4', '<h4 class="heading heading--h4"' | replace: 'heading ', class_value
+    | replace: '<h1', '<h4 class="heading heading--h1"' | replace: 'heading ', class_value
+    | replace: '</h1>', '</h4>'
+    | replace: '<h2', '<h4 class="heading heading--h2"' | replace: 'heading ', class_value
+    | replace: '</h2>', '</h4>'
+    | replace: '<h3', '<h4 class="heading heading--h3"' | replace: 'heading ', class_value
+    | replace: '</h3>', '</h4>'
+    | replace: '<h5', '<h4 class="heading heading--h5"' | replace: 'heading ', class_value
+    | replace: '</h5>', '</h4>'
+    | replace: '<h6', '<h4 class="heading heading--h6"' | replace: 'heading ', class_value
+    | replace: '</h6>', '</h4>'
+  }}
+{% elsif type == "span" %}
+  {{ content
+    | replace: '<h1', '<span class="heading heading--h1"' | replace: 'heading ', class_value
+    | replace: '</h1>', '</span>'
+    | replace: '<h2', '<span class="heading heading--h2"' | replace: 'heading ', class_value
+    | replace: '</h2>', '</span>'
+    | replace: '<h3', '<span class="heading heading--h3"' | replace: 'heading ', class_value
+    | replace: '</h3>', '</span>'
+    | replace: '<h4', '<span class="heading heading--h4"' | replace: 'heading ', class_value
+    | replace: '</h4>', '</span>'
+    | replace: '<h5', '<span class="heading heading--h5"' | replace: 'heading ', class_value
+    | replace: '</h5>', '</span>'
+    | replace: '<h6', '<span class="heading heading--h6"' | replace: 'heading ', class_value
+    | replace: '</h6>', '</span>'
+  }}
+{% elsif type == "buttons" %}
+  {{ content
+    | remove: "</h1>" | replace: '<h1><a', '<a class="button style--primary style--1" ' | replace: '<h1> <a', '<a class="button style--primary style--1" '
+    | remove: "</h2>" | replace: '<h2><a', '<a class="button style--primary style--2" ' | replace: '<h2> <a', '<a class="button style--primary style--2" '
+    | remove: "</h3>" | replace: '<h3><a', '<a class="button style--primary style--3" ' | replace: '<h3> <a', '<a class="button style--primary style--3" '
+    | remove: "</h4>" | replace: '<h4><a', '<a class="button style--primary style--4" ' | replace: '<h4> <a', '<a class="button style--primary style--4" '
+    | remove: "</h5>" | replace: '<h5><a', '<a class="button style--primary style--5" ' | replace: '<h5> <a', '<a class="button style--primary style--5" '
+    | remove: "</h6>" | replace: '<h6><a', '<a class="button style--primary style--6" ' | replace: '<h6> <a', '<a class="button style--primary style--6" '
+  }}
+{% else %}
+  {% if content contains "<h1><a" %}
+    {% assign content = content | remove: "</h1>" | replace: '<h1><a', '<a class="button style--primary style--large" ' | replace: '<h1> <a', '<a class="button style--primary style--large" ' %}
+  {% endif %}
+  {% if content contains "<h6><a" %}
+    {% assign content = content | remove: "</h6>" | replace: '<h6><a', '<a class="button style--primary" ' | replace: '<h6> <a', '<a class="button style--primary" ' %}
+  {% endif %}
+  {{ content
+    | replace: '<h1', '<h1 class="heading heading--h1"' | replace: 'heading ', class_value
+    | replace: '<h2', '<h2 class="heading heading--h2"' | replace: 'heading ', class_value
+    | replace: '<h3', '<h3 class="heading heading--h3"' | replace: 'heading ', class_value
+    | replace: '<h4', '<h4 class="heading heading--h4"' | replace: 'heading ', class_value
+    | replace: '<h5', '<h5 class="heading heading--h5"' | replace: 'heading ', class_value
+    | replace: '<h6', '<h6 class="heading heading--h6"' | replace: 'heading ', class_value
+  }}
+{% endif %}
