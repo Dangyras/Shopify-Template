@@ -23,46 +23,47 @@
 {%- if ss.content_padding_3 != blank -%}--content--padding_3: {{ ss.content_padding_3 }}rem;{%- endif -%}
 
 {% comment %} SECTION BACKGROUNDS {% endcomment %}
-{%- if ss.section_background_1 != blank -%}--section--background_1: {{ ss.section_background_1 }};{%- endif -%}
+{%- if ss.section_background_1 != blank or ss.section_background_1 != blank != "rgba(0,0,0,0)" -%}--section--background_1: {{ ss.section_background_1 }};{%- endif -%}
 
 {% comment %} CONTENT BACKGROUNDS {% endcomment %}
-{%- if ss.content_background_1 != blank -%}--content--background_1: {{ ss.content_background_1 }};{%- endif -%}
-{%- if ss.content_background_2 != blank -%}--content--background_2: {{ ss.content_background_2 }};{%- endif -%}
-{%- if ss.content_background_3 != blank -%}--content--background_3: {{ ss.content_background_3 }};{%- endif -%}
-{%- if ss.content_background_4 != blank -%}--content--background_4: {{ ss.content_background_4 }};{%- endif -%}
-{%- if ss.content_background_5 != blank -%}--content--background_5: {{ ss.content_background_5 }};{%- endif -%}
+{%- if ss.content_background_1 != blank or ss.content_background_1 != "rgba(0,0,0,0)" -%}--content--background_1: {{ ss.content_background_1 }};{%- endif -%}
+{%- if ss.content_background_2 != blank or ss.content_background_2 != "rgba(0,0,0,0)" -%}--content--background_2: {{ ss.content_background_2 }};{%- endif -%}
+{%- if ss.content_background_3 != blank or ss.content_background_3 != "rgba(0,0,0,0)" -%}--content--background_3: {{ ss.content_background_3 }};{%- endif -%}
+{%- if ss.content_background_4 != blank or ss.content_background_4 != "rgba(0,0,0,0)" -%}--content--background_4: {{ ss.content_background_4 }};{%- endif -%}
+{%- if ss.content_background_5 != blank or ss.content_background_5 != "rgba(0,0,0,0)" -%}--content--background_5: {{ ss.content_background_5 }};{%- endif -%}
 
 {% comment %} TEXTS {% endcomment %}
-{%- if ss.content_text_1 != blank -%}--content--colour_1: {{ ss.content_text_1 }};{%- endif %}
-{%- if ss.content_text_1 != blank -%}--content--colourRGB_1: {{ ss.content_text_1 | color_extract: 'red' }} {{ ss.content_text_1 | color_extract: 'green' }} {{ ss.content_text_1 | color_extract: 'blue' }};{%- endif %}
-{%- if ss.content_text_2 != blank -%}--content--colour_2: {{ ss.content_text_2 }};{%- endif %}
-{%- if ss.content_text_2 != blank -%}--content--colourRGB_2: {{ ss.content_text_2 | color_extract: 'red' }} {{ ss.content_text_2 | color_extract: 'green' }} {{ ss.content_text_2 | color_extract: 'blue' }};{%- endif %}
-{%- if ss.content_text_3 != blank -%}--content--colour_3: {{ ss.content_text_3 }};{%- endif %}
-{%- if ss.content_text_3 != blank -%}--content--colourRGB_3: {{ ss.content_text_3 | color_extract: 'red' }} {{ ss.content_text_3 | color_extract: 'green' }} {{ ss.content_text_3 | color_extract: 'blue' }};{%- endif %}
-{%- if ss.content_text_4 != blank -%}--content--colour_4: {{ ss.content_text_4 }};{%- endif %}
-{%- if ss.content_text_4 != blank -%}--content--colourRGB_4: {{ ss.content_text_4 | color_extract: 'red' }} {{ ss.content_text_4 | color_extract: 'green' }} {{ ss.content_text_4 | color_extract: 'blue' }};{%- endif %}
-{%- if ss.content_text_5 != blank -%}--content--colour_5: {{ ss.content_text_5 }};{%- endif %}
+{%- if ss.content_text_1 != blank or ss.content_text_1 != "rgba(0,0,0,0)" -%}--content--colour_1: {{ ss.content_text_1 }};{%- endif %}
+{%- if ss.content_text_1 != blank or ss.content_text_1 != "rgba(0,0,0,0)" -%}--content--colourRGB_1: {{ ss.content_text_1 | color_extract: 'red' }} {{ ss.content_text_1 | color_extract: 'green' }} {{ ss.content_text_1 | color_extract: 'blue' }};{%- endif %}
+{%- if ss.content_text_2 != blank or ss.content_text_2 != "rgba(0,0,0,0)" -%}--content--colour_2: {{ ss.content_text_2 }};{%- endif %}
+{%- if ss.content_text_2 != blank or ss.content_text_2 != "rgba(0,0,0,0)" -%}--content--colourRGB_2: {{ ss.content_text_2 | color_extract: 'red' }} {{ ss.content_text_2 | color_extract: 'green' }} {{ ss.content_text_2 | color_extract: 'blue' }};{%- endif %}
+{%- if ss.content_text_3 != blank or ss.content_text_3 != "rgba(0,0,0,0)" -%}--content--colour_3: {{ ss.content_text_3 }};{%- endif %}
+{%- if ss.content_text_3 != blank or ss.content_text_3 != "rgba(0,0,0,0)" -%}--content--colourRGB_3: {{ ss.content_text_3 | color_extract: 'red' }} {{ ss.content_text_3 | color_extract: 'green' }} {{ ss.content_text_3 | color_extract: 'blue' }};{%- endif %}
+{%- if ss.content_text_4 != blank or ss.content_text_4 != "rgba(0,0,0,0)" -%}--content--colour_4: {{ ss.content_text_4 }};{%- endif %}
+{%- if ss.content_text_4 != blank or ss.content_text_4 != "rgba(0,0,0,0)" -%}--content--colourRGB_4: {{ ss.content_text_4 | color_extract: 'red' }} {{ ss.content_text_4 | color_extract: 'green' }} {{ ss.content_text_4 | color_extract: 'blue' }};{%- endif %}
+{%- if ss.content_text_5 != blank or ss.content_text_5 != "rgba(0,0,0,0)" -%}--content--colour_5: {{ ss.content_text_5 }};{%- endif %}
+{%- if ss.content_text_5 != blank or ss.content_text_5 != "rgba(0,0,0,0)" -%}--content--colourRGB_5: {{ ss.content_text_5 | color_extract: 'red' }} {{ ss.content_text_5 | color_extract: 'green' }} {{ ss.content_text_5 | color_extract: 'blue' }};{%- endif %}
 
-{%- if ss.content_accent_1 != blank -%}--content--accent_1: {{ ss.content_accent_1 }};{%- endif -%}
-{%- if ss.content_accent_2 != blank -%}--content--accent_2: {{ ss.content_accent_2 }};{%- endif -%}
-{%- if ss.content_accent_3 != blank -%}--content--accent_3: {{ ss.content_accent_3 }};{%- endif -%}
-{%- if ss.content_accent_4 != blank -%}--content--accent_4: {{ ss.content_accent_4 }};{%- endif -%}
-{%- if ss.content_accent_5 != blank -%}--content--accent_5: {{ ss.content_accent_5 }};{%- endif -%}
+{%- if ss.content_accent_1 != blank or ss.content_accent_1 != "rgba(0,0,0,0)" -%}--content--accent_1: {{ ss.content_accent_1 }};{%- endif -%}
+{%- if ss.content_accent_2 != blank or ss.content_accent_2 != "rgba(0,0,0,0)" -%}--content--accent_2: {{ ss.content_accent_2 }};{%- endif -%}
+{%- if ss.content_accent_3 != blank or ss.content_accent_3 != "rgba(0,0,0,0)" -%}--content--accent_3: {{ ss.content_accent_3 }};{%- endif -%}
+{%- if ss.content_accent_4 != blank or ss.content_accent_4 != "rgba(0,0,0,0)" -%}--content--accent_4: {{ ss.content_accent_4 }};{%- endif -%}
+{%- if ss.content_accent_5 != blank or ss.content_accent_5 != "rgba(0,0,0,0)" -%}--content--accent_5: {{ ss.content_accent_5 }};{%- endif -%}
 
 {% comment %} BUTTONS {% endcomment %}
-{%- if ss.button_text_1 != blank -%}--section--buttonText_1: {{ ss.button_text_1 }};{%- endif %}
-{%- if ss.button_text_1 != blank -%}--section--buttonTextHover_1: {{ ss.button_text_1 }};{%- endif %}
-{%- if ss.button_background_1 != blank -%}--section--buttonBackground_1: {{ ss.button_background_1 }};{%- endif %}
-{%- if ss.button_background_1 != blank -%}--section--buttonBackgroundHover_1: {{ ss.button_background_1 }};{%- endif %}
-{%- if ss.button_text_hover_1 != blank -%}--section--buttonTextHover_1: {{ ss.button_text_hover_1 }};{%- endif %}
-{%- if ss.button_background_hover_1 != blank -%}--section--buttonBackgroundHover_1: {{ ss.button_background_hover_1 }};{%- endif %}
+{%- if ss.button_text_1 != blank or ss.button_text_1 != "rgba(0,0,0,0)" -%}--section--buttonText_1: {{ ss.button_text_1 }};{%- endif %}
+{%- if ss.button_text_1 != blank or ss.button_text_1 != "rgba(0,0,0,0)" -%}--section--buttonTextHover_1: {{ ss.button_text_1 }};{%- endif %}
+{%- if ss.button_background_1 != blank or ss.button_background_1 != "rgba(0,0,0,0)" -%}--section--buttonBackground_1: {{ ss.button_background_1 }};{%- endif %}
+{%- if ss.button_background_1 != blank or ss.button_background_1 != "rgba(0,0,0,0)" -%}--section--buttonBackgroundHover_1: {{ ss.button_background_1 }};{%- endif %}
+{%- if ss.button_text_hover_1 != blank or ss.button_text_hover_1 != "rgba(0,0,0,0)" -%}--section--buttonTextHover_1: {{ ss.button_text_hover_1 }};{%- endif %}
+{%- if ss.button_background_hover_1 != blank or ss.button_background_hover_1 != "rgba(0,0,0,0)" -%}--section--buttonBackgroundHover_1: {{ ss.button_background_hover_1 }};{%- endif %}
 
-{%- if ss.button_text_2 != blank -%}--section--buttonText_2: {{ ss.button_text_2 }};{%- endif %}
-{%- if ss.button_text_2 != blank -%}--section--buttonTextHover_2: {{ ss.button_text_2 }};{%- endif %}
-{%- if ss.button_background_2 != blank -%}--section--buttonBackground_2: {{ ss.button_background_2 }};{%- endif %}
-{%- if ss.button_background_2 != blank -%}--section--buttonBackgroundHover_2: {{ ss.button_background_2 }};{%- endif %}
-{%- if ss.button_text_hover_2 != blank -%}--section--buttonTextHover_2: {{ ss.button_text_hover_2 }};{%- endif %}
-{%- if ss.button_background_hover_2 != blank -%}--section--buttonBackgroundHover_2: {{ ss.button_background_hover_2 }};{%- endif %}
+{%- if ss.button_text_2 != blank or ss.button_text_2 != "rgba(0,0,0,0)" -%}--section--buttonText_2: {{ ss.button_text_2 }};{%- endif %}
+{%- if ss.button_text_2 != blank or ss.button_text_2 != "rgba(0,0,0,0)" -%}--section--buttonTextHover_2: {{ ss.button_text_2 }};{%- endif %}
+{%- if ss.button_background_2 != blank or ss.button_background_2 != "rgba(0,0,0,0)" -%}--section--buttonBackground_2: {{ ss.button_background_2 }};{%- endif %}
+{%- if ss.button_background_2 != blank or ss.button_background_2 != "rgba(0,0,0,0)" -%}--section--buttonBackgroundHover_2: {{ ss.button_background_2 }};{%- endif %}
+{%- if ss.button_text_hover_2 != blank or ss.button_text_hover_2 != "rgba(0,0,0,0)" -%}--section--buttonTextHover_2: {{ ss.button_text_hover_2 }};{%- endif %}
+{%- if ss.button_background_hover_2 != blank or ss.button_background_hover_2 != "rgba(0,0,0,0)" -%}--section--buttonBackgroundHover_2: {{ ss.button_background_hover_2 }};{%- endif %}
 
 {% comment %} ELEMENT SPACING {% endcomment %}
 {%- if ss.element_margin_1 != blank -%}--element--marginBottom_1: {{ ss.element_margin_1 }}rem;{%- endif %}
