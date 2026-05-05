@@ -422,6 +422,7 @@
   }
 
   .button,
+  .button.style--primary,
   .button--primary,
   .button--wrapper a,
   .customer button,
@@ -453,6 +454,12 @@
         var(--section--buttonTextHover_1, var(--button-text-hover)),
         $variant: wire
       );
+    }
+
+    &.style--large {
+      padding: $buttons--padding_large;
+      border-radius: $buttons--radius_large;
+      font-size: $buttons--size_large;
     }
   }
 
