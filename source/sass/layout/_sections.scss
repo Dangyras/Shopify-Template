@@ -8,12 +8,36 @@
   background-color: var(--section--background_1, transparent);
   padding: var(--section--paddingTop_1, 0rem) 0 var(--section--paddingBottom_1, 0rem) 0;
   margin-bottom: calc(var(--section--marginBottom_1, 0rem));
+  
+
+  &.style--hidden {
+    overflow: hidden;
+  }
 
   /* SECTION CONTENT */
-  .section--content {
+  .section-content {
     background-color: var(--content--background_1, transparent);
     padding: var(--content--paddingTop_1, 0rem) var(--content--paddingSides_1, 0rem) var(--content--paddingBottom_1, 0rem);
     color: var(--content--colour_1, var(--colour--primary));
+
+    .section-header {
+      margin-bottom: calc(var(--section--paddingTop_1, 0rem) * 0.5);
+      .heading:only-child {
+        margin: 0;
+      }
+    }
+
+    .section-footer {
+      margin-bottom: calc(var(--section--paddingBotton_1, 0rem) * 0.5);
+      .heading:only-child {
+        margin: 0;
+      }
+    }
+
+    [style*="underline"] {
+      color: var(--content--accent_1);
+      text-decoration: none !important;
+    }
   }
 
   /* ELEMENT MARGIN */
@@ -25,6 +49,35 @@
     }
   }
 
+  .layout--spacing {
+    display: grid;
+    grid-template-columns: 100%;
+    gap: calc(var(--element--spacing_1, 0rem));
+  }
+
+  .margin--bottom1 {
+    margin-bottom: calc(var(--element--marginBottom_1, 0rem));
+
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  .margin--bottom2 {
+    margin-bottom: calc(var(--element--marginBottom_2, 0rem));
+
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  .margin--bottom {
+    margin-bottom: calc(var(--element--marginBottom_2, 0rem));
+
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
   
   .swiper-button-lock {
     display: none !important;
@@ -52,35 +105,70 @@
     color: var(--content--colour_2, var(--colour--secondary));
   }
 
-  .heading.style--decoration {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 3.2rem;
-    
-    span {
-      position: relative;
-    z-index: 1;
+  .style--colourAccent {
+    &1 {
+      color: var(--content--accent_1, var(--colour--accent));
     }
 
-    &:after {
-      content: "";
-      position: absolute;
-      background-image: var(--icon-title);
-      z-index: 0;
-      background-repeat: no-repeat;
-      width: 5.625em;
-      height: 2em;
-      transform: translate(var(--pos-left, 0.15em), var(--pos-top, 0.15em));
+    &2 {
+      color: var(--content--accent_2);
+    }
+    
+    &3 {
+      color: var(--content--accent_3, inherit);
+    }
+    
+    &4 {
+      color: var(--content--accent_4, inherit);
+    }
+  }
+
+  .style--colourContent {
+    &1 {
+      color: var(--content--colour_1, var(--colour--primary));
+    }
+
+    &2 {
+      color: var(--content--colour_2, var(--colour--secondary));
+    }
+    
+    &3 {
+      color: var(--content--colour_3, inherit);
+    }
+    
+    &4 {
+      color: var(--content--colour_4, inherit);
     }
   }
   
+  .style--backgroundContent {
+    &1 {
+      background: var(--content--background_1);
+    }
+
+    &2 {
+      background: var(--content--background_2);
+    }
+    
+    &3 {
+      background: var(--content--background_3);
+    }
+    
+    &4 {
+      background: var(--content--background_4);
+    }
+  }
+
   @media screen and (max-width: $break--small) {
+    .section--header {
+      margin-bottom: 2.4rem;
+    }
+
     &.padding--desktop {
       padding-top: 0 !important;
       padding-bottom: 0 !important;
     }    
+
     &.margin--desktop {
       margin-top: 0 !important;
       margin-bottom: 0 !important;
@@ -104,6 +192,18 @@
 
     .margin--inner>* {
       margin-bottom: calc(var(--element--marginBottom_1, 0rem) * var(--section--modifierSmall_1, 2));
+    }
+
+    .margin--bottom1 {
+      margin-bottom: calc(var(--element--marginBottom_1, 0rem) * var(--section--modifierSmall_2, 2));
+    }
+
+    .margin--bottom2 {
+      margin-bottom: calc(var(--element--marginBottom_2, 0rem) * var(--section--modifierSmall_2, 2));
+    }
+
+    .layout--spacing {
+      gap: calc(var(--element--spacing_1, 0rem) * var(--section--modifierSmall_1, 2));
     }
   }
 }
