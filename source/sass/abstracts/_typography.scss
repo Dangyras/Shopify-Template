@@ -128,39 +128,38 @@
     container-type: inline-size;
 
     .heading--h1 {
-      font-size: clamp(3.6rem, 8cqi, 5.4rem);
+      font-size: clamp(3.6rem, cqiRem(5.4rem), 5.4rem);
       @media only screen and (max-width: $break--small) {
-        font-size: clamp(1.6rem, 5.3cqi, 3.6rem);
+        font-size: clamp(1.6rem, cqiRem(3.6rem), 3.6rem);
       }
     }
 
     .heading--h2 {
-      font-size: clamp(3.2rem, 7.1cqi, 4.8rem);
+      font-size: clamp(3.2rem, cqiRem(4.8rem), 4.8rem);
       @media only screen and (max-width: $break--small) {
-        font-size: clamp(1.6rem, 4.7cqi, 3.2rem);
+        font-size: clamp(1.6rem, cqiRem(3.2rem), 3.2rem);
       }
     }
 
     .heading--h3 {
-      font-size: clamp(2.4rem, 4.7cqi, 3.2rem);
+      font-size: clamp(2.4rem, cqiRem(3.2rem), 3.2rem);
       @media only screen and (max-width: $break--small) {
-        font-size: clamp(1.6rem, 3.6cqi, 2.4rem);
+        font-size: clamp(1.6rem, cqiRem(2.4rem), 2.4rem);
       }
     }
 
     .heading--h4 {
-      font-size: clamp(2rem, 3cqi, 2rem);
+      font-size: clamp(2rem, cqiRem(2rem), 2rem);
       @media only screen and (max-width: $break--small) {
-        font-size: clamp(2rem, 3cqi, 2rem);
+        font-size: clamp(2rem, cqiRem(2rem), 2rem);
       }
     }
 
     .button {
-      font-size: clamp(1.4rem, 2.4cqi, 1.6rem);
-      gap: clamp(.4rem, .75cqi, .5em);
-      padding: clamp(.65em, 1.2cqi, .813em) clamp(1.1em, 2.2cqi, 1.5em);
-      border-radius: clamp(.8rem, 1.8cqi, 1.2rem);
-      min-width: clamp(7rem, 13cqi, 8.75em);
+      font-size: clamp(1.4rem, cqiRem(1.6rem), 1.6rem);
+      gap: clamp(.4rem, cqiRem(0.5rem), .5rem);
+      border-radius: clamp(.8rem, cqiRem(1.2rem), 1.2rem);
+      min-width: clamp(7rem, cqiRem(8.75rem), 8.75rem);
     }
   }
 }
