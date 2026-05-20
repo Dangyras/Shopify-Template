@@ -282,116 +282,235 @@ class Utils {
 
 new Utils();
 
-
 class DropdownElement extends HTMLElement {
-  connectedCallback() {
-    this.init();
+  constructor() {
+    super();
+ 
+    this.selectors = {
+      trigger: '[data-dropdown="trigger"]',
+      body: '[data-dropdown="body"]',
+      inner: ".dropdown--inner",
+    };
+ 
+    this.classes = {
+      open: "is-open",
+    };
+ 
+    this.isTransitioning = false;
+    this._listeners = new WeakMap();
   }
-
-  init() {
-    Element.prototype.on = function (event, callback, options = false) {
-      if (!this._eventNamespaces) {
-        this._eventNamespaces = {};
-      }
-      this._eventNamespaces[event] = callback;
-      this.addEventListener(event.split(".")[0], callback, options);
-      return this;
-    };
-
-    Element.prototype.off = function (event) {
-      if (!this._eventNamespaces) return;
-      const callback = this._eventNamespaces[event];
-      if (callback) {
-        this.removeEventListener(event.split(".")[0], callback);
-        delete this._eventNamespaces[event];
-      }
-      return this;
-    };
-
+ 
+  connectedCallback() {
     this.cleanupText();
     this.initializeDropdown();
   }
-
+ 
+  disconnectedCallback() {
+    const triggers = this.querySelectorAll(this.selectors.trigger);
+    triggers.forEach((trigger) => this._removeListener(trigger));
+  }
+ 
+  _addListener(el, event, handler) {
+    this._removeListener(el, event);
+    el.addEventListener(event, handler);
+    if (!this._listeners.has(el)) this._listeners.set(el, {});
+    this._listeners.get(el)[event] = handler;
+  }
+ 
+  _removeListener(el, event = null) {
+    if (!this._listeners.has(el)) return;
+    const map = this._listeners.get(el);
+    if (event) {
+      if (map[event]) {
+        el.removeEventListener(event, map[event]);
+        delete map[event];
+      }
+    } else {
+      Object.entries(map).forEach(([evt, fn]) => el.removeEventListener(evt, fn));
+      this._listeners.delete(el);
+    }
+  }
+ 
   cleanupText() {
-    const paragraphs = this.querySelectorAll(".dropdown--inner p");
-    paragraphs.forEach((paragraph) => {
-      paragraph.childNodes.forEach((child) => {
+    const inner = this.querySelector(this.selectors.inner);
+    if (!inner) return;
+ 
+    inner.querySelectorAll("p").forEach((p) => {
+      p.childNodes.forEach((child) => {
         if (child.nodeType === Node.TEXT_NODE) {
           child.textContent = child.textContent.trim().replace(/\s+/g, " ");
         }
       });
     });
-
-    if (this.querySelector(".dropdown--inner").textContent.trim() === "") {
+ 
+    if (inner.textContent.trim() === "") {
       this.classList.add("hide");
     }
   }
-
+ 
   initializeDropdown() {
-    const selectors = {
-      trigger: '[data-dropwdown="trigger"]',
-      body: '[data-dropwdown="body"]',
-      inner: ".dropdown--inner",
-    };
-
-    const classes = {
-      open: "is-open",
-      transitioning: "is-transitioning",
-    };
-
-    let isTransitioning = false;
-
-    const triggers = this.querySelectorAll(selectors.trigger);
+    const triggers = this.querySelectorAll(this.selectors.trigger);
+ 
     triggers.forEach((trigger) => {
-      const state = trigger.classList.contains(classes.open);
-      trigger.setAttribute("aria-expanded", state);
-
-      trigger.off("click.dropdown");
-      trigger.on("click.dropdown", (evt) => this.toggleDropdown(evt, selectors, classes, isTransitioning));
+      const bodyId = trigger.getAttribute("aria-controls");
+      if (!bodyId) {
+        console.warn("[dropdown-element] Trigger is missing aria-controls attribute.", trigger);
+        return;
+      }
+ 
+      const body = this.querySelector(`#${bodyId}`);
+      if (!body) {
+        console.warn(`[dropdown-element] No body found for aria-controls="${bodyId}".`, trigger);
+        return;
+      }
+ 
+      const isOpen = trigger.classList.contains(this.classes.open);
+      trigger.setAttribute("aria-expanded", String(isOpen));
+ 
+      this._addListener(trigger, "click", (evt) => this._onTriggerClick(evt));
     });
   }
 
-  toggleDropdown(evt, selectors, classes, isTransitioning) {
-    if (isTransitioning) return;
-
-    isTransitioning = true;
-
-    const trigger = evt.currentTarget;
-    const isOpen = trigger.classList.contains(classes.open);
+  _onTriggerClick(evt) {
+    this.toggleDropdown(evt.currentTarget);
+  }
+ 
+  toggleDropdown(trigger) {
+    if (this.isTransitioning) return;
+ 
     const bodyId = trigger.getAttribute("aria-controls");
     const body = this.querySelector(`#${bodyId}`);
-
+ 
     if (!body) {
-      isTransitioning = false;
+      console.warn(`[dropdown-element] No body found for aria-controls="${bodyId}".`);
       return;
     }
-
-    const contentHeight = body.querySelector(selectors.inner).offsetHeight;
-
+ 
+    const isOpen = trigger.classList.contains(this.classes.open);
+ 
+    this._closeRelatedDropdowns(trigger);
+ 
     if (isOpen) {
-      body.style.height = `${contentHeight}px`;
-      requestAnimationFrame(() => {
-        body.style.height = "0";
-      });
+      this._closeBody(trigger, body);
     } else {
-      body.style.height = "0";
+      this._openBody(trigger, body);
+    }
+  }
+ 
+  _openBody(trigger, body) {
+    this.isTransitioning = true;
+ 
+    body.hidden = false;
+ 
+    const inner = body.querySelector(this.selectors.inner);
+    const contentHeight = inner.offsetHeight;
+ 
+    body.style.height = "0";
+ 
+    requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         body.style.height = `${contentHeight}px`;
       });
-    }
-
-    body.addEventListener(
-      "transitionend",
-      () => {
-        body.style.height = isOpen ? "0" : "auto";
-        body.classList.toggle(classes.open, !isOpen);
-        isTransitioning = false;
-      },
-      { once: true }
-    );
-
-    trigger.setAttribute("aria-expanded", !isOpen);
-    trigger.classList.toggle(classes.open, !isOpen);
+    });
+ 
+    const onEnd = (e) => {
+      if (e.target !== body) return;
+      body.style.height = "auto";
+      body.classList.add(this.classes.open);
+      trigger.classList.add(this.classes.open);
+      trigger.setAttribute("aria-expanded", "true");
+      this.isTransitioning = false;
+    };
+ 
+    body.addEventListener("transitionend", onEnd, { once: true });
+  }
+ 
+  _closeBody(trigger, body, onComplete = null) {
+    this.isTransitioning = true;
+    const inner = body.querySelector(this.selectors.inner);
+    const contentHeight = inner.offsetHeight;
+    body.style.height = `${contentHeight}px`;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        body.style.height = "0";
+      });
+    });
+ 
+    const onEnd = (e) => {
+      if (e.target !== body) return;
+      body.hidden = true;
+      body.style.height = "0";
+      body.classList.remove(this.classes.open);
+      trigger.classList.remove(this.classes.open);
+      trigger.setAttribute("aria-expanded", "false");
+      this.isTransitioning = false;
+      if (typeof onComplete === "function") onComplete();
+    };
+ 
+    body.addEventListener("transitionend", onEnd, { once: true });
+  }
+ 
+  _closeRelatedDropdowns(currentTrigger) {
+    const dataName = currentTrigger.getAttribute("data-name");
+    if (!dataName) return;
+ 
+    document
+      .querySelectorAll(
+        `[data-dropdown="trigger"][data-name="${dataName}"].${this.classes.open}`
+      )
+      .forEach((otherTrigger) => {
+        if (otherTrigger === currentTrigger) return;
+ 
+        const otherBodyId = otherTrigger.getAttribute("aria-controls");
+        const otherDropdown = otherTrigger.closest("dropdown-element");
+        if (!otherDropdown) return;
+ 
+        const otherBody = otherDropdown.querySelector(`#${otherBodyId}`);
+        if (!otherBody) return;
+ 
+        // Each sibling manages its own isTransitioning flag
+        otherDropdown._closeBody(otherTrigger, otherBody);
+      });
+  }
+ 
+  // ---------------------------------------------------------------------------
+  // Public
+  // ---------------------------------------------------------------------------
+  /**
+   * Programmatically close one or all open triggers within this element.
+   * @param {Element|null} trigger - specific trigger to close, or null for all
+   */
+  close(trigger = null) {
+    if (this.isTransitioning) return;
+ 
+    const triggers = trigger
+      ? [trigger]
+      : Array.from(this.querySelectorAll(this.selectors.trigger));
+ 
+    triggers.forEach((tr) => {
+      if (!tr.classList.contains(this.classes.open)) return;
+ 
+      const bodyId = tr.getAttribute("aria-controls");
+      const body = this.querySelector(`#${bodyId}`);
+      if (!body) return;
+ 
+      this._closeBody(tr, body);
+    });
+  }
+ 
+  /**
+   * Programmatically open a specific trigger within this element.
+   * @param {Element} trigger
+   */
+  open(trigger) {
+    if (this.isTransitioning) return;
+    if (trigger.classList.contains(this.classes.open)) return;
+ 
+    const bodyId = trigger.getAttribute("aria-controls");
+    const body = this.querySelector(`#${bodyId}`);
+    if (!body) return;
+ 
+    this._openBody(trigger, body);
   }
 }
 
