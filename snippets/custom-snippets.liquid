@@ -7,6 +7,20 @@
 
 {%- case type -%}
 
+{%- when 'dropdown' -%}
+  <dropdown-element data-snippet="dropdown" class="{{ classes }}" {{ attributes }}>
+    <button id="{{ selector }}_button" type="button" class="button--reset dropdown-header" aria-controls="{{ selector }}" aria-expanded="false" data-dropdown="trigger" {% if group %}data-name="dropdowns__{{ section.id }}"{% endif %}>
+      <span>{{ header }}</span>
+      <div class="html-icon" aria-hidden="true"></div>
+    </button>
+  
+    <div id="{{ selector }}" data-dropdown="body" role="region" aria-labelledby="{{ selector }}_button" hidden>
+      <div class="dropdown--inner" data-title="{{ header }}" data-index="{{ index }}">
+        <div class="text--wrapper">{{ body }}</div>
+      </div>
+    </div>
+  </dropdown-element>
+
 {%- when 'breadcrumbs' -%}
   <div data-snippet="breadcrumbs">
     {% unless template == 'index' or template == 'cart' or template == 'list-collections' or template == '404' %}
